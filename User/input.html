@@ -2,154 +2,115 @@
 <html>
 
 <head>
-    <!-- <base target="_top"> -->
     <style>
         body {
-            margin: 0;
-            padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 60vh;
-        }
-
-        /* Form container */
-        .form-container {
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            margin: 0;
             padding: 20px;
-            width: 90%;
-            /* Adjust width for smaller devices */
-            max-width: 400px;
-            box-sizing: border-box;
-            text-align: center;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
         h1 {
+            text-align: center;
             color: #333;
-            margin-bottom: 1.5em;
-            /* Reduced margin for smaller screens */
             font-weight: 800;
-            font-size: 1.5em;
-            /* Adjusted for readability on small screens */
+            font-size: 80px;
+            margin-bottom: 100px;
+        }
+
+
+        .form-group {
+            margin-bottom: 40px;
+            width: 100%;
+            /* margin-left: -200px; */
         }
 
         label {
-            font-weight: 800;
-            text-align: left;
-            color: #555;
-            font-size: 1.2em;
-            /* Reduced font size for smaller screens */
+            color: #3d3b3b;
+            display: block;
+            font-size: 60px;
+            font-weight: 700;
+            margin-bottom: 30px;
         }
 
-        input[type="text"],
-        input[type="tel"] {
-            width: 100%;
-            padding: 12px;
-            /* Slightly larger padding for easier touch interaction */
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box;
-            font-size: 16px;
-            background-color: #f9f9f9;
-            transition: border-color 0.3s;
+        input {
+            padding: 20px;
+            border: 2px solid #ddd;
+            border-radius: 15px;
+            font-size: 35px;
         }
 
-        input[type="text"]:focus,
-        input[type="tel"]:focus {
-            border-color: #6a11cb;
-            outline: none;
-        }
-
-        input[type="submit"] {
-            display: inline-block;
-            width: 40%;
-            /* Adjusted width for smaller devices */
-            padding: 10px;
-            /* Larger padding for better tap targets */
-            margin-top: 20px;
-            background-color: #1162cb;
+        button {
+            padding: 10px 30px;
+            background-color: #1d85ad;
             color: white;
-            border: none;
+            font-weight: 800;
+            font-size: 40px;
+            margin-top: 30px;
+            margin-left: 120px;
+            border: 2px solid #a7a3a3;
             border-radius: 10px;
             cursor: pointer;
-            font-size: 1em;
-            /* Adjusted for readability */
-            font-weight: 800;
-            transition: background-color 0.3s;
         }
 
-        input[type="submit"]:hover {
-            background-color: #2575fc;
+        button:hover {
+            background-color: #213c88;
         }
 
-        /* Responsive adjustments */
-        @media (max-width: 600px) {
-            .form-container {
-                background-color: #fff;
-                border-radius: 10px;
-                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-                padding: 20px;
-                width: 75%;
-                /* Adjust width for smaller devices */
-                box-sizing: border-box;
-                text-align: center;
-            }
+        .message {
+            margin-top: 10px;
+            text-align: center;
+            font-weight: bold;
         }
     </style>
 </head>
 
 <body>
-
-    <div class="form-container">
-        <h1>Register</h1>
-        <form id="myForm">
+    <h1>Register</h1>
+    <form id="registrationForm">
+        <div class="form-group">
             <label for="name">Name:</label>
-            <input type="text" id="name" name="name" placeholder="Ramesh Bhai" required>
-
+            <input type="text" id="name" name="name" placeholder="Ramesh Bhai" required />
+        </div>
+        <div class="form-group">
             <label for="phone">Phone:</label>
-            <input type="tel" id="phone" name="phone" placeholder="+91 7226871727" required>
-
+            <input type="text" id="phone" name="phone" placeholder="+91 7226871727" required />
+        </div>
+        <div class="form-group">
             <label for="location">Location:</label>
-            <input type="text" id="location" name="location" placeholder="Gandhidham, Kutch" required>
-
-            <input type="submit" value="Submit">
-        </form>
-    </div>
+            <input type="text" id="location" name="location" placeholder="Gandhidham, Kutch" required />
+        </div>
+        <button type="submit">Submit</button>
+        <div class="message" id="message"></div>
+    </form>
 
     <script>
-        // Wait for the DOM to load
-        document.addEventListener("DOMContentLoaded", function () {
-            const form = document.getElementById("myForm");
+        document.getElementById("registrationForm").addEventListener("submit", function (e) {
+            e.preventDefault();
 
-            // Handle form submission
-            form.addEventListener("submit", function (e) {
-                e.preventDefault(); // Prevent the default form submission behavior
+            const name = document.getElementById("name").value;
+            const phone = document.getElementById("phone").value;
+            const location = document.getElementById("location").value;
 
-                // Collect form data
-                const name = document.getElementById("name").value.trim();
-                const phone = document.getElementById("phone").value.trim();
-                const location = document.getElementById("location").value.trim();
+            const data = { name, phone, location };
 
-                // Simple validation (optional)
-                if (!name || !phone || !location) {
-                    alert("Please fill out all fields.");
-                    return;
-                }
+            google.script.run
+                .withSuccessHandler((response) => {
+                    const messageDiv = document.getElementById("message");
+                    messageDiv.textContent = response;
+                    messageDiv.style.color = response.includes("already") ? "red" : "green";
 
-
-                // Display success message
-                alert("Thank you for registering!");
-                form.reset(); // Clear the form fields after submission
-            });
+                    if (response.includes("registered")) {
+                        document.getElementById("registrationForm").reset();
+                    }
+                })
+                .submitForm(data);
         });
-
     </script>
-
 </body>
 
 </html>
