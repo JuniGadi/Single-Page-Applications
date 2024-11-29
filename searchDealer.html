@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body {
+        display: flex;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        align-items: center;
+        flex-direction: column;
+        background: white;
+      }
+
+      .container {
+        background: linear-gradient(
+          45deg,
+          rgb(91, 159, 223) 0%,
+          rgb(69, 225, 252) 80%,
+          rgb(142, 189, 243) 99%
+        );
+        display: flex;
+        flex-direction: column;
+        border-radius: 15px;
+        width: 300px;
+        height: 350px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        margin-top: 1rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .row {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin: 10px 0;
+      }
+
+      p {
+        text-align: center;
+        color: #000000;
+        font-size: 11px;
+      }
+
+      .button,
+      .back-button,
+      .next-button,
+      .search-button {
+        background: linear-gradient(
+          45deg,
+          rgb(248, 151, 106) 0%,
+          rgb(255, 212, 120) 80%,
+          rgb(247, 195, 85) 99%
+        );
+        display: inline-block;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: bolder;
+        font-size: auto;
+        width: 110px;
+        margin: 10px;
+        border: 2px solid #ffffff;
+        border-radius: 20px;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all 0.2s ease-in-out;
+        text-align: center;
+        padding: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        background-color: #f2f0f3;
+      }
+      .back-button {
+        margin-bottom: 0px;
+      }
+      .next-button,
+      .search-button {
+        margin-top: 0px;
+      }
+
+      .button:hover,
+      .back-button:hover,
+      .next-button:hover,
+      .search-button:hover {
+        border: 2px solid #d1cfcf;
+        color: rgb(255, 255, 255);
+        transform: scale(1.05);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      .heading {
+        color: #000000;
+        font-weight: 700;
+        font-size: 30px;
+        margin-top: 5px;
+        text-align: center;
+        width: 100%;
+      }
+
+      .dropdown {
+        color: #000000;
+        display: flex;
+        width: 170px;
+        background: linear-gradient(
+          45deg,
+          rgb(216, 216, 223) 0%,
+          rgb(206, 219, 221) 80%,
+          rgb(197, 201, 202) 99%
+        );
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: 700;
+        padding: 8px;
+        font-size: 14px;
+        border-radius: 20px;
+        border: 2px solid #ffffff;
+        background-color: #ececec;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        margin: 10px 50%;
+        transition: all 0.2s ease-in-out;
+      }
+
+      .dropdown:hover {
+        border: 2px solid #c4c0c0;
+        transform: scale(1.02);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+      }
+
+      .blinking-dot {
+        animation: blink 2s infinite;
+        margin-right: 5px;
+      }
+
+      @keyframes blink {
+        50% {
+          opacity: 0;
+        }
+      }
+
+      #moreLocations,
+      #dealer {
+        margin: auto;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .result {
+        margin: 30px 0;
+        font-weight: 900;
+        text-align: center;
+        color: #ffffff;
+      }
+
+      h1 {
+        color: #444246;
+      }
+      a {
+        color: #000000;
+        text-decoration: none;
+        font-weight: 500;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1
+      style="
+        text-align: center;
+        font-size: 40px;
+        font-weight: 800;
+        margin-top: 0;
+        margin-bottom: 5px;
+      "
+    >
+      Search Dealer
+    </h1>
+    <h1
+      style="
+        text-align: center;
+        font-size: 25px;
+        font-weight: 700;
+        margin-top: 0;
+        margin-bottom: 50px;
+      "
+    >
+      (ડીલર શોધો)
+    </h1>
+    <div class="container">
+      <!-- Location -->
+      <div id="locations" class="row">
+        <div class="heading">Select Location</div>
+        <button class="button" data-location="AHMEDABAD">Ahmedabad</button>
+        <button class="button" data-location="JUNAGADH">Junagadh</button>
+        <button class="button" data-location="KUTCH">Kutch</button>
+        <button class="button" data-location="MEHSANA">Mehsana</button>
+        <button class="button" data-location="RAJKOT">Rajkot</button>
+        <button class="button" data-location="SURAT">Surat</button>
+        <button
+          class="button"
+          id="moreLocationsButton"
+          style="font-size: 11px; font-weight: 800"
+        >
+          More Locations
+        </button>
+      </div>
+
+      <!-- More Locations -->
+      <div id="moreLocations" class="row hidden">
+        <div class="heading">More Locations</div>
+        <button class="back-button">Back</button>
+        <select id="locationDropdown" class="dropdown">
+          <option value="">Select Location</option>
+          <option value="AMRELI">Amreli</option>
+          <option value="ANAND">Anand</option>
+          <option value="BANASKANTHA">Banaskantha</option>
+          <option value="BHARUCH">Bharuch</option>
+          <option value="BHAVNAGAR">Bhavnagar</option>
+          <option value="DAHOD">Dahod</option>
+          <option value="DEVBHUMI DWARKA">Devbhumi Dwarka</option>
+          <option value="GANDHINAGAR">Gandhinagar</option>
+          <option value="KHEDA">Kheda</option>
+          <option value="JAMNAGAR">Jamnagar</option>
+          <option value="MUMBAI">Mumbai</option>
+          <option value="PANCHMAHAL">Panchmahal</option>
+          <option value="PATAN">Patan</option>
+          <option value="PORBANDAR">Porbandar</option>
+          <option value="RAJASTHAN">Rajasthan</option>
+          <option value="SABARKANTHA">Sabarkantha</option>
+          <option value="SURENDRANAGAR">Surendranagar</option>
+          <option value="TAPI">Tapi</option>
+          <option value="VADODARA">Vadodara</option>
+          <option value="VALSAD">Valsad</option>
+        </select>
+        <button class="next-button">Next</button>
+      </div>
+
+      <!-- Dealer -->
+      <div id="dealer" class="row hidden">
+        <div class="heading">Select Dealer</div>
+        <button class="back-button">Back</button>
+        <select id="dealerDropdown" class="dropdown">
+          <!-- Dealer options will be populated dynamically -->
+        </select>
+        <button class="search-button">Search</button>
+      </div>
+      <div id="result" class="result"></div>
+    </div>
+    <!-- Register link -->
+    <div class="register-link">
+      <a href="https://tally.so/r/3jBpB9"
+        >New Dealer?
+        <strong style="color: green; text-decoration: underline"
+          >Register Now</strong
+        ></a
+      >
+    </div>
+    <!-- Footer -->
+    <footer>
+      <div class="col-md-12">
+        <p>
+          <span class="blinking-dot">⦿</span
+          ><span
+            id="lastUpdate"
+            style="font-weight: 700; font-size: 11px"
+          ></span
+          ><br />
+          &copy; 2024 Junigadi Vehicle Solution Pvt. Ltd.<br />
+          All rights reserved.
+        </p>
+      </div>
+    </footer>
+
+    <script>
+      const locationButtons = document.querySelectorAll("#locations .button");
+      const moreLocationsButton = document.getElementById(
+        "moreLocationsButton"
+      );
+      const backButtons = document.querySelectorAll(".back-button");
+      const nextButton = document.querySelector(".next-button");
+      const searchButton = document.querySelector(".search-button");
+      const locationDropdown = document.getElementById("locationDropdown");
+      const dealerDropdown = document.getElementById("dealerDropdown");
+
+      let selectedLocation = "";
+      let previousScreen = "locations";
+
+      const locationContainer = document.getElementById("locations");
+      const moreLocationsContainer = document.getElementById("moreLocations");
+      const dealerContainer = document.getElementById("dealer");
+
+      locationButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          if (button.id === "moreLocationsButton") {
+            previousScreen = "locations";
+            locationContainer.classList.add("hidden");
+            moreLocationsContainer.classList.remove("hidden");
+            return;
+          }
+          toggleSelected(button);
+          selectedLocation = button.getAttribute("data-location");
+          previousScreen = "locations";
+          locationContainer.classList.add("hidden");
+          dealerContainer.classList.remove("hidden");
+          populateDealers(selectedLocation);
+        });
+      });
+
+      locationDropdown.addEventListener("change", () => {
+        selectedLocation = locationDropdown.value;
+        document.getElementById("result").innerHTML = "";
+      });
+
+      nextButton.addEventListener("click", () => {
+        if (selectedLocation) {
+          previousScreen = "moreLocations";
+          moreLocationsContainer.classList.add("hidden");
+          dealerContainer.classList.remove("hidden");
+          populateDealers(selectedLocation);
+        } else {
+          displayResult("⚠️ Select any location.");
+          return;
+        }
+      });
+
+      backButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          if (!dealerContainer.classList.contains("hidden")) {
+            dealerContainer.classList.add("hidden");
+            if (previousScreen === "locations") {
+              locationContainer.classList.remove("hidden");
+            } else if (previousScreen === "moreLocations") {
+              moreLocationsContainer.classList.remove("hidden");
+              locationDropdown.value = "";
+            }
+          } else if (!moreLocationsContainer.classList.contains("hidden")) {
+            moreLocationsContainer.classList.add("hidden");
+            locationContainer.classList.remove("hidden");
+            locationDropdown.value = "";
+          }
+          selectedLocation = "";
+          document.getElementById("result").innerHTML = "";
+        });
+      });
+
+      searchButton.addEventListener("click", () => {
+        const selectedDealer = dealerDropdown.value;
+        if (selectedDealer) {
+          window.open(selectedDealer, "_blank");
+        } else {
+          displayResult("⚠️ Select dealer.");
+          return;
+        }
+      });
+
+      function toggleSelected(button) {
+        const allButtons = [...locationButtons];
+        allButtons.forEach((btn) => btn.classList.remove("selected"));
+        button.classList.toggle("selected");
+      }
+
+      function populateDealers(location) {
+        const dealersByLocation = {
+          RAJASTHAN: [
+            {
+              name: "HAKIM BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/hakim0691",
+            },
+          ],
+          AHMEDABAD: [
+            {
+              name: "AMIT BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/amit4673",
+            },
+            {
+              name: "BM MOTOR 🚗",
+              link: "https://mydukaan.io/junigadi/categories/bmmotor2888",
+            },
+            {
+              name: "FIROZ BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/firoz4532",
+            },
+            {
+              name: "GOPAL BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/gopal3333",
+            },
+            {
+              name: "GUJARAT AUTO 🚗",
+              link: "https://mydukaan.io/junigadi/categories/gujaratauto4035",
+            },
+            {
+              name: "HITESH BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/hitesh-3803",
+            },
+            {
+              name: "IRFAN BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/irfan6657",
+            },
+            {
+              name: "JALARAM MOTORS 🛻",
+              link: "https://mydukaan.io/junigadi/categories/jalaram7622",
+            },
+            {
+              name: "KAMLESH BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/kamlesh6314",
+            },
+            {
+              name: "MAHALAXMI MOTOTRS 🛻",
+              link: "https://mydukaan.io/junigadi/categories/mahalaxmi1841",
+            },
+            {
+              name: "MAYUR BHAI 🚛",
+              link: "https://mydukaan.io/junigadi/categories/mayur7555",
+            },
+            {
+              name: "NK MOTORS 🚗",
+              link: "https://mydukaan.io/junigadi/categories/nkmotors6520",
+            },
+            {
+              name: "NILESH BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/nilesh9794",
+            },
+            {
+              name: "PM CARS 🚗",
+              link: "https://mydukaan.io/junigadi/categories/pmcar3911",
+            },
+            {
+              name: "PRATIK BHAI 🛻",
+              link: "https://mydukaan.io/junigadi/categories/pratik2798",
+            },
+            {
+              name: "RAHIM BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/rahim0767",
+            },
+            {
+              name: "SHAH AUTO 🚗",
+              link: "https://mydukaan.io/junigadi/categories/hardik2176",
+            },
+            {
+              name: "SHREE RAM MOTORS 🚗",
+              link: "https://mydukaan.io/junigadi/categories/faizan6965",
+            },
+            {
+              name: "SIRAJ BHAI 🛻",
+              link: "https://mydukaan.io/junigadi/categories/siraj8234",
+            },
+            {
+              name: "SOHIL BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/sohil2432",
+            },
+            {
+              name: "SUNNY BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/sunny9693",
+            },
+          ],
+          JAMNAGAR: [
+            {
+              name: "BIPIN BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/bipin4398",
+            },
+            {
+              name: "PARTH BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/parth5304",
+            },
+          ],
+          JUNAGADH: [
+            {
+              name: "ARMAAN BHAI 🛻",
+              link: "https://mydukaan.io/junigadi/categories/armaan1189",
+            },
+            {
+              name: "ASHRAF BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/ashraf9365-1",
+            },
+            {
+              name: "DHARMESH BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/dharmesh0222",
+            },
+            {
+              name: "JAY BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/jaybhai4583",
+            },
+            {
+              name: "JUBER BHAI 🛻",
+              link: "https://mydukaan.io/junigadi/categories/juber5579",
+            },
+            {
+              name: "PARESH BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/paresh0400",
+            },
+            {
+              name: "SHREE NATH AUTO 🚗",
+              link: "https://mydukaan.io/junigadi/categories/shreenath7460",
+            },
+          ],
+          KUTCH: [
+            {
+              name: "ANKIT BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/ankit1111",
+            },
+            {
+              name: "ASWIN BHAI 🛻",
+              link: "https://mydukaan.io/junigadi/categories/aswin7435",
+            },
+            {
+              name: "BHARAT BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/bharat4866",
+            },
+            {
+              name: "CV SOLUTION 🚗 🛻",
+              link: "https://mydukaan.io/junigadi/categories/cv-solution",
+            },
+            {
+              name: "DAUD BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/daud0075",
+            },
+            {
+              name: "DEVA BHAI 🛻",
+              link: "https://mydukaan.io/junigadi/categories/deva0637",
+            },
+            {
+              name: "GHANSHYAM BHAI 🛻",
+              link: "https://mydukaan.io/junigadi/categories/ghanshyam5450",
+            },
+            {
+              name: "GOPAL BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/gopal4842",
+            },
+            {
+              name: "HARGOVIND BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/govind4954",
+            },
+            {
+              name: "JASU BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/jasubhai6819",
+            },
+            {
+              name: "JIGNESH BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/jignesh0211",
+            },
+            {
+              name: "JUBER BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/juber7863",
+            },
+            {
+              name: "KALPESH BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/kalpesh3449",
+            },
+            {
+              name: "KANJI BHAI 🚛",
+              link: "https://mydukaan.io/junigadi/categories/kanjii4657",
+            },
+            {
+              name: "KUNAL BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/kunal5559",
+            },
+            {
+              name: "KUTCHH AUTO 🛻",
+              link: "https://mydukaan.io/junigadi/categories/kutchhauto2511",
+            },
+            {
+              name: "MANISH BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/manish7778",
+            },
+            {
+              name: "MAVJI BHAI 🛻",
+              link: "https://mydukaan.io/junigadi/categories/mavji0666",
+            },
+            {
+              name: "MIHIR BHAI 🛻",
+              link: "https://mydukaan.io/junigadi/categories/mihir5421",
+            },
+            {
+              name: "MUBARAK BHAI 🛻",
+              link: "https://mydukaan.io/junigadi/categories/mubarak0625",
+            },
+            {
+              name: "MUKESH BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/mukesh3134",
+            },
+            {
+              name: "MUSTAK BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/mustak4466",
+            },
+            {
+              name: "NILESH BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/nilesh7146",
+            },
+            {
+              name: "NITIN BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/nitin4563",
+            },
+            {
+              name: "PRADEEP BHAI 🛻",
+              link: "https://mydukaan.io/junigadi/categories/pradeep9155",
+            },
+            {
+              name: "RANCHHOD BHAI 🛻",
+              link: "https://mydukaan.io/junigadi/categories/ranchhod5386",
+            },
+            {
+              name: "RAJU BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/raju7670",
+            },
+            {
+              name: "SANDIP BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/sandeep6509",
+            },
+            {
+              name: "SANDIP BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/sandip0399",
+            },
+            {
+              name: "SHRI RAVRAY 🚗",
+              link: "https://mydukaan.io/junigadi/categories/shriravray2771",
+            },
+            {
+              name: "SMIT BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/smit8738",
+            },
+          ],
+          MEHSANA: [
+            {
+              name: "ADNAN BHAI 🚗 ",
+              link: "https://mydukaan.io/junigadi/categories/adnan8922",
+            },
+            {
+              name: "FAHIM BHAI 🚗 🚛",
+              link: "https://mydukaan.io/junigadi/categories/fahim4742",
+            },
+            {
+              name: "GHANSHYAM BHAI 🚗 ",
+              link: "https://mydukaan.io/junigadi/categories/ghanshyam8955",
+            },
+            {
+              name: "HET BHAI 🚗 ",
+              link: "https://mydukaan.io/junigadi/categories/hetbhai0627",
+            },
+            {
+              name: "JIGAR BHAI 🚗 ",
+              link: "https://mydukaan.io/junigadi/categories/jigar9574",
+            },
+            {
+              name: "MAHESH BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/mahesh0823",
+            },
+            {
+              name: "MAKBUL BHAI 🚗 ",
+              link: "https://mydukaan.io/junigadi/categories/makbul7487",
+            },
+            {
+              name: "MAULIK BHAI 🚗 ",
+              link: "https://mydukaan.io/junigadi/categories/maulik4655",
+            },
+            {
+              name: "PARSHOTAM BHAI 🚗 ",
+              link: "https://mydukaan.io/junigadi/categories/parshotam4442",
+            },
+            {
+              name: "RAVI BHAI 🚗 ",
+              link: "https://mydukaan.io/junigadi/categories/ravi0683",
+            },
+            {
+              name: "SAMIR SUMRA 🚗 🛻",
+              link: "https://mydukaan.io/junigadi/categories/samir2470",
+            },
+            {
+              name: "SHAKIL BHAI 🛻",
+              link: "https://mydukaan.io/junigadi/categories/shakil8159",
+            },
+            {
+              name: "SMIT BHAI 🛻",
+              link: "https://mydukaan.io/junigadi/categories/smit4703",
+            },
+            {
+              name: "VIKAS BHAI 🚗 ",
+              link: "https://mydukaan.io/junigadi/categories/vikas3568",
+            },
+          ],
+          RAJKOT: [
+            {
+              name: "BHARAT THAKRIA 🚛",
+              link: "https://mydukaan.io/junigadi/categories/bharat3003",
+            },
+            {
+              name: "DEEP BHAI 🚗 ",
+              link: "https://mydukaan.io/junigadi/categories/deep0636",
+            },
+            {
+              name: "DILIP BHAI 🛻 ",
+              link: "https://mydukaan.io/junigadi/categories/dilip6589",
+            },
+            {
+              name: "HARESH BHAI 🚗 🛻 ",
+              link: "https://mydukaan.io/junigadi/categories/haresh0497",
+            },
+            {
+              name: "HITESH BHAI 🛻 ",
+              link: "https://mydukaan.io/junigadi/categories/hitesh8382",
+            },
+            {
+              name: "JK CARZ 🚗",
+              link: "https://mydukaan.io/junigadi/categories/jkcarz7888",
+            },
+            {
+              name: "KISHOR BAVAJI 🛻",
+              link: "https://mydukaan.io/junigadi/categories/kishor8696",
+            },
+            {
+              name: "KISHOR BHAI 🚗 ",
+              link: "https://mydukaan.io/junigadi/categories/kishor7027",
+            },
+            {
+              name: "MILAN BHAKOTRA 🛻 🚛",
+              link: "https://mydukaan.io/junigadi/categories/milan0675",
+            },
+            {
+              name: "PADU BHAI 🛻 ",
+              link: "https://mydukaan.io/junigadi/categories/padubhai1350",
+            },
+            {
+              name: "RAVI BHAI 🚗 ",
+              link: "https://mydukaan.io/junigadi/categories/ravi6065",
+            },
+            {
+              name: "TANMAY BHAI 🚗 ",
+              link: "https://mydukaan.io/junigadi/categories/tanmay7414",
+            },
+            {
+              name: "TUSHAR BHAI 🚗 🛻",
+              link: "https://mydukaan.io/junigadi/categories/tushar7307",
+            },
+          ],
+          SURAT: [
+            {
+              name: "AFEEL BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/afeel3133",
+            },
+            {
+              name: "ASHOK BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/ashok4060",
+            },
+            {
+              name: "BHAVESH BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/bhavesh5330",
+            },
+            {
+              name: "DHRUVIL BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/dhruvil9972",
+            },
+            {
+              name: "KISHORE BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/kishor6186",
+            },
+            {
+              name: "LALU BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/lalu4786",
+            },
+            {
+              name: "MAYANK BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/mayank4156",
+            },
+            {
+              name: "MAYUR BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/mayur8049",
+            },
+            {
+              name: "PARTH BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/parth5031",
+            },
+            {
+              name: "PIYUSH BHAI 🛻",
+              link: "https://mydukaan.io/junigadi/categories/piyush8433",
+            },
+            {
+              name: "RAFIK BHAI 🛻",
+              link: "https://mydukaan.io/junigadi/categories/rafik9786",
+            },
+            {
+              name: "RAHUL BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/rahul7666",
+            },
+            {
+              name: "SAAD KHAN 🚗",
+              link: "https://mydukaan.io/junigadi/categories/saad0786",
+            },
+            {
+              name: "SADIK BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/sadik4147",
+            },
+            {
+              name: "VISHAL BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/vishal0596",
+            },
+            {
+              name: "YASH BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/yashbhai2293",
+            },
+            {
+              name: "YASIN BHAI 🛻",
+              link: "https://mydukaan.io/junigadi/categories/yasin5626",
+            },
+            {
+              name: "YUNUS BHAI 🛻 🚛",
+              link: "https://mydukaan.io/junigadi/categories/yunus2909",
+            },
+          ],
+          AMRELI: [
+            {
+              name: "ASIF BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/asif4545",
+            },
+            {
+              name: "FEZAN BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/fezan9941",
+            },
+            {
+              name: "JAGDISH BHAI 🛻",
+              link: "https://mydukaan.io/junigadi/categories/jagdish7085",
+            },
+            {
+              name: "JAY BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/jay2823",
+            },
+            {
+              name: "JAY BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/jay5636",
+            },
+            {
+              name: "NASIR BHAI 🛻",
+              link: "https://mydukaan.io/junigadi/categories/nasir1598",
+            },
+            {
+              name: "NIJEN BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/nijen1911",
+            },
+            {
+              name: "RAJDEEP BHAI 🚗 🛻",
+              link: "https://mydukaan.io/junigadi/categories/rajdeep1514",
+            },
+            {
+              name: "SANJAY BHAI 🛻",
+              link: "https://mydukaan.io/junigadi/categories/sanjay8046",
+            },
+            {
+              name: "VIRAM BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/viram9378",
+            },
+          ],
+          ANAND: [
+            {
+              name: "ANAM VOHRA 🛻",
+              link: "https://mydukaan.io/junigadi/categories/anam2074",
+            },
+            {
+              name: "ANKUR BHAI 🛻",
+              link: "https://mydukaan.io/junigadi/categories/ankur5036",
+            },
+            {
+              name: "CAR WORLD 🚗 🚛",
+              link: "https://mydukaan.io/junigadi/categories/hemal9312",
+            },
+            {
+              name: "HAJI BHAI 🚛",
+              link: "https://mydukaan.io/junigadi/categories/haji4311",
+            },
+            {
+              name: "PARIVAR MOTORS 🛻",
+              link: "https://mydukaan.io/junigadi/categories/parivar2626",
+            },
+            {
+              name: "RIYAZ BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/riyaz1973",
+            },
+            {
+              name: "TOSIF BHAI 🛻",
+              link: "https://mydukaan.io/junigadi/categories/tosif3708",
+            },
+          ],
+          BANASKANTHA: [
+            {
+              name: "ASHOK BHAI 🛻",
+              link: "https://mydukaan.io/junigadi/categories/ashok9336",
+            },
+            {
+              name: "JAYBHAVANI AUTO 🚗",
+              link: "https://mydukaan.io/junigadi/categories/jaybhavani1592",
+            },
+            {
+              name: "JAVED BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/javed2276",
+            },
+            {
+              name: "KULDEVI AUTO CONSULT 🛻",
+              link: "https://mydukaan.io/junigadi/categories/parag0985",
+            },
+            {
+              name: "MUSTAK BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/mustak4645",
+            },
+            {
+              name: "UMAR BHAI 🚗 🛻",
+              link: "https://mydukaan.io/junigadi/categories/umar7932",
+            },
+            {
+              name: "VASANT BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/vasant5923",
+            },
+          ],
+          BHARUCH: [
+            {
+              name: "HUSEN BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/husen6183",
+            },
+          ],
+          BHAVNAGAR: [
+            {
+              name: "AKIL BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/akil1792",
+            },
+            {
+              name: "BHIKHA BHAI 🛻",
+              link: "https://mydukaan.io/junigadi/categories/bhikha0042",
+            },
+            {
+              name: "HITESH BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/hitesh0360",
+            },
+            {
+              name: "JISHAN BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/jishan3134",
+            },
+            {
+              name: "KRISHNA BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/krishna5427",
+            },
+            {
+              name: "MAYUR BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/mayur9836",
+            },
+            {
+              name: "MUBARAK BHAI 🛻",
+              link: "https://mydukaan.io/junigadi/categories/mubarak0771",
+            },
+            {
+              name: "TAPASVI BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/tapasvi1321",
+            },
+          ],
+          DAHOD: [
+            {
+              name: "SALMAN BHAI 🛻",
+              link: "https://mydukaan.io/junigadi/categories/salman5786",
+            },
+          ],
+          "DEVBHUMI DWARKA": [
+            {
+              name: "LADHA BHAI 🛻",
+              link: "https://mydukaan.io/junigadi/categories/ladha6571",
+            },
+          ],
+          GANDHINAGAR: [
+            {
+              name: "ABHISHEK BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/abhishek2133",
+            },
+            {
+              name: "AKRAM BHAI 🛻",
+              link: "https://mydukaan.io/junigadi/categories/akram5586",
+            },
+          ],
+          KHEDA: [
+            {
+              name: "AMIT BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/amit3015",
+            },
+            {
+              name: "FAISAL BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/faisal2771",
+            },
+          ],
+          MUMBAI: [
+            {
+              name: "HASAN BHAI 🛻",
+              link: "https://mydukaan.io/junigadi/categories/hasan3158",
+            },
+            {
+              name: "RAHUL BHANUSHALI 🚛",
+              link: "https://mydukaan.io/junigadi/categories/rahul2112-2",
+            },
+          ],
+          PALANPUR: [
+            {
+              name: "ANAS BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/anas3681",
+            },
+          ],
+          PATAN: [
+            {
+              name: "BALINDRA BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/balindra9094",
+            },
+            {
+              name: "NARAYAN BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/narayan1796",
+            },
+          ],
+          PANCHMAHAL: [
+            {
+              name: "CHETAN BHAI 🛻",
+              link: "https://mydukaan.io/junigadi/categories/chetan5909",
+            },
+            {
+              name: "HABIB BHAI 🛻",
+              link: "https://mydukaan.io/junigadi/categories/habib1121",
+            },
+          ],
+          PORBANDAR: [
+            {
+              name: "GOWARDHAN BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/goverdhan4497",
+            },
+          ],
+          SABARKANTHA: [
+            {
+              name: "MAHIR BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/mahir7627",
+            },
+          ],
+          SURENDRANAGAR: [
+            {
+              name: "PANKAJ GIRI 🛻",
+              link: "https://mydukaan.io/junigadi/categories/pankaj3240",
+            },
+            {
+              name: "RAJU BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/raju8774",
+            },
+          ],
+          TAPI: [
+            {
+              name: "KEZAR BHAI 🚛",
+              link: "https://mydukaan.io/junigadi/categories/kezar1304",
+            },
+          ],
+          VADODARA: [
+            {
+              name: "PRAKASH BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/prakash8856",
+            },
+            {
+              name: "SETUL BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/setul4315",
+            },
+          ],
+          VALSAD: [
+            {
+              name: "HAMID BHAI 🚛",
+              link: "https://mydukaan.io/junigadi/categories/hamid1267-1",
+            },
+            {
+              name: "RAWAL BHAI 🚗",
+              link: "https://mydukaan.io/junigadi/categories/rawal0718",
+            },
+            {
+              name: "SANDEEP BHAI 🛻",
+              link: "https://mydukaan.io/junigadi/categories/sandeep5735",
+            },
+          ],
+        };
+
+        dealerDropdown.innerHTML = '<option value="">Select dealer</option>';
+        if (dealersByLocation[location]) {
+          dealersByLocation[location].forEach((dealer) => {
+            const option = document.createElement("option");
+            option.value = dealer.link;
+            option.textContent = dealer.name;
+            dealerDropdown.appendChild(option);
+          });
+        }
+        dealerDropdown.addEventListener("change", function () {
+          if (dealerDropdown.value) {
+            document.getElementById("result").innerHTML = "";
+          }
+        });
+      }
+
+      function displayResult(message) {
+        const resultDiv = document.getElementById("result");
+        resultDiv.innerHTML = message;
+      }
+
+      let lastUpdateDate = new Date("August 15, 2024");
+      document.getElementById("lastUpdate").textContent =
+        "Last updated on " +
+        lastUpdateDate
+          .toLocaleDateString("en-IN", {
+            day: "numeric",
+            month: "short",
+            year: "numeric",
+          })
+          .replace(",", "");
+    </script>
+  </body>
+</html>

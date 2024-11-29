@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+        }
+
+        .banner {
+            background: linear-gradient(120deg, #50208f, #d42323);
+            color: #fff;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            font-size: 1em;
+            /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); */
+        }
+
+        .offer-title {
+            font-size: 1.2em;
+            font-weight: 600;
+            margin: 0;
+            flex-shrink: 0;
+        }
+
+        .offer-details {
+            font-size: 1em;
+            margin: 0 15px;
+            flex-shrink: 0;
+        }
+
+        .timer {
+            display: flex;
+            align-items: center;
+            font-size: 1em;
+            font-weight: 600;
+            color: #ffffff;
+            gap: 5px;
+        }
+
+        .timer div {
+            text-align: center;
+        }
+
+        .timer span {
+            display: block;
+            font-size: 0.8em;
+        }
+
+        .subscribe-btn {
+            background-color: #e67e22;
+            margin-left: 1em;
+            color: #000000;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 400;
+            text-decoration: none;
+            display: inline-block;
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 600px) {
+            .banner {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 10px;
+            }
+
+            .offer-title,
+            .offer-details,
+            .timer,
+            .subscribe-btn {
+                margin: 5px 0;
+                flex-basis: 100%;
+            }
+
+            .offer-title,
+            .offer-details {
+                font-size: 1.1em;
+            }
+
+            .timer {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="banner">
+        <p class="offer-title">✨ DIWALI OFFER ✨</p>
+        <p class="offer-details">Flat 50% off on Pro, Gold, and Diamond plans
+            <a href="https://www.junigadi.com/pricing" class="subscribe-btn" target="_blank">Subscribe</a>
+        </p>
+        <div class="timer">
+            <div><span id="days">00</span><span>Days</span></div> :
+            <div><span id="hours">00</span><span>Hours</span></div> :
+            <div><span id="minutes">00</span><span>Minutes</span></div> :
+            <div><span id="seconds">00</span><span>Seconds</span></div>
+        </div>
+    </div>
+
+    <script>
+        // Set the countdown date
+        const countdownDate = new Date("2024-11-02T00:00:00").getTime();
+
+        // Update countdown every second
+        const countdownInterval = setInterval(function () {
+            const now = new Date().getTime();
+            const distance = countdownDate - now;
+
+            // Calculate days, hours, minutes, and seconds
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Display result
+            document.getElementById("days").textContent = days < 10 ? "0" + days : days;
+            document.getElementById("hours").textContent = hours < 10 ? "0" + hours : hours;
+            document.getElementById("minutes").textContent = minutes < 10 ? "0" + minutes : minutes;
+            document.getElementById("seconds").textContent = seconds < 10 ? "0" + seconds : seconds;
+
+            // If countdown is over, display "Expired"
+            if (distance < 0) {
+                clearInterval(countdownInterval);
+                document.querySelector(".timer").innerHTML = "Offer Expired";
+            }
+        }, 1000);
+    </script>
+</body>
+
+</html>

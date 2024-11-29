@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: white;
+    }
+
+    .container {
+      max-width: 350px;
+      background: linear-gradient(45deg,
+          rgb(238, 129, 129) 0%,
+          rgba(252, 192, 82, 0.932) 80%,
+          rgb(255, 163, 24) 99%);
+      padding: 5px;
+      border-radius: 15px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+      transition: box-shadow 0.3s ease, scale 0.3s ease;
+      width: 90%;
+    }
+
+    .container:hover {
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+
+    p {
+      text-align: center;
+      color: #1f1d1d;
+      font-weight: 600;
+      font-size: 11px;
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-top: 0;
+      margin-bottom: auto;
+    }
+
+    h1,
+    h3 {
+      margin-top: 0;
+      text-align: center;
+      color: #3d3b3b;
+    }
+
+    .form-group-model,
+    .form-group-year {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group-model {
+      position: relative;
+      margin-top: 40px;
+      margin-bottom: 15px;
+    }
+
+    .form-group-year {
+      position: relative;
+      margin-bottom: 40px;
+    }
+
+    .dropdown-list {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      border: 1px solid #ece9e9;
+      border-radius: 15px;
+      max-height: 300px;
+      overflow-y: auto;
+      background: rgb(241, 240, 240);
+      z-index: 1000;
+      display: none;
+      width: fit-content;
+      box-sizing: border-box;
+    }
+
+    .dropdown-item {
+      font-size: 12px;
+      font-weight: bold;
+      padding: 8px;
+      cursor: auto;
+    }
+
+    .dropdown-item:hover {
+      background: #dbd9d9;
+    }
+
+    label {
+      font-size: 14px;
+      display: block;
+      font-weight: 700;
+      margin-left: 5px;
+      margin-bottom: 5px;
+      color: #000000;
+    }
+
+    select {
+      width: 215px;
+      font-size: 11px;
+      color: #444343;
+      font-weight: 800;
+      padding: 5px;
+      border-radius: 15px;
+      background-color: #ffffff;
+    }
+
+    option {
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .buttons {
+      display: flex;
+    }
+
+    button {
+      font-size: 0.8em;
+      padding: 5px 10px;
+      background: linear-gradient(45deg,
+          rgb(100, 158, 233) 0%,
+          rgba(69, 179, 252, 0.932) 80%,
+          rgb(115, 223, 223) 99%);
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: 800;
+      margin: auto;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      display: inline-block;
+      transition: background-color 0.5s ease, transform 0.5s ease;
+    }
+
+    button:hover {
+      transform: scale(1.02);
+      color: #000000;
+    }
+
+    .result {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      margin-bottom: 20px;
+      color: #000000;
+      font-weight: 600;
+    }
+
+    .price-table {
+      border-collapse: collapse;
+      border-radius: 15px;
+      font-family: Arial, sans-serif;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+      transition: box-shadow 0.3s ease, scale 0.3s ease;
+    }
+
+    .price-table th,
+    .price-table td {
+      padding: 8px;
+      text-align: center;
+    }
+
+    .price-table th {
+      background-color: rgb(226, 139, 68);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .price-table th:first-child {
+      border-top-left-radius: 15px;
+    }
+
+    .price-table th:last-child {
+      border-top-right-radius: 15px;
+    }
+
+    .price-table td:first-child {
+      border-bottom-left-radius: 15px;
+    }
+
+    .price-table td:last-child {
+      border-bottom-right-radius: 15px;
+    }
+
+    .price-table td {
+      background-color: rgb(255, 255, 255);
+      font-size: auto;
+    }
+
+    .blinking-dot {
+      animation: blink 2s infinite;
+      margin-right: 5px;
+    }
+
+    @keyframes blink {
+      50% {
+        opacity: 0;
+      }
+    }
+
+    input#model {
+      width: 210px;
+      border: 1.5px solid #575151;
+      border-radius: 15px;
+      padding: 7px;
+      font-weight: 800;
+      font-size: 10px;
+      color: #444343;
+    }
+
+    input::placeholder {
+      color: #868282;
+    }
+
+    a {
+      text-decoration: none;
+      color: #000000;
+      font-size: 14px;
+      font-weight: 500;
+      margin-top: 10px;
+      float: right;
+    }
+
+    #viewNowButton {
+      display: none;
+      background: linear-gradient(45deg,
+          rgb(44, 173, 65) 0%,
+          rgba(53, 180, 70, 0.932) 80%,
+          rgb(36, 167, 149) 99%);
+    }
+
+    #resetButton {
+      display: none;
+      background: linear-gradient(45deg,
+          rgb(181, 184, 181) 0%,
+          rgba(161, 159, 158, 0.932) 80%,
+          rgb(197, 195, 193) 99%);
+      background-color: slategray;
+    }
+
+    #note {
+      color: rgb(0, 0, 0);
+      display: none;
+      align-items: center;
+      font-weight: 700;
+      margin-top: 20px;
+    }
+
+
+    #vehicleForm {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>
+    Junigadi Price<br />Estimator
+  </h1>
+  <h1 style="font-size: 20px; font-weight: 800; margin-bottom: 50px">
+    (જુનીગાડી ભાવ અંદાજકર્તા)
+  </h1>
+  <div class="container">
+    <form id="vehicleForm">
+      <div class="form-group-model">
+        <label for="model">BRAND (બ્રાન્ડ)</label>
+        <input type="text" id="model" name="model" placeholder="વાહનનું નામ દાખલ કરો" oninput="filterModels()"
+          onclick="resetResult();" />
+        <div id="dropdown-list" class="dropdown-list"></div>
+      </div>
+      <div class="form-group-year">
+        <label for="year">MODEL (મોડલ)</label>
+        <select id="year" name="year" disabled>
+          <option value="" disabled selected>મોડલ પસંદ કરો</option>
+        </select>
+      </div>
+    </form>
+    <div id="result" class="result"></div>
+    <div class="buttons">
+      <button id="getPriceButton" type="button" onclick="getPrice()">
+        Get Price
+      </button>
+      <button id="viewNowButton" type="button" onclick="viewNow()">
+        View Now
+      </button>
+      <button id="resetButton" type="button" onclick="resetResult()">
+        Reset
+      </button>
+    </div>
+  </div>
+  <p id="note">
+    🖊️ Note: These prices may not be accurate.<br />
+    Please use this only for reference.
+  </p>
+  <footer>
+    <p id="footer">
+      &copy; 2024 Junigadi Vehicle Solution Pvt. Ltd.<br />
+      All rights reserved.
+    </p>
+  </footer>
+  <script>
+    let selectedModel = "";
+    let vehiclesData;
+
+    // Fetch vehicles data from the Google Web App
+    async function fetchVehiclesData() {
+      try {
+        const response = await fetch('https://script.google.com/macros/s/AKfycbxcq491A45V7bmY9G9ButOqzoTZfkAYJXlPNAKL39qXdfhtJQ-T8jVo7bWFHuuqYPXk/exec');
+        if (!response.ok) throw new Error('Network response was not ok.');
+        const data = await response.json();
+        vehiclesData = data;
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+
+    // Call fetchVehiclesData once to initialize vehiclesData
+    fetchVehiclesData().then(() => {
+      // Initialize filterModels() here if needed
+      document.getElementById("model").addEventListener("keyup", filterModels);
+    });
+
+    // Function to calculate Levenshtein Distance between two strings
+    function getLevenshteinDistance(a, b) {
+      const matrix = [];
+      let i, j;
+
+      if (a.length === 0) return b.length;
+      if (b.length === 0) return a.length;
+
+      for (i = 0; i <= b.length; i++) {
+        matrix[i] = [i];
+      }
+
+      for (j = 0; j <= a.length; j++) {
+        matrix[0][j] = j;
+      }
+
+      for (i = 1; i <= b.length; i++) {
+        for (j = 1; j <= a.length; j++) {
+          if (b.charAt(i - 1) === a.charAt(j - 1)) {
+            matrix[i][j] = matrix[i - 1][j - 1];
+          } else {
+            matrix[i][j] = Math.min(
+              matrix[i - 1][j - 1] + 1,
+              Math.min(matrix[i][j - 1] + 1, matrix[i - 1][j] + 1)
+            );
+          }
+        }
+      }
+
+      return matrix[b.length][a.length];
+    }
+
+    function filterModels() {
+      const input = document.getElementById("model").value.toLowerCase().trim();
+      const dropdownList = document.getElementById("dropdown-list");
+      dropdownList.innerHTML = "";
+      dropdownList.style.display = "none";
+
+      if (input) {
+        if (!vehiclesData || vehiclesData.length === 0) {
+          console.log('No vehicle data available.');
+          return;
+        }
+
+        const maxDistance = 2; // Allowed number of typos
+
+        // Filter vehicles that match the input with fuzzy logic on substrings
+        const filteredModels = vehiclesData.filter((vehicle) => {
+          if (!vehicle || !vehicle["VEHICLE MODEL"]) {
+            return false;
+          }
+
+          const model = vehicle["VEHICLE MODEL"].toLowerCase().trim();
+          const modelParts = model.split(" "); // Split model into parts, e.g., ["hyundai", "verna"]
+
+          // Check if any part of the model matches the input using substring or fuzzy matching
+          const matchesInput = modelParts.some((part) => {
+            const isSubstring = part.includes(input); // Check if input is a substring
+            const isFuzzyMatch = getLevenshteinDistance(input, part) <= maxDistance; // Check if input is a fuzzy match
+            return isSubstring || isFuzzyMatch;
+          });
+
+          // Check if there's at least one non-empty price
+          const hasPrice = Object.keys(vehicle).some((key) => {
+            return (
+              key !== "VEHICLE MODEL" &&
+              vehicle[key] !== "" &&
+              vehicle[key] !== undefined &&
+              vehicle[key] !== null
+            );
+          });
+
+          return matchesInput && hasPrice;
+        });
+
+        if (filteredModels.length) {
+          filteredModels.forEach((vehicle) => {
+            const div = document.createElement("div");
+            div.className = "dropdown-item";
+            div.textContent = vehicle["VEHICLE MODEL"];
+            div.onclick = () => {
+              selectModel(vehicle["VEHICLE MODEL"]);
+              document.getElementById("result").innerHTML = "";
+            };
+            dropdownList.appendChild(div);
+          });
+          dropdownList.style.display = "block";
+        } else {
+          console.log('No matching models found.');
+        }
+      }
+    }
+
+    function selectModel(model) {
+      selectedModel = model;
+      document.getElementById("model").value = model;
+      document.getElementById("dropdown-list").innerHTML = "";
+      document.getElementById("dropdown-list").style.display = "none";
+      populateYearDropdown(model);
+    }
+
+    function populateYearDropdown(model) {
+      const yearSelect = document.getElementById("year");
+      yearSelect.innerHTML =
+        '<option value="" disabled selected>મોડેલ પસંદ કરો</option>';
+      const selectedVehicle = vehiclesData.find(
+        (vehicle) => vehicle["VEHICLE MODEL"] === model
+      );
+      const years = Object.keys(selectedVehicle).filter(
+        (key) => key !== "VEHICLE MODEL" && selectedVehicle[key] !== ""
+      );
+      years.forEach((year) => {
+        const option = document.createElement("option");
+        option.value = year;
+        option.textContent = year;
+        yearSelect.appendChild(option);
+      });
+      yearSelect.disabled = false;
+
+      yearSelect.addEventListener("change", function () {
+        if (yearSelect.value) {
+          document.getElementById("result").innerHTML = "";
+        }
+      });
+    }
+
+    function getPrice() {
+      const model = document.getElementById("model").value;
+      const year = document.getElementById("year").value;
+      if (model && !year) {
+        displayResult("Select a year!");
+        return;
+      } else if (!model || !year) {
+        resetResult();
+        displayResult("Select both model and year!");
+        return;
+      }
+      const vehicle = vehiclesData.find((v) => v["VEHICLE MODEL"] === model);
+      const price = vehicle[year];
+      if (price) {
+        const fair = (parseFloat(price) * 0.95).toLocaleString("en-IN", {
+          maximumFractionDigits: 0,
+        });
+        const good = parseFloat(price).toLocaleString("en-IN", {
+          maximumFractionDigits: 0,
+        });
+        const best = (parseFloat(price) * 1.05).toLocaleString("en-IN", {
+          maximumFractionDigits: 0,
+        });
+        displayResult(`
+				<div class="prices">
+					<h3 style="font-size: auto;font-weight: 800;">Condition (સ્થિતિ)</h3>
+                <table class="price-table">
+                    <tr>
+                        <th>Fair (વાજબી)</th>
+                        <th>Good (સારું)</th>
+                        <th>Best (શ્રેષ્ઠ)</th>
+                    </tr>
+                    <tr>
+                        <td><strong style="color:red">₹ ${fair}</strong></td>
+                        <td><strong style="color:green">₹ ${good}</strong></td>
+                        <td><strong style="color:orange">₹ ${best}</strong></td>
+                    </tr>
+                </table>
+                <a href="https://wa.me/+918076561453?text=We noted a potentially misleading listed price of ₹ ${good} for the ${selectedModel} ${year} on your app. Please review and verify the price for accuracy. Thank you!"
+      target="_blank">🚫 Report</a>
+            </div>
+        `);
+      }
+      document.getElementById("resetButton").style.display = "inline-block";
+      document.getElementById("viewNowButton").style.display = "inline-block";
+      document.getElementById("note").style.display = "inline-block";
+    }
+
+    function viewNow() {
+      if (selectedModel) {
+        const modelUrl = `https://mydukaan.io/junigadi/search?query=${encodeURIComponent(
+          selectedModel
+        )}`;
+        window.open(modelUrl, "_blank");
+      }
+    }
+
+    function displayResult(message) {
+      document.getElementById("result").innerHTML = message;
+    }
+
+    function resetResult() {
+      document.getElementById("model").value = "";
+      document.getElementById("dropdown-list").style.display = "none";
+
+      const yearSelect = document.getElementById("year");
+      yearSelect.innerHTML =
+        '<option value="" disabled selected>મોડલ પસંદ કરો</option>';
+      yearSelect.disabled = true;
+
+      document.getElementById("result").innerHTML = "";
+      document.getElementById("viewNowButton").style.display = "none";
+      document.getElementById("resetButton").style.display = "none";
+      document.getElementById("note").style.display = "none";
+    }
+  </script>
+</body>
+
+</html>

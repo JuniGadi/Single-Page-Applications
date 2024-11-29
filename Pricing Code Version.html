@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: rgb(255, 255, 255);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 200vh;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 900;
+      margin-bottom: 10px;
+    }
+
+    h4 {
+      font-weight: 600;
+    }
+
+    h5 {
+      color: #0c1458;
+    }
+
+    hr {
+      background-color: #ce3d19;
+      border: none;
+      height: 2px;
+      margin: 20px 0;
+      opacity: 0.8;
+    }
+
+    .image-container {
+      position: relative;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+
+    .card {
+      background-color: rgb(250, 250, 250);
+      border: #e6a991ad 2px solid;
+      position: absolute;
+      margin: 0 10px;
+      padding: 0 20px;
+      width: 25%;
+      border-radius: 15px;
+      overflow: hidden;
+      transition: transform 0.3s ease-in-out, opacity 0.5s ease;
+      cursor: pointer;
+    }
+
+    .card:hover {
+      border: #ce3d19 2px solid;
+    }
+
+    .card.left {
+      transform: translateX(-100%) scale(0.95);
+      opacity: 0.95;
+    }
+
+    .card.left:hover {
+      transform: translateX(-100%) scale(0.97);
+    }
+
+    .card.center {
+      border: #ce3d19 2px solid;
+      z-index: 1;
+    }
+
+    .card.right {
+      transform: translateX(100%) scale(0.95);
+      opacity: 0.95;
+    }
+
+    .card.right:hover {
+      transform: translateX(100%) scale(0.97);
+    }
+
+    .card.hidden {
+      display: none;
+    }
+
+    .btn-select {
+      font-size: 1.1em;
+      font-weight: 700;
+      display: block;
+      margin: 20px auto;
+      padding: 10px 80px;
+      background: linear-gradient(45deg, rgb(255, 71, 20) 0%, rgb(252, 7, 48) 4%, rgb(233, 115, 30) 100%);
+      color: white;
+      opacity: 1;
+      border: none;
+      border-radius: 15px;
+      cursor: pointer;
+      transition: background-color 0.3s ease-in-out;
+    }
+
+    .card.left .btn-select,
+    .card.right .btn-select {
+      background: white;
+      color: #ce3d19;
+      border: 2px solid #ce3d19;
+      background-color: white;
+      transition: background-color 0.3s ease-in-out;
+    }
+
+    .card.left .btn-select:hover,
+    .card.right .btn-select:hover {
+      background-color: #f5c0b37e;
+    }
+
+    ul li {
+      font-size: 1.15em;
+      list-style: none;
+      line-height: 3em;
+      word-spacing: 0.1em;
+      letter-spacing: 0.1em;
+    }
+
+    ul li:hover {
+      color: #ce3d19;
+    }
+
+    .pricing-title {
+      font-size: 2.5em;
+      font-weight: 800;
+      color: #0c1458;
+      margin-bottom: 0;
+    }
+
+    .pricing-price {
+      font-size: 2em;
+      font-weight: 700;
+      color: #0c1458;
+      transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+    }
+
+    .org-pricing-price {
+      color: rgb(105, 105, 105);
+      font-size: 0.7em;
+      opacity: 0.9;
+    }
+
+    .org-pricing-price button {
+      font-weight: 700;
+      color: white;
+      padding: 5px 8px;
+      background-color: #5c86c5;
+      border-radius: 20px;
+      border: none;
+    }
+
+    .card-header {
+      background: linear-gradient(45deg, rgb(255, 71, 20) 0%, rgb(252, 7, 48) 4%, rgb(233, 115, 30) 100%);
+      border: 2px solid rgb(244, 93, 25);
+      /* Customize the background color */
+      color: white;
+      text-align: center;
+      padding: 5px;
+      border-radius: 15px 15px 0 0;
+      /* Rounded corners at the top */
+      position: absolute;
+      /* Adjust position as needed */
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+    }
+
+    .header-title {
+      margin: 0;
+      font-size: 1.2rem;
+      font-weight: 800;
+    }
+
+    .plan-duration {
+      margin: 20px 0;
+      text-align: center;
+    }
+
+    .plan-duration label {
+      font-weight: bold;
+      margin-right: 10px;
+    }
+
+    #duration-select {
+      color: white;
+      background-color: #120b2e;
+      padding: 5px;
+      font-weight: 800;
+      border-radius: 15px;
+    }
+
+    #duration-select option {
+      background-color: #120b2e;
+    }
+
+
+    @media (max-width: 768px) {
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: white;
+        margin: 0;
+        padding: 0;
+      }
+
+      h1 {
+        font-size: 1.8em;
+      }
+
+      h4 {
+        margin-top: 0;
+        font-size: 0.8em;
+      }
+
+      h5 {
+        font-size: 1.1em;
+      }
+
+      ul li {
+        font-size: 0.8em;
+      }
+
+      .btn-select {
+        font-size: 0.8em;
+      }
+
+      .card.center .pricing-title {
+        margin-top: 40px;
+      }
+
+      .image-container {
+        position: relative;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+      }
+
+      .card {
+        background-color: rgb(250, 250, 250);
+        border: #e6a991ad 2px solid;
+        position: absolute;
+        margin: 0;
+        padding: 0 20px;
+        width: 60%;
+        border-radius: 15px;
+        transition: transform 0.3s ease-in-out, opacity 0.5s ease;
+        cursor: pointer;
+      }
+
+      .card.left {
+        transform: translateX(-25%) scale(0.9);
+        /* Shift left card */
+        opacity: 0.5;
+        /* Reduce opacity for non-active cards */
+      }
+
+      .card.left:hover {
+        transform: translateX(-25%) scale(0.9);
+      }
+
+      .card.center {
+        opacity: 1;
+        /* Full opacity for the center card */
+        z-index: 1;
+        /* Bring the center card to the front */
+      }
+
+      .card.right {
+        transform: translateX(25%) scale(0.9);
+        /* Shift right card */
+        opacity: 0.5;
+        /* Reduce opacity for non-active cards */
+      }
+
+      .card.right:hover {
+        transform: translateX(25%) scale(0.9);
+      }
+
+      ul li:hover {
+        color: #000000;
+      }
+
+      /* Dots styling */
+      .dots {
+        display: flex;
+        /* Use flexbox to arrange dots in a row */
+        justify-content: center;
+        /* Center the dots */
+        margin-top: 20px;
+        /* Add some space above the dots */
+      }
+
+      .dot {
+        width: 1em;
+        /* Set width for dots */
+        height: 1em;
+        /* Set height for dots */
+        border-radius: 50%;
+        /* Make dots circular */
+        background-color: #ccc;
+        /* Default color for inactive dots */
+        margin: 0 5px 25px 5px;
+        /* Space between dots */
+        transition: background-color 0.3s ease;
+        /* Smooth transition for color change */
+      }
+
+      .dot.active {
+        background-color: #db3b0a;
+        /* Color for the active dot */
+        animation: blink 1.5s infinite;
+      }
+
+      @keyframes blink {
+        0% {
+          opacity: 1;
+        }
+
+        50% {
+          opacity: 0.5;
+        }
+
+        100% {
+          opacity: 1;
+        }
+
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Pick your perfect plan</h1>
+  <h4>Choose a plan that fits your needs</h4>
+  <div class="plan-duration">
+    <label for="duration-select">Select Plan Duration<br><br></label>
+    <select id="duration-select">
+      <option value="1">1 Month</option>
+      <option value="6">6 Months</option>
+      <option value="12">12 Months</option>
+    </select>
+  </div>
+  <div class="dots">
+    <span class="dot active"></span>
+    <span class="dot"></span>
+    <span class="dot"></span>
+  </div>
+
+  <div class="image-container">
+
+    <div class="card left" id="pro">
+      <h3 class="pricing-title">Pro</h3>
+      <h5 style="font-weight: 700;margin: 0;">Best for small sellers</h5>
+      <p class="pricing-price"><sup>₹</sup>1000<sub>/month</sub></p>
+      </p>
+      <button class="btn-select" onclick="window.open('https://tally.so/r/w7oBDZ', '_blank')">Choose Plan</button>
+      <hr>
+      <ul class="features-list">
+        <li><i class="fa-solid fa-check" style="color:green;"></i> Upto <strong>10</strong> vehicles listing per month
+        </li>
+        <li><i class="fa-solid fa-check" style="color:green;"></i> <strong>Sell</strong> used vehicles</li>
+        <li><i class="fa-solid fa-check" style="color:green;"></i> Social media <strong>marketing</strong></li>
+        <li><i class="fa-solid fa-check" style="color:green;"></i> <strong>Featured</strong> seller</li>
+        <li><i class="fa-solid fa-check" style="color:green;"></i> Key <strong>account</strong> management</li>
+        <li><i class="fa-solid fa-check" style="color:green;"></i> E-commerce <strong>store</strong></li>
+        <li><i class="fa-solid fa-check" style="color:green;"></i> Stock <strong>QR</strong> code</li>
+        <li><i class="fa-solid fa-check" style="color:green;"></i> Dealer’s <strong>community</strong></li>
+        <li><i class="fa-solid fa-check" style="color:green;"></i> <strong>Smart</strong> vehicle tag</li>
+        <li>
+          <i class="fa-solid fa-check" style="color:green;"></i>
+          <strong>Juni AI ✨</strong> chat assistant support
+          <span
+            style="background-color: #ff0; color: #000; padding: 5px 10px; border-radius: 10px; margin-left: 8px; font-size: 12px; font-weight: 700;">New</span>
+        </li>
+        <li style="opacity:0.5;"><i class="fa-solid fa-xmark" style="color:red;"></i> Other marketplace listing</li>
+        <li style=" opacity:0.5;"><i class="fa-solid fa-xmark" style="color:red;"></i> Business reports</li>
+        <li style=" opacity:0.5;"><i class="fa-solid fa-xmark" style="color:red;"></i> Call agent support</li>
+        <li style=" opacity:0.5;"><i class="fa-solid fa-xmark" style="color:red;"></i> Procure used vehicles</li>
+        <li style=" opacity:0.5;"><i class="fa-solid fa-xmark" style="color:red;"></i> Pricing tool</li>
+        <li style=" opacity:0.5;"><i class="fa-solid fa-xmark" style="color:red;"></i> Dealer branding</li>
+      </ul>
+    </div>
+
+    <div class=" card center" id="gold">
+      <div class="card-header">
+        <h3 class="header-title">Most Popular</h3>
+      </div>
+      <h3 class="pricing-title">Gold</h3>
+      <h5 style="font-weight: 700;margin: 0;">Best for mid-size sellers</h5>
+      <p class="pricing-price"><sup>₹</sup>2500<sub>/month</sub>
+      </p>
+      <button class="btn-select" style="font-weight: 800;"
+        onclick="window.open('https://tally.so/r/wod9XM', '_blank')">Choose Plan</button>
+      <hr>
+      <ul class="features-list">
+        <li><i class="fa-solid fa-check" style="color:green;"></i> Upto <strong>25</strong> vehicle listing per month
+        </li>
+        <li><i class="fa-solid fa-check" style="color:green;"></i> <strong>Sell</strong> used vehicles</li>
+        <li><i class="fa-solid fa-check" style="color:green;"></i> Social media <strong>marketing</strong></li>
+        <li><i class="fa-solid fa-check" style="color:green;"></i> <strong>Featured</strong> seller</li>
+        <li><i class="fa-solid fa-check" style="color:green;"></i> Key <strong>account</strong> management</li>
+        <li><i class="fa-solid fa-check" style="color:green;"></i> E-commerce <strong>store</strong></li>
+        <li><i class="fa-solid fa-check" style="color:green;"></i> Stock <strong>QR</strong> code</li>
+        <li><i class="fa-solid fa-check" style="color:green;"></i> Dealer’s <strong>community</strong></li>
+        <li><i class="fa-solid fa-check" style="color:green;"></i> <strong>Smart</strong> vehicle tag</li>
+        <li><i class="fa-solid fa-check" style="color:green;"></i> Other marketplace listing</li>
+        <li><i class="fa-solid fa-check" style="color:green;"></i> Business <strong>reports</strong></li>
+        <li><i class="fa-solid fa-check" style="color:green;"></i> Call <strong>agent support</strong></li>
+        <li>
+          <i class="fa-solid fa-check" style="color:green;"></i>
+          <strong>Juni AI ✨</strong> chat assistant support
+          <span
+            style="background-color: #ff0; color: #000; padding: 5px 10px; border-radius: 10px; margin-left: 8px; font-size: 12px; font-weight: 700;">New</span>
+        </li>
+        <li style="opacity:0.5;"><i class="fa-solid fa-xmark" style="color:red;"></i> Procure used vehicles</li>
+        <li style="opacity:0.5;"><i class="fa-solid fa-xmark" style="color:red;"></i> Pricing tool</li>
+        <li style="opacity:0.5;"><i class="fa-solid fa-xmark" style="color:red;"></i> Dealer branding</li>
+      </ul>
+    </div>
+
+    <div class="card right" id="diamond">
+      <h3 class="pricing-title">Diamond</h3>
+      <h5 style="font-weight: 700;margin: 0;">Best for large scale sellers</h5>
+      <p class="pricing-price"><sup>₹</sup>4000<sub>/month</sub></p>
+      </p>
+      <button class="btn-select" onclick="window.open('https://tally.so/r/mYYjL0', '_blank')">Choose Plan</button>
+      <hr>
+      <ul class="features-list">
+        <li><i class="fa-solid fa-check" style="color:green;"></i> Upto <strong>40</strong> vehicle listing per month
+        </li>
+        <li><i class="fa-solid fa-check" style="color:green;"></i> <strong>Sell</strong> used vehicles</li>
+        <li><i class="fa-solid fa-check" style="color:green;"></i> Social media <strong>marketing</strong></li>
+        <li><i class="fa-solid fa-check" style="color:green;"></i> <strong>Featured</strong> seller</li>
+        <li><i class="fa-solid fa-check" style="color:green;"></i> Key <strong>account</strong> management</li>
+        <li><i class="fa-solid fa-check" style="color:green;"></i> E-commerce <strong>store</strong></li>
+        <li><i class="fa-solid fa-check" style="color:green;"></i> Stock <strong>QR</strong> code</li>
+        <li><i class="fa-solid fa-check" style="color:green;"></i> Dealer’s <strong>community</strong></li>
+        <li><i class="fa-solid fa-check" style="color:green;"></i> <strong>Smart</strong> vehicle tag</li>
+        <li><i class="fa-solid fa-check" style="color:green;"></i> Other marketplace listing</li>
+        <li><i class="fa-solid fa-check" style="color:green;"></i> Business <strong>reports</strong></li>
+        <li><i class="fa-solid fa-check" style="color:green;"></i> Call <strong>agent support</strong></li>
+        <li><i class="fa-solid fa-check" style="color:green;"></i> Procure used vehicles</li>
+        <li><i class="fa-solid fa-check" style="color:green;"></i> <strong>Pricing</strong> tool</li>
+        <li><i class="fa-solid fa-check" style="color:green;"></i> Dealer <strong>branding</strong></li>
+        <li>
+          <i class="fa-solid fa-check" style="color:green;"></i>
+          <strong>Juni AI ✨</strong> chat assistant support
+          <span
+            style="background-color: #ff0; color: #000; padding: 5px 10px; border-radius: 10px; margin-left: 8px; font-size: 12px; font-weight: 700;">New</span>
+        </li>
+
+      </ul>
+    </div>
+
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/js/all.min.js"></script>
+  <script>
+    document.getElementById('duration-select').addEventListener('change', function () {
+      const duration = parseInt(this.value);
+
+      const proPrice = document.querySelector('#pro .pricing-price');
+      const goldPrice = document.querySelector('#gold .pricing-price');
+      const diamondPrice = document.querySelector('#diamond .pricing-price');
+
+      // Animate out
+      [proPrice, goldPrice, diamondPrice].forEach(priceElement => {
+        priceElement.style.opacity = '0';
+        priceElement.style.transform = 'scale(0.9)';
+      });
+
+      function updatePrice(element, originalPrice, discountedPrice, duration) {
+        // Calculate the discount percentage and round it to the nearest integer
+        const discountPercentage = Math.round(((originalPrice - discountedPrice) / originalPrice) * 100);
+
+        // Update the innerHTML of the specified element with calculated discount
+        element.innerHTML = `
+        <p class="org-pricing-price">
+            <s>₹ ${originalPrice}</s>
+            <button>Save ${discountPercentage}%</button>
+        </p>
+        <sup>₹</sup>${discountedPrice}<sub>/${duration} months</sub>
+    `;
+      }
+
+      // Update prices after the fade-out animation is complete
+      setTimeout(() => {
+        if (duration === 1) {
+          proPrice.innerHTML = '<sup>₹</sup>1000<sub>/month</sub>';
+          goldPrice.innerHTML = '<sup>₹</sup>2500<sub>/month</sub>';
+          diamondPrice.innerHTML = '<sup>₹</sup>4000<sub>/month</sub>';
+        } else if (duration === 6) {
+          updatePrice(proPrice, 6000, 4500, duration);
+          updatePrice(goldPrice, 15000, 12000, duration);
+          updatePrice(diamondPrice, 24000, 18000, duration);
+        } else if (duration === 12) {
+          updatePrice(proPrice, 12000, 9000, duration);
+          updatePrice(goldPrice, 30000, 18000, duration);
+          updatePrice(diamondPrice, 48000, 30000, duration);
+        }
+
+        // Animate in
+        [proPrice, goldPrice, diamondPrice].forEach(priceElement => {
+          priceElement.style.opacity = '1';
+          priceElement.style.transform = 'scale(1)';
+        });
+      }, 300); // Match this with the CSS transition duration
+    });
+
+    let dotIndex = 1;
+
+    function updateDots() {
+      const dots = document.querySelectorAll('.dot');
+      dots.forEach((dot, index) => {
+        if (index === dotIndex) {
+          dot.classList.add('active');
+        } else {
+          dot.classList.remove('active');
+        }
+      });
+    }
+
+    function updateVisibility() {
+      var cards = document.querySelectorAll('.card');
+      var leftCard = document.querySelector('.card.left');
+      var centerCard = document.querySelector('.card.center');
+      var rightCard = document.querySelector('.card.right');
+
+      leftCard.classList.remove('hidden');
+      rightCard.classList.remove('hidden');
+
+      if (centerCard.id === 'pro') {
+        leftCard.classList.add('hidden');
+      } else if (centerCard.id === 'diamond') {
+        rightCard.classList.add('hidden');
+      }
+    }
+
+    function showNextImageRight() {
+      var cards = document.querySelectorAll('.card');
+      cards.forEach(function (card) {
+        if (card.classList.contains('right')) {
+          card.classList.remove('right');
+          card.classList.add('center');
+        } else if (card.classList.contains('center')) {
+          card.classList.remove('center');
+          card.classList.add('left');
+        } else if (card.classList.contains('left')) {
+          card.classList.remove('left');
+          card.classList.add('right');
+        }
+      });
+      updateVisibility();
+      dotIndex = (dotIndex + 1) % 3;
+      updateDots();
+    }
+
+    function showNextImageLeft() {
+      var cards = document.querySelectorAll('.card');
+      cards.forEach(function (card) {
+        if (card.classList.contains('left')) {
+          card.classList.remove('left');
+          card.classList.add('center');
+        } else if (card.classList.contains('center')) {
+          card.classList.remove('center');
+          card.classList.add('right');
+        } else if (card.classList.contains('right')) {
+          card.classList.remove('right');
+          card.classList.add('left');
+        }
+      });
+      updateVisibility();
+      dotIndex = (dotIndex - 1 + 3) % 3;
+      updateDots();
+    }
+
+    // Initialize with specific positions
+    document.addEventListener('DOMContentLoaded', function () {
+
+      var cards = document.querySelectorAll('.card');
+      cards[0].classList.add('left');
+      cards[1].classList.add('center');
+      cards[2].classList.add('right');
+
+      // Function to check if the device is mobile
+      function isMobileDevice() {
+        return window.innerWidth <= 768; // Adjust the width as needed
+      }
+
+      if (isMobileDevice()) {
+
+        // Swipe Gesture
+        // Update the event listeners to target the image container
+        const imageContainer = document.querySelector('.image-container');
+        let startX, currentX, scrollDistance;
+
+
+        imageContainer.addEventListener('touchstart', (e) => {
+          startX = e.touches[0].clientX;
+        });
+
+        imageContainer.addEventListener('touchmove', (e) => {
+          currentX = e.touches[0].clientX;
+          scrollDistance = startX - currentX;
+        });
+
+        imageContainer.addEventListener('touchend', (e) => {
+
+          if (scrollDistance > 60) {
+            if (dotIndex !== 2) {
+              showNextImageRight();
+            }
+          } else if (scrollDistance < -60) {
+            if (dotIndex !== 0) {
+              showNextImageLeft();
+            }
+          }
+          // Reset scrollDistance after touch interaction
+          scrollDistance = 0;
+        });
+
+        // Click event handling
+        imageContainer.addEventListener('click', (e) => {
+          const rect = e.target.getBoundingClientRect();
+          const clickX = e.offsetX;
+          const halfWidth = rect.width / 2;
+          const quaterWidth = rect.width / 4;
+
+          // Check if the clicked target is a card
+          const clickedCard = e.target.closest('.card');
+          if (!clickedCard) return; // Exit if the click is not on a card
+
+          // Get the index of the clicked card
+          const clickedCardIndex = Array.from(imageContainer.children).indexOf(clickedCard);
+
+          // Do nothing if the clicked card is the active card
+          if (clickedCardIndex === dotIndex) {
+            return; // Exit the function
+          }
+
+          if (clickX > halfWidth + quaterWidth) {
+            if (dotIndex === 0 || dotIndex === 1) {
+              showNextImageRight();
+            }
+          } else if (clickX < halfWidth - quaterWidth) {
+            if (dotIndex === 1 || dotIndex === 2) {
+              showNextImageLeft();
+            }
+          }
+        });
+      }
+
+      updateVisibility();
+      updateDots();
+    });
+
+
+  </script>
+</body>
+
+</html>

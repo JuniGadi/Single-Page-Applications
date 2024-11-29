@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* Main container that holds the marquee */
+        .marquee-container {
+            position: relative;
+            /* Use relative positioning to enable absolute positioning of content */
+            width: 100%;
+            /* Full width of the container */
+            height: 200px;
+            /* Set the desired height for the marquee */
+            overflow: hidden;
+            /* Hide overflow to prevent scrollbars */
+            white-space: nowrap;
+            /* Ensure content doesn't wrap */
+            background-color: #fff;
+            /* Background color of the marquee */
+            border-radius: 10px;
+            /* Optional rounded corners */
+        }
+
+        /* Content inside the marquee */
+        .marquee-content {
+            display: flex;
+            /* Use flexbox to align images horizontally */
+            animation: marquee 15s linear infinite;
+            /* Continuous scrolling animation */
+            position: absolute;
+            /* Absolutely position the content to animate it smoothly */
+            will-change: transform;
+            /* Hint for optimization */
+        }
+
+        /* Style for images within the marquee */
+        .marquee-content img {
+            margin-right: 10px;
+            /* Space between images */
+            height: 150px;
+            /* Set a default height for images */
+            object-fit: cover;
+            /* Maintain aspect ratio, cropping if necessary */
+            border-radius: 50%;
+            /* Optional: Make images circular */
+        }
+
+        /* Media query for tablets */
+        @media (max-width: 768px) {
+            .marquee-container {
+                height: 150px;
+                /* Adjust height for tablets */
+            }
+
+            .marquee-content img {
+                height: 100px;
+                /* Adjust image size for tablets */
+            }
+        }
+
+        /* Media query for mobile devices */
+        @media (max-width: 480px) {
+            .marquee-container {
+                height: 100px;
+                /* Adjust height for mobile devices */
+            }
+
+            .marquee-content img {
+                height: 75px;
+                /* Adjust image size for mobile devices */
+            }
+        }
+
+        /* Keyframes for marquee animation */
+        @keyframes marquee {
+            from {
+                transform: translateX(0);
+                /* Start at the initial position */
+            }
+
+            to {
+                transform: translateX(-50%);
+                /* End at half width to loop continuously */
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Main marquee container -->
+    <div class="marquee-container">
+        <!-- Content that scrolls -->
+        <div class="marquee-content">
+            <img src="https://img.playbook.com/p6D-bAl7HordusDSG4gsNteDGoS3_fLMd54l-pNS3vk/Z3M6Ly9wbGF5Ym9v/ay1hc3NldHMtcHVi/bGljL2Q4MjU3MmE3/LWJkNTQtNGNjMy05/OTczLThkMzY5YjZj/ZGQzOQ"
+                class="h-full" alt="Image 1">
+            <img src="https://img.playbook.com/r-_s2OsQANBQ_fFnrg_XRaNCGm8Sf8mEGIHX5Gbf4tY/Z3M6Ly9wbGF5Ym9v/ay1hc3NldHMtcHVi/bGljLzIzNGEwY2Ji/LWU4YmMtNDZhYi1h/MjY3LTJkYzY0MWUw/MWFkNw"
+                class="h-full" alt="Image 2">
+            <img src="https://img.playbook.com/hp8y3_qS4OV6uvkLy81uJ7itFJhK-XzJtfe_REO-_TI/Z3M6Ly9wbGF5Ym9v/ay1hc3NldHMtcHVi/bGljLzU4MGM1NTg3/LTBiOTUtNGRlNy1h/YmQ0LWRhZmVlM2Vk/NjNmMw"
+                class="h-full" alt="Image 3">
+            <img src="https://img.playbook.com/9hpVSQqz6wk3IDyS614ajR4Hv5-Ekpuwu0Q8uT6OT1c/Z3M6Ly9wbGF5Ym9v/ay1hc3NldHMtcHVi/bGljLzY1YTAxMjI0/LWY1MDgtNDRkZi04/YTJmLWNjM2YyMTUz/ODRmZQ"
+                class="h-full" alt="Image 4">
+            <img src="https://img.playbook.com/P-li_2rWTygvzA3JFN3vt6yNU3XhhZ72EzdZOxI6VtM/Z3M6Ly9wbGF5Ym9v/ay1hc3NldHMtcHVi/bGljL2FlMjU5YWY2/LWQ3NzEtNDE5My1h/YzhmLTMxNGFkNzdk/ZmRhMg"
+                class="h-full" alt="Image 5">
+            <img src="https://img.playbook.com/GpEhEDTHuBJoG-tIyw6l2x-xnXciOF9iDLhKIxC7GM4/Z3M6Ly9wbGF5Ym9v/ay1hc3NldHMtcHVi/bGljL2Y3NDBlOWVk/LThmNzgtNGYyYi05/OGZkLTUyM2UyZjdj/MDA4NA"
+                class="h-full" alt="Image 6">
+            <img src="https://img.playbook.com/Ynqcuhayoj0HeO6Srrvioy-Au1Cn_VLxHkCB338n9pQ/Z3M6Ly9wbGF5Ym9v/ay1hc3NldHMtcHVi/bGljLzBmMTI1ZmY3/LWE4ZWYtNDU5Yy1i/Nzg1LTZiNDgzMTNi/NmIwNA"
+                class="h-full" alt="Image 7">
+            <img src="https://img.playbook.com/QuNvAlLpaGVGqs9Lb74mqfyhIilegprosK_f0ijLwwY/Z3M6Ly9wbGF5Ym9v/ay1hc3NldHMtcHVi/bGljLzI2ZWFjODJm/LWY2ZmMtNDY4Zi05/NmJhLTBkNmZjYzUw/ZDgyMQ"
+                class="h-full" alt="Image 8">
+            <img src="https://img.playbook.com/wSydo6ypm7psNrJekTN_FEwBA7rj8P3D5fMhh04-xqQ/Z3M6Ly9wbGF5Ym9v/ay1hc3NldHMtcHVi/bGljLzYxZDI3YWVi/LTM2YjgtNDAzZi1i/ZmRiLTVhNzc0ZWRl/MTc2ZQ"
+                class="h-full" alt="Image 9">
+            <img src="https://img.playbook.com/p6D-bAl7HordusDSG4gsNteDGoS3_fLMd54l-pNS3vk/Z3M6Ly9wbGF5Ym9v/ay1hc3NldHMtcHVi/bGljL2Q4MjU3MmE3/LWJkNTQtNGNjMy05/OTczLThkMzY5YjZj/ZGQzOQ"
+                class="h-full" alt="Image 1">
+            <img src="https://img.playbook.com/r-_s2OsQANBQ_fFnrg_XRaNCGm8Sf8mEGIHX5Gbf4tY/Z3M6Ly9wbGF5Ym9v/ay1hc3NldHMtcHVi/bGljLzIzNGEwY2Ji/LWU4YmMtNDZhYi1h/MjY3LTJkYzY0MWUw/MWFkNw"
+                class="h-full" alt="Image 2">
+            <img src="https://img.playbook.com/hp8y3_qS4OV6uvkLy81uJ7itFJhK-XzJtfe_REO-_TI/Z3M6Ly9wbGF5Ym9v/ay1hc3NldHMtcHVi/bGljLzU4MGM1NTg3/LTBiOTUtNGRlNy1h/YmQ0LWRhZmVlM2Vk/NjNmMw"
+                class="h-full" alt="Image 3">
+            <img src="https://img.playbook.com/9hpVSQqz6wk3IDyS614ajR4Hv5-Ekpuwu0Q8uT6OT1c/Z3M6Ly9wbGF5Ym9v/ay1hc3NldHMtcHVi/bGljLzY1YTAxMjI0/LWY1MDgtNDRkZi04/YTJmLWNjM2YyMTUz/ODRmZQ"
+                class="h-full" alt="Image 4">
+            <img src="https://img.playbook.com/P-li_2rWTygvzA3JFN3vt6yNU3XhhZ72EzdZOxI6VtM/Z3M6Ly9wbGF5Ym9v/ay1hc3NldHMtcHVi/bGljL2FlMjU5YWY2/LWQ3NzEtNDE5My1h/YzhmLTMxNGFkNzdk/ZmRhMg"
+                class="h-full" alt="Image 5">
+            <img src="https://img.playbook.com/GpEhEDTHuBJoG-tIyw6l2x-xnXciOF9iDLhKIxC7GM4/Z3M6Ly9wbGF5Ym9v/ay1hc3NldHMtcHVi/bGljL2Y3NDBlOWVk/LThmNzgtNGYyYi05/OGZkLTUyM2UyZjdj/MDA4NA"
+                class="h-full" alt="Image 6">
+            <img src="https://img.playbook.com/Ynqcuhayoj0HeO6Srrvioy-Au1Cn_VLxHkCB338n9pQ/Z3M6Ly9wbGF5Ym9v/ay1hc3NldHMtcHVi/bGljLzBmMTI1ZmY3/LWE4ZWYtNDU5Yy1i/Nzg1LTZiNDgzMTNi/NmIwNA"
+                class="h-full" alt="Image 7">
+            <img src="https://img.playbook.com/QuNvAlLpaGVGqs9Lb74mqfyhIilegprosK_f0ijLwwY/Z3M6Ly9wbGF5Ym9v/ay1hc3NldHMtcHVi/bGljLzI2ZWFjODJm/LWY2ZmMtNDY4Zi05/NmJhLTBkNmZjYzUw/ZDgyMQ"
+                class="h-full" alt="Image 8">
+            <img src="https://img.playbook.com/wSydo6ypm7psNrJekTN_FEwBA7rj8P3D5fMhh04-xqQ/Z3M6Ly9wbGF5Ym9v/ay1hc3NldHMtcHVi/bGljLzYxZDI3YWVi/LTM2YjgtNDAzZi1i/ZmRiLTVhNzc0ZWRl/MTc2ZQ"
+                class="h-full" alt="Image 9">
+        </div>
+    </div>
+
+</body>
+
+</html>

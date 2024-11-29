@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background: white;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 350px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: auto;
+            width: 70%;
+            padding: 30px 5px;
+            background: linear-gradient(45deg,
+                    rgb(68, 96, 221) 0%,
+                    rgba(20, 125, 151, 0.932) 80%,
+                    rgb(19, 83, 143) 99%);
+            border-radius: 15px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease, scale 0.3s ease;
+        }
+
+        h1 {
+            color: #312e2e;
+            text-align: center;
+            font-size: 40px;
+            font-weight: 800;
+            margin-bottom: 50px;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            margin-bottom: 1em;
+            border: 1px solid #ccc;
+            border-radius: 15px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 5px;
+            margin: auto;
+        }
+
+        button {
+            font-size: 0.8em;
+            padding: 8px 12px;
+            font-weight: 800;
+            background-color: #da472e;
+            color: white;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            transition: transform 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #f0553a;
+            transform: scale(1.03);
+        }
+
+
+        #result {
+            color: black;
+        }
+
+        #result p {
+            font-size: 1em;
+            font-weight: 800;
+            color: #ffffff;
+        }
+
+
+        p {
+            font-size: 0.7em;
+            text-align: center;
+            color: #000000;
+            font-weight: 600;
+        }
+
+
+        input::placeholder {
+            color: #000000;
+            font-weight: 800;
+        }
+
+        #resetButton {
+            display: none;
+            background-color: #f0553a;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Customer's Vehicle <br> (ગ્રાહક ની ગાડી)</h1>
+    <div class="container">
+        <input type="text" id="mobileNumber" placeholder="નંબર નાખો ..." onclick="value=''" />
+        <button id="openButton" onclick="fetchDealerStock()">View Now</button>
+        <div id="result"></div>
+        <button id="resetButton" onclick="resetForm()">Reset</button>
+    </div>
+    <!-- Footer -->
+    <footer>
+        <div class="row">
+            <p>
+                &copy; 2024 Junigadi Vehicle Solution Pvt. Ltd.<br />
+                All rights reserved.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        let dealers = [];
+
+        async function fetchDealersData() {
+            try {
+                // Fetch data from Google Sheets
+                const response = await fetch("https://script.google.com/macros/s/AKfycbwGI91SrUbURuOvGzglAW-Xm2eWCMUt5-rARnSL6wAx59JSR31fN7Tnw_8oGKCreMkq/exec");
+                const data = await response.json();
+                dealers = data;
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        }
+
+        // Initialize dealers data on page load
+        fetchDealersData();
+
+        async function fetchDealerStock() {
+            const mobileNumberInput = document.getElementById("mobileNumber").value.trim();
+            const mobileNumber = parseInt(mobileNumberInput);
+            const validMobileNumber = /^[0-9]{10}$/.test(mobileNumberInput);
+            const resultDiv = document.getElementById("result");
+
+            dukaanUrl = "https://mydukaan.io/junigadicom";
+
+            feturesUrl = "https://www.junigadi.com/tools/buy-vehicle-feature"
+
+            resultDiv.innerHTML = `<p style="font-size: 18px;font-weight: 700;color: white;">Please wait...</p>`;
+
+            // Ensure the dealers array is populated
+            if (dealers.length === 0) {
+                await fetchDealersData();
+            }
+
+            const activeDealer = dealers.find(dealer => dealer.CONTACT === mobileNumber && dealer.STATUS === "Active");
+            const expiredDealer = dealers.find(dealer => dealer.CONTACT === mobileNumber && dealer.STATUS === "Expired");
+            const trialDealer = dealers.find(dealer => dealer.CONTACT === mobileNumber && dealer.STATUS === "Trial");
+
+            // Show reset button
+            document.getElementById("mobileNumber").style.display = "none";
+            document.getElementById("openButton").style.display = "none";
+            document.getElementById("resetButton").style.display = "inline-block";
+
+            if (activeDealer) {
+                document.getElementById("result").innerHTML = `<p>✅ You are registered!</p>`;
+                window.open(dukaanUrl, "_blank");
+            } else if (expiredDealer) {
+                document.getElementById("result").innerHTML = `<p>⚠️ Your registration is expired!</p>`;
+                window.open(feturesUrl, "_blank");
+            } else if (trialDealer) {
+                document.getElementById("result").innerHTML = `<p>⚠️ You are in trial phase! </p>`;
+                window.open(feturesUrl, "_blank");
+            } else if (!mobileNumberInput) {
+                document.getElementById("result").innerHTML = `<p>🚫 Enter your mobile number!</p>`;
+                document.getElementById("mobileNumber").style.display = "inline-block";
+            } else if (!validMobileNumber) {
+                document.getElementById("result").innerHTML = `<p>🚫 Enter a valid mobile number!</p>`;
+                document.getElementById("mobileNumber").style.display = "inline-block";
+            } else {
+                document.getElementById("result").innerHTML = `<p>⚠️ You are not registered!</p>`;
+                window.open(feturesUrl, "_blank");
+            }
+        }
+
+        function resetForm() {
+            document.getElementById("mobileNumber").style.display = "inline-block";
+            document.getElementById("mobileNumber").value = "";
+            document.getElementById("openButton").style.display = "inline-block";
+            document.getElementById("result").innerHTML = "";
+            document.getElementById("resetButton").style.display = "none";
+        }
+
+    </script>
+</body>
+
+</html>

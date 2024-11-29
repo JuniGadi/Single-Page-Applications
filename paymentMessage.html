@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 20px;
+      padding: 0;
+      background-color: #f5f5f5;
+      color: #333;
+    }
+
+    .container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      max-width: 600px;
+      margin: 0 auto;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      font-size: 1.5em;
+      font-weight: 800;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    p {
+      font-size: 14px;
+      margin-bottom: 10px;
+      line-height: 1.6;
+    }
+
+    .button-container {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    a.button {
+      font-weight: 700;
+      background-color: #19c519;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .language-toggle {
+      text-align: right;
+      padding: 10px;
+    }
+
+    .language-toggle select {
+      padding: 5px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="language-toggle">
+      <label for="language">Language: </label>
+      <select id="language" onchange="changeLanguage()">
+        <option value="en">English</option>
+        <option value="hi">हिंदी</option>
+        <option value="gu">ગુજરાતી</option>
+      </select>
+    </div>
+
+    <h1 id="title">Thank You for Your Response</h1>
+    <p id="response-message">We have received your response. Our team will confirm your payment and activate your
+      account within 24 hours.</p>
+    <p id="whatsapp-message">You can share your vehicle with us using WhatsApp.</p>
+    <div class="button-container">
+      <a href="https://wa.me/+918076561453" class="button" id="chat-button">Click here to proceed with chat</a>
+    </div>
+    <p id="query-message">In case you have any queries, please feel free to contact us:</p>
+    <p id="support-team">Support Team</p>
+    <p id="phone1">Ph +91 8076561453</p>
+    <p id="phone2">Ph +91 7226871727</p>
+    <p id="thanks-message">Thank you for choosing Junigadi.</p>
+
+  </div>
+
+  <script>
+    function changeLanguage() {
+      const language = document.getElementById("language").value;
+
+      if (language === "hi") {
+        document.getElementById("title").innerText = "आपकी प्रतिक्रिया के लिए धन्यवाद";
+        document.getElementById("response-message").innerText = "हमें आपकी प्रतिक्रिया प्राप्त हो गई है। हमारी टीम आपकी भुगतान की पुष्टि करेगी और आपके खाते को 24 घंटे के भीतर सक्रिय कर देगी।";
+        document.getElementById("whatsapp-message").innerText = "आप व्हाट्सएप का उपयोग करके हमें अपना वाहन भेज सकते हैं।";
+        document.getElementById("chat-button").innerText = "चैट के साथ आगे बढ़ने के लिए यहां क्लिक करें";
+        document.getElementById("query-message").innerText = "यदि आपके कोई प्रश्न हैं, तो कृपया हमसे संपर्क करने में संकोच न करें:";
+        document.getElementById("support-team").innerText = "सहयोग टीम";
+        document.getElementById("phone1").innerText = "फ़ोन +91 8076561453";
+        document.getElementById("phone2").innerText = "फ़ोन +91 7226871727";
+        document.getElementById("thanks-message").innerText = "Junigadi को चुनने के लिए धन्यवाद।";
+      } else if (language === "gu") {
+        document.getElementById("title").innerText = "તમારી પ્રતિસાદ માટે આભાર";
+        document.getElementById("response-message").innerText = "અમને તમારો પ્રતિસાદ મળ્યો છે. અમારી ટીમ તમારું ચુકવણી પુષ્ટિ કરશે અને તમારા ખાતાને 24 કલાકની અંદર સક્રિય કરશે.";
+        document.getElementById("whatsapp-message").innerText = "તમે WhatsApp નો ઉપયોગ કરીને અમને તમારું વાહન મોકલી શકો છો.";
+        document.getElementById("chat-button").innerText = "ચેટ સાથે આગળ વધવા માટે અહીં ક્લિક કરો";
+        document.getElementById("query-message").innerText = "જો તમને કોઈ પ્રશ્ન હોય, તો કૃપા કરીને અમારો સંપર્ક કરવામાં સંકોચશો નહીં:";
+        document.getElementById("support-team").innerText = "સપોર્ટ ટીમ";
+        document.getElementById("phone1").innerText = "ફોન +91 8076561453";
+        document.getElementById("phone2").innerText = "ફોન +91 7226871727";
+        document.getElementById("thanks-message").innerText = "Junigadi પસંદ કરવા બદલ આભાર.";
+      } else {
+        // Default is English
+        document.getElementById("title").innerText = "Thank You for Your Response";
+        document.getElementById("response-message").innerText = "We have received your response. Our team will confirm your payment and activate your account within 24 hours.";
+        document.getElementById("whatsapp-message").innerText = "You can share your vehicle with us using WhatsApp.";
+        document.getElementById("chat-button").innerText = "Click here to proceed with chat";
+        document.getElementById("query-message").innerText = "In case you have any queries, please feel free to contact us:";
+        document.getElementById("support-team").innerText = "Support Team";
+        document.getElementById("phone1").innerText = "Ph +91 8076561453";
+        document.getElementById("phone2").innerText = "Ph +91 7226871727";
+        document.getElementById("thanks-message").innerText = "Thank you for choosing Junigadi.";
+      }
+    }
+  </script>
+</body>
+
+</html>

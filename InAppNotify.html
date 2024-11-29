@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>In-App Notification</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .notification {
+      background-color: rgb(238, 233, 233);
+      border-radius: 20px;
+      overflow: hidden;
+      width: 90%;
+      max-width: 350px;
+      position: relative;
+    }
+
+    .close-btn {
+      position: absolute;
+      background-color: #dddcdc;
+      top: 8px;
+      right: 8px;
+      padding: 8px 8px;
+      border-radius: 15px;
+      cursor: pointer;
+    }
+
+    .content {
+      padding: 10px 15px 0 15px;
+    }
+
+    .content h2 {
+      margin: 0 0;
+      font-weight: 800;
+      font-size: 1.2em;
+      text-align: center;
+    }
+
+    .content p {
+      margin: 0 0 16px;
+      color: #3a3636;
+      font-size: 0.9em;
+    }
+
+    .content .price {
+      color: #28a745;
+      font-size: 1.3em;
+      font-weight: 800;
+      text-align: end;
+      margin: 10px 0;
+    }
+
+    .content .details {
+      font-size: 1.1em;
+      font-weight: 600;
+      margin-left: 1.5em;
+    }
+
+    button {
+      border: none;
+      padding: 5px 15px;
+      border-radius: 20px;
+      cursor: pointer;
+    }
+
+    button a {
+      display: block;
+      width: 50px;
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 2em;
+      font-weight: 900;
+    }
+
+    #callBtn {
+      background-color: rgb(57, 124, 224);
+    }
+
+    #messageBtn {
+      background-color: rgb(34, 197, 42);
+    }
+
+    .links {
+      display: flex;
+      justify-content: space-evenly;
+      margin: 10px 0 20px 0;
+    }
+
+
+    .image-container {
+      width: 100%;
+      height: 50%;
+      /* Adjust the height */
+      overflow: hidden;
+      border-radius: 20px;
+    }
+
+    .image-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    svg {
+      display: block;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="notification">
+    <div class="header">
+      <div class="close-btn" data-onesignal-unique-label="close">
+        <svg width="20" height="20" preserveAspectRatio="none" viewBox="0 0 8 8" fill="none"
+          xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M7.80309 1.14768C8.06564 0.885137 8.06564 0.459453 7.80309 0.196909C7.54055 -0.0656362 7.11486 -0.0656362 6.85232 0.196909L4 3.04923L1.14768 0.196909C0.885137 -0.0656362 0.459453 -0.0656362 0.196909 0.196909C-0.0656362 0.459453 -0.0656362 0.885137 0.196909 1.14768L3.04923 4L0.196909 6.85232C-0.0656362 7.11486 -0.0656362 7.54055 0.196909 7.80309C0.459453 8.06564 0.885137 8.06564 1.14768 7.80309L4 4.95077L6.85232 7.80309C7.11486 8.06564 7.54055 8.06564 7.80309 7.80309C8.06564 7.54055 8.06564 7.11486 7.80309 6.85232L4.95077 4L7.80309 1.14768Z"
+            fill="#111111" />
+        </svg>
+      </div>
+    </div>
+    <div class="image-container">
+      <a href="https://mydukaan.io/junigadi/products/hyundai-venue-sx-2022?sku_id=54709770"><img width="auto"
+          height="auto"
+          src="https://img.playbook.com/FRRZUqHIsgCbO4miYNs0XwE-4fqddqmpmcNApDi2EAw/Z3M6Ly9wbGF5Ym9v/ay1hc3NldHMtcHVi/bGljLzVlNmZjODVh/LTVmZTAtNGUxNi04/YTgzLTBlNzJlN2E0/YTkzNA"
+          alt="" /></a>
+    </div>
+    <div class="content">
+      <h2>HYUNDAI VENUE 2022</h2>
+      <p class="price">₹ 10,10,999 <s style="font-size: 0.8em;color: red;">₹ 11,00,000</s></p>
+      <p class="details">
+        🙎‍♂️ <strong>1</strong> Owner <br>
+        ⛽ <strong>Petrol</strong><br />
+        🚗 <strong>SX</strong> Variant <br />
+        🚂 <strong>BS6</strong> Engine <br />
+        🚢 Passing <strong>Running</strong> <br />
+        📑 Insurance <strong>Running</strong> <br />
+        <!-- 📏 <strong>8 Feet</strong> Loading Length <br> -->
+        📌 <strong>Kanodar</strong> (કનોદર), Banaskantha
+      </p>
+    </div>
+
+    <div class="links">
+      <button id="callBtn">
+        <a class="call-btn" href="tel:+919726361499" data-onesignal-unique-label="call"><i
+            class="fa-solid fa-phone"></i></a>
+      </button>
+      <button id="messageBtn">
+        <a class="message-btn"
+          href="https://wa.me/+919726361499?text=નમસ્તે, 🙏😃 *JUNIGADI APP* ઉપર તમારી HYUNDAI VENUE SX 2022, ગાડી નંબર GJ 06 PK 7850 ને જોઈ છે. હું ખરીદવા માંગુ છું. મને આ નંબર ઉપર ડીટેલ આપજો."
+          target="_blank" data-onesignal-unique-label="message"><i class="fa-brands fa-whatsapp"></i></a>
+      </button>
+    </div>
+  </div>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/js/all.min.js"></script>
+  <script>
+    document
+      .querySelector(".close-btn")
+      .addEventListener("click", function (e) {
+        OneSignalIamApi.close(e);
+      });
+
+    document
+      .querySelector(".call-btn")
+      .addEventListener("click", function (e) {
+        OneSignalIamApi.addClickName(e, "call");
+      });
+    document
+      .querySelector(".message-btn")
+      .addEventListener("click", function (e) {
+        OneSignalIamApi.addClickName(e, "message");
+      });
+  </script>
+</body>
+
+</html>

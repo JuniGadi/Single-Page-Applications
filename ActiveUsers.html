@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live Now Embed</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat&display=swap">
+  <style>
+    /* Your existing styles */
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-weight: bold;
+      font-size: 16px; /* Decreased font size */
+      font-family: 'Montserrat', sans-serif; /* Montserrat font */
+      margin: 0;
+    }
+    /* Additional styling for the "ACTIVE USERS" display */
+    #liveContainer {
+      border: 2px solid black;
+      border-radius: 10px;
+      padding: 5px 10px;
+      display: flex;
+      align-items: center;
+    }
+    #live {
+      margin-right: 8px;
+      color: black;
+    }
+    #blinkingDot {
+      height: 10px;
+      width: 10px;
+      background-color: green;
+      border-radius: 50%;
+      animation: blink 1s infinite;
+      margin-right: 8px;
+    }
+    @keyframes blink {
+      0%, 49% {
+        opacity: 1;
+      }
+      50%, 100% {
+        opacity: 0;
+      }
+    }
+    #customNumber {
+      color: black;
+    }
+  </style>
+</head>
+<body>
+  <div id="liveContainer">
+    <span id="blinkingDot"></span>
+    <span id="live">ACTIVE USERS :</span>
+    <span id="customNumber"></span>
+  </div>
+
+  <script>
+    function getRandomNumber(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function displayRandomNumber() {
+      const now = new Date();
+      const currentHour = (now.getUTCHours() + 5) % 24; // IST is UTC+5:30
+
+      let minRange, maxRange;
+
+      if (currentHour >= 0 && currentHour < 6) {
+        minRange = 0;
+        maxRange = 50;
+      } else if (currentHour >= 6 && currentHour < 10) {
+        minRange = 300;
+        maxRange = 800;
+      } else if (currentHour >= 10 && currentHour < 12) {
+        minRange = 1500;
+        maxRange = 2000;
+    } else if (currentHour >= 12 && currentHour < 16) {
+        minRange = 500;
+        maxRange = 1000;
+      } else if (currentHour >= 16 && currentHour < 18) {
+        minRange = 200;
+        maxRange = 500;
+      } else if (currentHour >= 18 && currentHour < 20) {
+        minRange = 600;
+        maxRange = 1500;
+      } else if (currentHour >= 20 && currentHour < 22) {
+        minRange = 1500;
+        maxRange = 1800;
+      } else {
+        minRange = 100;
+        maxRange = 200;
+      }
+
+      const randomNumber = getRandomNumber(minRange, maxRange);
+      document.getElementById('customNumber').textContent = ' ' + randomNumber;
+    }
+
+    // Display initial random number
+    displayRandomNumber();
+
+    // Update the random number every 30 to 40 seconds
+    setInterval(displayRandomNumber, Math.floor(Math.random() * 31000) + 30000);
+  </script>
+</body>
+</html>

@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      flex-direction: column;
+      background: white;
+    }
+
+    .container {
+      max-width: 300px;
+      background: linear-gradient(45deg,
+          rgb(125, 163, 214) 0%,
+          rgb(69, 225, 252) 80%,
+          rgb(153, 193, 238) 99%);
+      display: flex;
+      flex-direction: column;
+      border-radius: 15px;
+      align-items: center;
+    }
+
+    .header {
+      font-weight: bold;
+      font-size: 60px;
+      text-align: center;
+      color: #290d91;
+      margin-top: 10px;
+      margin-bottom: 150px;
+    }
+
+    .row {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin: 10px 0;
+    }
+
+    .button,
+    .back-button,
+    .search-button {
+      background: linear-gradient(45deg,
+          rgb(248, 106, 106) 0%,
+          rgb(252, 194, 69) 80%,
+          rgb(236, 183, 68) 99%);
+      color: rgba(0, 0, 0, 0.918);
+      display: inline-block;
+      padding: 10px;
+      margin: 10px;
+      width: 110px;
+      font-weight: 700;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      border: 2px solid #d8d4d4;
+      border-radius: 20px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease-in-out;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .back-button {
+      font-size: 14px;
+      background: linear-gradient(45deg,
+          rgb(197, 204, 200) 0%,
+          rgb(162, 166, 167) 80%,
+          rgb(138, 143, 139) 99%);
+    }
+
+    .search-button {
+      padding: 8px 0px;
+      background: linear-gradient(45deg,
+          rgb(78, 226, 103) 0%,
+          rgb(28, 207, 88) 80%,
+          rgb(29, 185, 37) 99%);
+    }
+
+    .button:hover,
+    .back-button:hover,
+    .search-button:hover {
+      color: rgb(255, 255, 255);
+      transform: scale(1.05);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+    }
+
+    .selected {
+      color: rgb(0, 0, 0);
+      transform: scale(1.05);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .heading {
+      color: #000000d3;
+      font-weight: 700;
+      font-size: 30px;
+      margin-bottom: 30px;
+      text-align: center;
+      width: 100%;
+    }
+
+    .dropdown {
+      height: 40px;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      color: rgb(255, 255, 255);
+      background: linear-gradient(45deg,
+          rgb(248, 106, 106) 0%,
+          rgb(252, 194, 69) 80%,
+          rgb(236, 183, 68) 99%);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+      width: 200px;
+      font-weight: 700;
+      padding-bottom: 1px;
+      padding-left: 10px;
+      margin: 10px;
+      border-radius: 20px;
+      border: 2px solid #ccc;
+    }
+
+    .dropdown option {
+      color: rgb(0, 0, 0);
+    }
+
+    p {
+      text-align: center;
+      color: #0f0e0f;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    h1 {
+      color: #494846;
+    }
+
+    @keyframes blink {
+      50% {
+        opacity: 0;
+      }
+    }
+
+    .location-controls {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1 style="
+        text-align: center;
+        font-size: 40px;
+        font-weight: 800;
+        margin-top: 0;
+        margin-bottom: 5px;
+      ">
+    Search Faster
+  </h1>
+  <h1 style="
+        text-align: center;
+        font-size: 25px;
+        font-weight: 700;
+        margin-top: 0;
+        margin-bottom: 50px;
+      ">
+    (ઝડપથી શોધો)
+  </h1>
+  <div class="container">
+    <!-- Type of Vehicle -->
+    <div id="vehicleType" class="row">
+      <div class="heading">Type of Vehicle</div>
+      <button class="button" data-type="CAR">Car</button>
+      <button class="button" data-type="PASSENGER">Passenger</button>
+      <button class="button" data-type="LOADING PICKUP">Loading</button>
+      <button class="button" data-type="TRUCK">Truck</button>
+    </div>
+
+    <!-- Price Range -->
+    <div id="priceRange" class="row hidden">
+      <div class="heading">Price Range</div>
+      <button class="back-button">Back</button>
+      <button class="button" data-price="0-300000">Below 3 lakhs</button>
+      <button class="button" data-price="300001-500000">3-5 lakhs</button>
+      <button class="button" data-price="500001-700000">5-7 lakhs</button>
+      <button class="button" data-price="700001-1000000">7-10 lakhs</button>
+      <button style="font-size: 12px; font-weight: 700" class="button" data-price="1000001-ABOVE">
+        Above 10 lakhs
+      </button>
+    </div>
+
+    <!-- Location -->
+    <div id="location" class="row hidden">
+      <div class="heading">Location</div>
+      <button class="back-button">Back</button>
+      <button class="button" data-location="AHMEDABAD">Ahmedabad</button>
+      <button class="button" data-location="JUNGADH">Junagadh</button>
+      <button class="button" data-location="KUTCH">Kutch</button>
+      <button class="button" data-location="PATAN">Patan</button>
+      <button class="button" data-location="RAJKOT">Rajkot</button>
+      <button class="button" data-location="SURAT">Surat</button>
+      <button style="font-size: 11px; font-weight: 800" class="button" id="moreLocationsButton">
+        More Locations
+      </button>
+    </div>
+
+    <!-- More Locations -->
+    <div id="moreLocations" class="row hidden">
+      <div class="heading">More Locations</div>
+      <div class="location-controls">
+        <button class="back-button">Back</button>
+        <select id="locationDropdown" class="dropdown">
+          <option value="">Select Location</option>
+          <option value="AMRELI">Amreli</option>
+          <option value="ANAND">Anand</option>
+          <option value="ARAVALLI">Aravalli</option>
+          <option value="BANASKANTHA">Banaskantha</option>
+          <option value="BHARUCH">Bharuch</option>
+          <option value="BHAVNAGAR">Bhavnagar</option>
+          <option value="BOTAD">Botad</option>
+          <option value="CHHOTA UDAIPUR">Chhota Udaipur</option>
+          <option value="DAHOD">Dahod</option>
+          <option value="DANG">Dang</option>
+          <option value="DEVBHUMI DWARKA">Devbhumi Dwarka</option>
+          <option value="GANDHINAGAR">Gandhinagar</option>
+          <option value="GIR SOMNATH">Gir Somnath</option>
+          <option value="JAMNAGAR">Jamnagar</option>
+          <option value="KHEDA">Kheda</option>
+          <option value="MAHISAGAR">Mahisagar</option>
+          <option value="MEHSANA">Mehsana</option>
+          <option value="MORBI">Morbi</option>
+          <option value="NARMADA">Narmada</option>
+          <option value="NAVSARI">Navsari</option>
+          <option value="PANCHMAHAL">Panchmahal</option>
+          <option value="PORBANDAR">Porbandar</option>
+          <option value="SABARKANTHA">Sabarkantha</option>
+          <option value="Surendranagar">Surendranagar</option>
+          <option value="TAPI">Tapi</option>
+          <option value="VADODARA">Vadodara</option>
+          <option value="VALSAD">Valsad</option>
+        </select>
+      </div>
+    </div>
+    <a id="searchButton" class="search-button hidden" href="#">Search</a>
+  </div>
+  <!-- Footer -->
+  <footer>
+    <div class="row">
+      <p>
+        &copy; 2024 Junigadi Vehicle Solution Pvt.Ltd.<br />
+        All rights reserved.
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    const vehicleTypeButtons = document.querySelectorAll(
+      "#vehicleType .button"
+    );
+    const priceRangeButtons = document.querySelectorAll(
+      "#priceRange .button"
+    );
+    const locationButtons = document.querySelectorAll("#location .button");
+    const moreLocationsButton = document.getElementById(
+      "moreLocationsButton"
+    );
+    const backButtons = document.querySelectorAll(".back-button");
+    const locationDropdown = document.getElementById("locationDropdown");
+    const searchButton = document.getElementById("searchButton");
+
+    let selectedCategory = "";
+    let selectedPrice = "";
+    let selectedLocation = "";
+
+    const vehicleTypeContainer = document.getElementById("vehicleType");
+    const priceRangeContainer = document.getElementById("priceRange");
+    const locationContainer = document.getElementById("location");
+    const moreLocationsContainer = document.getElementById("moreLocations");
+
+    vehicleTypeButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        toggleSelected(button);
+        selectedCategory = button.getAttribute("data-type");
+        vehicleTypeContainer.classList.add("hidden");
+        priceRangeContainer.classList.remove("hidden");
+        updateSearchButtonVisibility();
+      });
+    });
+
+    priceRangeButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        if (button.classList.contains("back-button")) {
+          deselectButtons(priceRangeButtons);
+          priceRangeContainer.classList.add("hidden");
+          vehicleTypeContainer.classList.remove("hidden");
+          selectedPrice = "";
+          updateSearchButtonVisibility();
+          return;
+        }
+        toggleSelected(button);
+        selectedPrice = button.getAttribute("data-price");
+        priceRangeContainer.classList.add("hidden");
+        locationContainer.classList.remove("hidden");
+        updateSearchButtonVisibility();
+      });
+    });
+
+    locationButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        if (button.classList.contains("back-button")) {
+          if (moreLocationsContainer.classList.contains("hidden")) {
+            deselectButtons(locationButtons);
+            locationContainer.classList.add("hidden");
+            priceRangeContainer.classList.remove("hidden");
+            selectedPrice = "";
+          } else {
+            moreLocationsContainer.classList.add("hidden");
+            locationContainer.classList.remove("hidden");
+          }
+          selectedLocation = "";
+          updateSearchButtonVisibility();
+          return;
+        } else if (button.id === "moreLocationsButton") {
+          locationContainer.classList.add("hidden");
+          moreLocationsContainer.classList.remove("hidden");
+          return;
+        }
+        toggleSelected(button);
+        selectedLocation = button.getAttribute("data-location");
+        updateSearchButtonVisibility();
+      });
+    });
+
+    backButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        if (moreLocationsContainer.classList.contains("hidden")) {
+          if (locationContainer.classList.contains("hidden")) {
+            priceRangeContainer.classList.add("hidden");
+            vehicleTypeContainer.classList.remove("hidden");
+            selectedPrice = "";
+            selectedCategory = "";
+          } else {
+            locationContainer.classList.add("hidden");
+            priceRangeContainer.classList.remove("hidden");
+            searchButton.classList.add("hidden");
+            selectedLocation = "";
+          }
+        } else {
+          moreLocationsContainer.classList.add("hidden");
+          locationContainer.classList.remove("hidden");
+        }
+      });
+    });
+
+    locationDropdown.addEventListener("change", () => {
+      selectedLocation = locationDropdown.value;
+      updateSearchButtonVisibility();
+    });
+
+    searchButton.addEventListener("click", (event) => {
+      if (!selectedCategory || !selectedPrice) {
+        alert("Please select both type of vehicle and price range.");
+        event.preventDefault();
+        return;
+      }
+      const code = getCode(selectedCategory, selectedPrice);
+      const locationQuery = selectedLocation ? `%20${selectedLocation}` : "";
+      const link = `https://mydukaan.io/junigadi/search?query=${code}${locationQuery}`;
+      searchButton.href = link;
+    });
+
+    function toggleSelected(button) {
+      const allButtons = [
+        ...vehicleTypeButtons,
+        ...priceRangeButtons,
+        ...locationButtons,
+      ];
+      allButtons.forEach((btn) => btn.classList.remove("selected"));
+      button.classList.toggle("selected");
+    }
+
+    function deselectButtons(buttons) {
+      buttons.forEach((button) => button.classList.remove("selected"));
+    }
+
+    function updateSearchButtonVisibility() {
+      if (selectedCategory && selectedPrice) {
+        searchButton.classList.remove("hidden");
+      } else {
+        searchButton.classList.add("hidden");
+      }
+    }
+
+    function getCode(category, price) {
+      let code = "";
+      switch (category) {
+        case "CAR":
+          switch (price) {
+            case "0-300000":
+              code = "8T6WZ";
+              break;
+            case "300001-500000":
+              code = "B9XK4";
+              break;
+            case "500001-700000":
+              code = "D3N7Q";
+              break;
+            case "700001-1000000":
+              code = "FJ2M5";
+              break;
+            case "1000001-ABOVE":
+              code = "H1VY8";
+              break;
+          }
+          break;
+        case "PASSENGER":
+          switch (price) {
+            case "0-300000":
+              code = "9K2H3";
+              break;
+            case "300001-500000":
+              code = "M5J2S";
+              break;
+            case "500001-700000":
+              code = "G8R4L";
+              break;
+            case "700001-1000000":
+              code = "C1Y9W";
+              break;
+            case "1000001-ABOVE":
+              code = "Q7P6F";
+              break;
+          }
+          break;
+        case "LOADING PICKUP":
+          switch (price) {
+            case "0-300000":
+              code = "T8F5D";
+              break;
+            case "300001-500000":
+              code = "P2Z3B";
+              break;
+            case "500001-700000":
+              code = "S4X9J";
+              break;
+            case "700001-1000000":
+              code = "O5X69";
+              break;
+            case "1000001-ABOVE":
+              code = "V1N3H";
+              break;
+          }
+          break;
+        case "TRUCK":
+          switch (price) {
+            case "0-300000":
+              code = "W6G7K";
+              break;
+            case "300001-500000":
+              code = "X5M2P";
+              break;
+            case "500001-700000":
+              code = "Y3L9Q";
+              break;
+            case "700001-1000000":
+              code = "Z4T8V";
+              break;
+            case "1000001-ABOVE":
+              code = "6D7B1";
+              break;
+          }
+          break;
+      }
+      return code;
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      font-family: Arial, sans-serif;
+    }
+
+    .call-btn,
+    .loan-btn {
+      width: 3rem;
+      height: 3rem;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      outline: none;
+      position: relative;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transition: box-shadow 0.3s ease;
+      margin-right: 20px;
+    }
+
+    .call-btn {
+      background: linear-gradient(45deg, rgb(93, 224, 89) 0%, rgb(27, 141, 37) 80%, rgb(43, 165, 59) 99%);
+      color: #ffffff;
+    }
+
+    .loan-btn {
+      background: linear-gradient(45deg, rgb(106, 203, 248) 0%, rgb(113, 151, 235) 80%, rgb(106, 195, 223) 99%);
+      color: #ffffff;
+    }
+
+    .call-btn .fa-phone-volume {
+      font-size: 1.4rem;
+      margin-right: 3px;
+    }
+
+    .loan-btn .fa-landmark {
+      font-size: 1.4rem;
+      margin-bottom: 4px;
+      margin-left: 1px;
+    }
+
+    .call-btn:hover,
+    .loan-btn:hover {
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Click to Call button -->
+  <a href="tel:+917226871727" class="call-btn"> <i class="fa-solid fa-phone-volume"></i><!-- ડીલર કોન્ટેક --></a>
+
+  <!-- Loan Available button -->
+  <a href="https://tally.so/r/n0xA6Q" class="loan-btn"><i class="fa-solid fa-landmark"></i> <!-- લોન માટે --></a>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/js/all.min.js"></script>
+</body>
+
+</html>

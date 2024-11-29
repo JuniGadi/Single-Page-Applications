@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        .container {
+            background-color: #ede9f0;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 600px;
+            margin: 0 auto;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 1.5em;
+            background-color: #676767;
+            color: white;
+            font-weight: 800;
+            margin-bottom: 20px;
+            text-align: center;
+            border-radius: 10px;
+            padding: 5px;
+        }
+
+        ul {
+            list-style-type: disc;
+            padding-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        li {
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .button-container {
+            text-align: center;
+        }
+
+        .call-button,
+        recharge-button,
+        join-button {
+            display: inline-block;
+            margin: 20px auto;
+        }
+
+        .call-button {
+            background-color: rgb(38, 182, 19);
+        }
+
+        .recharge-button {
+            background-color: rgb(255, 0, 0);
+        }
+
+        .join-button {
+            background-color: rgb(60, 99, 226);
+        }
+
+        a {
+            font-weight: 700;
+            background-color: #e9891c;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .language-toggle {
+            text-align: right;
+            padding: 10px;
+        }
+
+        .language-toggle select {
+            padding: 5px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="language-toggle">
+            <label for="language">Language: </label>
+            <select id="language" onchange="changeLanguage()">
+                <option value="gu">ગુજરાતી</option>
+                <option value="hi">हिंदी</option>
+                <option value="en">English</option>
+            </select>
+        </div>
+
+        <h1 id="title">ગ્રાહક ની ગાડી</h1>
+        <ul id="features-list">
+            <li id="feature1">🛠️ આ સુવિધા તમને ગ્રાહકોની ગાડીઓ સરળતાથી શોધવામાં મદદ કરે છે.</li>
+            <li id="feature2">🌍 તમારા આજુબાજુના વિસ્તારના વાહનો શોધી શકો છો અને સીધા વેચનાર સાથે સંપર્ક કરી શકો છો.
+            </li>
+            <li id="feature3">🔍 તમને અલગ અલગ વિસ્તારની ગાડીઓ સરળતાથી સર્ચ કરવાની સુવિધા ઉપલબ્ધ છે.</li>
+            <li id="feature4">🚫 જો તમને કોઈ વાહન વેચાયેલું મળે, તો કૃપા કરીને અમને જાણ કરો જેથી અમે ઝડપથી અમારી
+                લીસ્ટમાંથી તેને હટાવી શકીએ.</li>
+            <li id="feature5">✅ આ સુવિધા માત્ર અમારા જોડાયેલા ડીલરો માટે ઉપલબ્ધ છે.</li>
+        </ul>
+        <p id="contact">
+            🤝 જો તમે જોડાયેલા નથી, તો નીચેના <strong>જુડો</strong> બટન પર ક્લિક કરીને અમારી સાથે જોડાવો,
+
+            કૃપા કરીને અમારો <strong>સંપર્ક કરો:📞 +91 7383158073</strong>.
+        </p>
+        <div class="button-container">
+            <a id="contactButton" class="call-button" href="tel:+91 7383158073">સંપર્ક કરો</a>
+            <a id="joinButton" class="join-button" href="https://tally.so/r/3jBpB9">જુડો</a>
+            <a id="rechargeButton" href="https://junigadi.github.io/Pricing/" class="recharge-button">રીચાર્જ કરો</a>
+        </div>
+
+        <script>
+            function changeLanguage() {
+                const language = document.getElementById("language").value;
+
+                if (language === "hi") {
+                    document.getElementById("title").innerText = "ग्राहक की गाड़ी";
+                    document.getElementById("feature1").innerText = "🛠️ यह सुविधा आपको ग्राहकों की गाड़ियाँ आसानी से खोजने में मदद करती है।  ";
+                    document.getElementById("feature2").innerText = "🌍 आप अपने आसपास के इलाके में वाहनों को खोज सकते हैं और सीधे विक्रेता से संपर्क कर सकते हैं। ";
+                    document.getElementById("feature3").innerText = "🔍 अलग-अलग इलाकों की गाड़ियों को सर्च करने की सुविधा सरल और प्रभावी है।  ";
+                    document.getElementById("feature4").innerText = "🚫 यदि आपको कोई वाहन बेचा हुआ मिले, तो कृपया हमें सूचित करें ताकि हम उसे जल्दी से अपनी सूची से हटा सकें।  ";
+                    document.getElementById("feature5").innerText = "✅ यह सुविधा केवल हमारे जुड़े हुए डीलरों के लिए उपलब्ध है।  ";
+                    document.getElementById("contact").innerHTML = "🤝 अगर आप अभी तक जुड़े नहीं हैं, तो नीचे दिए गए <strong>जुड़ें</strong> बटन पर क्लिक करके हमसे जुड़ें।<br>📞 <strong>संपर्क करें: +91 7383158073</strong>";
+
+                    document.getElementById("contactButton").innerText = "संपर्क करें";
+                    document.getElementById("joinButton").innerText = "जुड़ें";
+                    document.getElementById("rechargeButton").innerText = "रीचार्ज करें";
+                } else if (language === "gu") {
+                    document.getElementById("title").innerText = "ગ્રાહક ની ગાડી";
+                    document.getElementById("feature1").innerText = "🛠️ આ સુવિધા તમને ગ્રાહકોની ગાડીઓ સરળતાથી શોધવામાં મદદ કરે છે.";
+                    document.getElementById("feature2").innerText = "🌍 તમારા આજુબાજુના વિસ્તારના વાહનો શોધી શકો છો અને સીધા વેચનાર સાથે સંપર્ક કરી શકો છો.";
+                    document.getElementById("feature3").innerText = "🔍 તમને અલગ અલગ વિસ્તારની ગાડીઓ સરળતાથી સર્ચ કરવાની સુવિધા ઉપલબ્ધ છે.";
+                    document.getElementById("feature4").innerText = "🚫 જો તમને કોઈ વાહન વેચાયેલું મળે, તો કૃપા કરીને અમને જાણ કરો જેથી અમે ઝડપથી અમારી લીસ્ટમાંથી તેને હટાવી શકીએ.";
+                    document.getElementById("feature5").innerText = "✅ આ સુવિધા માત્ર અમારા જોડાયેલા ડીલરો માટે ઉપલબ્ધ છે.";
+                    document.getElementById("contact").innerHTML = "🤝 જો તમે જોડાયેલા નથી, તો નીચેના <strong>જુડો</strong> બટન પર ક્લિક કરીને અમારી સાથે જોડાવો, કૃપા કરીને અમારો <strong>સંપર્ક કરો:📞 +91 7383158073</strong>";
+
+                    document.getElementById("contactButton").innerText = "સંપર્ક કરો";
+                    document.getElementById("joinButton").innerText = "જુડો";
+                    document.getElementById("rechargeButton").innerText = "રીચાર્જ કરો";
+                } else {
+                    // Default is English
+                    document.getElementById("title").innerText = "Customer's Vehicle";
+                    document.getElementById("feature1").innerText = "🛠️ This feature helps you easily find vehicles for your customers.";
+                    document.getElementById("feature2").innerText = "🌍 You can search for vehicles in your nearby areas and contact the seller directly.";
+                    document.getElementById("feature3").innerText = "🔍 The platform provides an easy way to search vehicles across different locations.";
+                    document.getElementById("feature4").innerText = "🚫 If you find a vehicle that has already been sold, please inform us so we can promptly remove it from our listings.";
+                    document.getElementById("feature5").innerText = "✅ This feature is exclusively available for our registered dealers.";
+                    document.getElementById("contact").innerHTML = "🤝 If you are not yet registered, click the <strong>Join</strong> button below to connect with us.<br>📞 For assistance, please <strong>contact us at: +91 7226874947</strong>";
+
+                    document.getElementById("contactButton").innerText = "Contact Us";
+                    document.getElementById("joinButton").innerText = "Join";
+                    document.getElementById("rechargeButton").innerText = "Recharge";
+                }
+            }
+        </script>
+</body>
+
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Onesignal In-App Message</title>
+    <style>
+        body {
+            margin: 0;
+            margin-top: 200px;
+            padding-top: var(--safe-area-inset-top);
+            padding-right: var(--safe-area-inset-right);
+            padding-bottom: calc(var(--safe-area-inset-bottom) + 20px);
+            padding-left: var(--safe-area-inset-left);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+        }
+
+        .center-modal {
+            position: relative;
+            background: #FFF;
+            margin: 18px;
+            padding: 24px;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 50%;
+            width: 80%;
+            box-shadow: rgb(0 0 0 / 30%) 0px 0px 12.5px, rgb(0 0 0 / 15%) 0px 0px 2.5px;
+        }
+
+        .center-modal .close-button {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0);
+            border: none;
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            min-width: 48px;
+            min-height: 48px;
+        }
+
+        .center-modal img {
+            min-height: 10px;
+            margin-bottom: 1px;
+            width: 100%;
+            object-fit: contain;
+        }
+
+        .center-modal h1 {
+            margin: 0px;
+            margin-bottom: 10px;
+            color: #000000;
+            font-size: 24px;
+            font-weight: 600;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .whatsapp-share {
+            background-color: #0e863a;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 12px 24px;
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            justify-content: center;
+            box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            border: none;
+            text-decoration: none;
+            transition: background-color 0.3s;
+            width: auto;
+        }
+
+        .whatsapp-share img {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+        }
+
+        .whatsapp-share:hover {
+            background-color: #128C7E;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        @media screen and (min-width: 480px) {
+            .center-modal {
+                height: 80%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="center-modal">
+        <div class="close-button" data-onesignal-unique-label="close-button">
+            <svg width="10" height="10" preserveAspectRatio="none" viewBox="0 0 8 8" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M7.80309 1.14768C8.06564 0.885137 8.06564 0.459453 7.80309 0.196909C7.54055 -0.0656362 7.11486 -0.0656362 6.85232 0.196909L4 3.04923L1.14768 0.196909C0.885137 -0.0656362 0.459453 -0.0656362 0.196909 0.196909C-0.0656362 0.459453 -0.0656362 0.885137 0.196909 1.14768L3.04923 4L0.196909 6.85232C-0.0656362 7.11486 -0.0656362 7.54055 0.196909 7.80309C0.459453 8.06564 0.885137 8.06564 1.14768 7.80309L4 4.95077L6.85232 7.80309C7.11486 8.06564 7.54055 8.06564 7.80309 7.80309C8.06564 7.54055 8.06564 7.11486 7.80309 6.85232L4.95077 4L7.80309 1.14768Z"
+                    fill="#111111" />
+            </svg>
+        </div>
+        <h1>Share JuniGadi App With Your Friends</h1>
+        <img
+            src="https://img.playbook.com/MOFEXjZ6jxy1VR619yc3nZNstChfWN920al1RvS8-OE/Z3M6Ly9wbGF5Ym9v/ay1hc3NldHMtcHVi/bGljLzg4NmU1YmEw/LTFmMDQtNDZmMy05/ZTdhLWQ5NjhlODEw/ZTNkYw" />
+        <div class="button-container">
+            <a class="whatsapp-share"
+                href="https://wa.me/?text=Download%20Junigadi%20App%20For%20Second%20Hand%20Vehicle%20Buy%20%26%20Sell%3A%20https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.junigadi.com%26hl%3Den_IN"
+                target="_blank">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" />
+                Share via WhatsApp
+            </a>
+        </div>
+    </div>
+    <script>
+        document.querySelector(".close-button").addEventListener("click", function (e) {
+            OneSignalIamApi.close(e);
+        });
+    </script>
+</body>
+
+</html>

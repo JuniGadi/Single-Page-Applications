@@ -1,0 +1,1611 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: white;
+        margin: 0;
+        padding: 0;
+      }
+
+      .container {
+        max-width: 350px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin: auto;
+        width: 80%;
+        padding: 20px;
+        background: linear-gradient(
+          45deg,
+          rgb(238, 182, 129) 0%,
+          rgba(240, 192, 60, 0.932) 80%,
+          rgb(255, 182, 24) 99%
+        );
+        border-radius: 15px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        transition: transform 0.3s ease, scale 0.3s ease;
+      }
+
+      h1 {
+        color: #312e2e;
+        text-align: center;
+        font-size: 40px;
+        font-weight: 800;
+      }
+      h2 {
+        color: #ffffff;
+        text-align: center;
+        font-size: 25px;
+        font-weight: 800;
+      }
+
+      input[type="text"] {
+        padding: 10px;
+        margin-bottom: 30px;
+        border: 1px solid #ccc;
+        border-radius: 15px;
+      }
+
+      button {
+        padding: 5px 12px;
+        background-color: #3b71c2;
+        font-weight: 800;
+        color: white;
+        border: none;
+        border-radius: 15px;
+        cursor: pointer;
+        margin-bottom: 10px;
+        transition: background-color 0.3s ease;
+        transition: transform 0.2s ease;
+      }
+
+      button:hover {
+        background-color: #4a94d1;
+        transform: scale(1.03);
+      }
+
+      #result {
+        color: black;
+      }
+
+      #result p {
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: #54368d;
+      }
+      p {
+        text-align: center;
+        color: #000000;
+        font-weight: 500;
+      }
+      a {
+        color: #234905;
+        text-decoration: none;
+        font-weight: 500;
+      }
+
+      a:hover {
+        color: green;
+        text-decoration: underline;
+      }
+
+      table {
+        max-width: 300px;
+        margin: 20px auto;
+        border-collapse: collapse;
+        margin: 20px 0;
+        border-radius: 15px;
+        font-size: 0.8em;
+        background-color: white;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        transition: box-shadow 0.3s ease, transform 0.3s ease;
+      }
+      table:hover {
+        box-shadow: 0 5px 15px rgba(119, 116, 116, 0.3);
+        transform: scale(1.01);
+      }
+
+      th,
+      td {
+        padding: 12px 15px;
+        text-align: left;
+      }
+
+      td {
+        font-weight: 700;
+      }
+
+      th {
+        background: linear-gradient(
+          45deg,
+          rgb(80, 136, 189) 0%,
+          rgba(99, 161, 212, 0.932) 80%,
+          rgb(48, 132, 201) 99%
+        );
+        color: white;
+        text-transform: uppercase;
+        border-bottom-right-radius: 15px;
+      }
+      tr {
+        border-bottom: 0.25em solid rgba(252, 203, 69, 0.932);
+      }
+      tr:last-child {
+        border: none;
+      }
+      tr:first-child th {
+        border-top-left-radius: 15px;
+      }
+      tr:last-child th {
+        border-bottom-left-radius: 15px;
+        border-bottom-right-radius: 15px;
+      }
+      #resetButton {
+        display: none;
+        background-color: rgb(104, 101, 101);
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Dealer Account</h1>
+    <div class="container">
+      <h2>Account Details<br />(ખાતો વિગત)</h2>
+      <input
+        type="text"
+        id="mobileNumber"
+        placeholder="નંબર નાખો ..."
+        onclick="value=''"
+      />
+      <button id="searchButton" onclick="fetchDealerStock()">Search</button>
+
+      <div id="result"></div>
+      <button id="resetButton" onclick="resetForm()">Reset</button>
+      <!-- Register link -->
+      <div class="register-link">
+        <strong>New Dealer? </strong
+        ><a href="https://tally.so/r/3jBpB9"><strong>Register Now</strong></a>
+      </div>
+    </div>
+    <!-- Footer -->
+    <footer>
+      <div class="row">
+        <p style="font-size: 11px">
+          &copy; 2024 Junigadi Vehicle Solution Pvt. Ltd.<br />
+          All rights reserved.
+        </p>
+      </div>
+    </footer>
+
+    <script>
+      const dealers = [
+        {
+          DEALER: "ABHISHEK BHAI",
+          CONTACT: 9898502133,
+          LOCATION: "GANDHINAGAR",
+          STOCK: "https://mydukaan.io/junigadi/categories/abhishek2133",
+          CATEGORY: "🚗",
+          VALID_UPTO: "6/30/2025",
+        },
+        {
+          DEALER: "ADNAN BHAI",
+          CONTACT: 9104318922,
+          LOCATION: "MEHSANA (VISNAGAR)",
+          STOCK: "https://mydukaan.io/junigadi/categories/adnan8922",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "AKIL BHAI",
+          CONTACT: 7600351792,
+          LOCATION: "BHAVNAGAR",
+          STOCK: "https://mydukaan.io/junigadi/categories/akil1792",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "AKRAM BHAI",
+          CONTACT: 9624975586,
+          LOCATION: "GANDHINAGAR (KALOL)",
+          STOCK: "https://mydukaan.io/junigadi/categories/akram5586",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "AMIT BHAI",
+          CONTACT: 7862024673,
+          LOCATION: "AHMEDABAD",
+          STOCK: "https://mydukaan.io/junigadi/categories/amit4673",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "AMIT BHAI",
+          CONTACT: 9016893015,
+          LOCATION: "KHEDA (NADIAD)",
+          STOCK: "https://mydukaan.io/junigadi/categories/amit3015",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "ANAM VOHRA",
+          CONTACT: 9624582074,
+          LOCATION: "ANAND (TARAPUR)",
+          STOCK: "https://mydukaan.io/junigadi/categories/anam2074",
+          CATEGORY: "🛻",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "ANAS BHAI",
+          CONTACT: 9892453681,
+          LOCATION: "PALANPUR",
+          STOCK: "https://mydukaan.io/junigadi/categories/anas3681",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "ANKIT BHAI",
+          CONTACT: 9925431111,
+          LOCATION: "KUTCH (GANDHIDHAM)",
+          STOCK: "https://mydukaan.io/junigadi/categories/ankit1111",
+          CATEGORY: "🚗",
+          VALID_UPTO: "9/6/2024",
+        },
+        {
+          DEALER: "ANKUR BHAI",
+          CONTACT: 9574005036,
+          LOCATION: "ANAND",
+          STOCK: "https://mydukaan.io/junigadi/categories/ankur5036",
+          CATEGORY: "🛻",
+          VALID_UPTO: "1/30/2025",
+        },
+        {
+          DEALER: "ARMAAN BHAI",
+          CONTACT: 9904231189,
+          LOCATION: "JUNAGADH",
+          STOCK: "https://mydukaan.io/junigadi/categories/armaan1189",
+          CATEGORY: "🛻",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "ASHOK BHAI",
+          CONTACT: 8511869336,
+          LOCATION: "BANASKANTHA (JETDA)",
+          STOCK: "https://mydukaan.io/junigadi/categories/ashok9336",
+          CATEGORY: "🛻",
+          VALID_UPTO: "9/9/2024",
+        },
+        {
+          DEALER: "ASHOK BHAI",
+          CONTACT: 9328024060,
+          LOCATION: "SURAT",
+          STOCK: "https://mydukaan.io/junigadi/categories/ashok4060",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "ASHRAF BHAI",
+          CONTACT: 9879469365,
+          LOCATION: "JUNAGADH",
+          STOCK: "https://mydukaan.io/junigadi/categories/ashraf9365-1",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "ASWIN BHAI",
+          CONTACT: 9825597435,
+          LOCATION: "KUTCH (ANJAR)",
+          STOCK: "https://mydukaan.io/junigadi/categories/aswin7435",
+          CATEGORY: "🛻",
+          VALID_UPTO: "2/12/2025",
+        },
+        {
+          DEALER: "BALINDRA BHAI",
+          CONTACT: 7096359094,
+          LOCATION: "PATAN (SIDDHPUR)",
+          STOCK: "https://mydukaan.io/junigadi/categories/balindra9094",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "BHARAT BHAI",
+          CONTACT: 9925114866,
+          LOCATION: "KUTCH (GANDHIDHAM)",
+          STOCK: "https://mydukaan.io/junigadi/categories/bharat4866",
+          CATEGORY: "🚗",
+          VALID_UPTO: "2/12/2025",
+        },
+        {
+          DEALER: "BHARAT THAKRIA",
+          CONTACT: 9913283003,
+          LOCATION: "RAJKOT",
+          STOCK: "https://mydukaan.io/junigadi/categories/bharat3003",
+          CATEGORY: "🚛",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "BHIKHA BHAI",
+          CONTACT: 9377110042,
+          LOCATION: "BHAVNAGAR",
+          STOCK: "https://mydukaan.io/junigadi/categories/bhikha0042",
+          CATEGORY: "🛻",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "BIPIN BHAI",
+          CONTACT: 7572924398,
+          LOCATION: "JAMNAGAR",
+          STOCK: "https://mydukaan.io/junigadi/categories/bipin4398",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "BM MOTOR",
+          CONTACT: 9904522888,
+          LOCATION: "AHMEDABAD",
+          STOCK: "https://mydukaan.io/junigadi/categories/bmmotor2888",
+          CATEGORY: "🚗",
+          VALID_UPTO: "9/4/2024",
+        },
+        {
+          DEALER: "CHETAN BHAI",
+          CONTACT: 6353001564,
+          LOCATION: "PANCHMAHAL (GODHRA)",
+          STOCK: "https://mydukaan.io/junigadi/categories/chetan5909",
+          CATEGORY: "🛻",
+          VALID_UPTO: "8/25/2024",
+        },
+        {
+          DEALER: "CV SOLUTION",
+          CONTACT: 9724502735,
+          LOCATION: "KUTCH (GANDHIDHAM)",
+          STOCK: "https://mydukaan.io/junigadi/categories/cv-solution",
+          CATEGORY: "🚗 🛻",
+          VALID_UPTO: "2/12/2025",
+        },
+        {
+          DEALER: "DAUD BHAI",
+          CONTACT: 9825620075,
+          LOCATION: "KUTCH (NAKHATRANA)",
+          STOCK: "https://mydukaan.io/junigadi/categories/daud0075",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "DEEP BHAI",
+          CONTACT: 8200840636,
+          LOCATION: "RAJKOT",
+          STOCK: "https://mydukaan.io/junigadi/categories/deep0636",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "HEMAL BHAI",
+          CONTACT: 9898569312,
+          LOCATION: "ANAND",
+          STOCK: "https://mydukaan.io/junigadi/categories/hemal9312",
+          CATEGORY: "🚗 🚛",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "DEVA BHAI",
+          CONTACT: 9925960637,
+          LOCATION: "KUTCH (GANDHIDHAM)",
+          STOCK: "https://mydukaan.io/junigadi/categories/deva0637",
+          CATEGORY: "🛻",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "DHRUVIL BHAI",
+          CONTACT: 9909669972,
+          LOCATION: "SURAT",
+          STOCK: "https://mydukaan.io/junigadi/categories/dhruvil9972",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "DILIP BHAI",
+          CONTACT: 9624006589,
+          LOCATION: "RAJKOT",
+          STOCK: "https://mydukaan.io/junigadi/categories/dilip6589",
+          CATEGORY: "🛻",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "FAHIM BHAI",
+          CONTACT: 9825074742,
+          LOCATION: "MEHSANA (KADI)",
+          STOCK: "https://mydukaan.io/junigadi/categories/fahim4742",
+          CATEGORY: "🚗 🚛",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "FAISAL BHAI",
+          CONTACT: 8866272771,
+          LOCATION: "KHEDA (NADIAD)",
+          STOCK: "https://mydukaan.io/junigadi/categories/faisal2771",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "FEZAN BHAI",
+          CONTACT: 9409999941,
+          LOCATION: "AMRELI",
+          STOCK: "https://mydukaan.io/junigadi/categories/fezan9941",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "FIROZ BHAI",
+          CONTACT: 7487094532,
+          LOCATION: "AHMEDABAD",
+          STOCK: "https://mydukaan.io/junigadi/categories/firoz4532",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "GHANSHYAM BHAI",
+          CONTACT: 9998055450,
+          LOCATION: "KUTCH (RAPAR)",
+          STOCK: "https://mydukaan.io/junigadi/categories/ghanshyam5450",
+          CATEGORY: "🛻",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "GHANSHYAM BHAI",
+          CONTACT: 9979518955,
+          LOCATION: "MEHSANA (UNJHA)",
+          STOCK: "https://mydukaan.io/junigadi/categories/ghanshyam8955",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "GOPAL BHAI",
+          CONTACT: 7622893333,
+          LOCATION: "AHMEDABAD",
+          STOCK: "https://mydukaan.io/junigadi/categories/gopal3333",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "GOPAL BHAI",
+          CONTACT: 9925854842,
+          LOCATION: "KUTCH (ANJAR)",
+          STOCK: "https://mydukaan.io/junigadi/categories/gopal4842",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "GOWARDHAN BHAI",
+          CONTACT: 9727444497,
+          LOCATION: "PORBANDAR",
+          STOCK: "https://mydukaan.io/junigadi/categories/goverdhan4497",
+          CATEGORY: "🚗",
+          VALID_UPTO: "7/24/2025",
+        },
+        {
+          DEALER: "GUJARAT AUTO",
+          CONTACT: 7990484035,
+          LOCATION: "AHMEDABAD",
+          STOCK: "https://mydukaan.io/junigadi/categories/gujaratauto4035",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "HAJI BHAI",
+          CONTACT: 9825184311,
+          LOCATION: "ANAND",
+          STOCK: "https://mydukaan.io/junigadi/categories/haji4311",
+          CATEGORY: "🚛",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "HAMID BHAI",
+          CONTACT: 9426861267,
+          LOCATION: "VALSAD (VAPI)",
+          STOCK: "https://mydukaan.io/junigadi/categories/hamid1267",
+          CATEGORY: "🚛",
+          VALID_UPTO: "12/9/2024",
+        },
+        {
+          DEALER: "HARDIK BHAI",
+          CONTACT: 9924442176,
+          LOCATION: "AHMEDABAD",
+          STOCK: "https://mydukaan.io/junigadi/categories/hardik2176",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "HARESH BHAI",
+          CONTACT: 9316900497,
+          LOCATION: "RAJKOT",
+          STOCK: "https://mydukaan.io/junigadi/categories/haresh0497",
+          CATEGORY: "🚗 🛻",
+          VALID_UPTO: "12/9/2024",
+        },
+        {
+          DEALER: "HARGOVIND BHAI",
+          CONTACT: 9426634954,
+          LOCATION: "KUTCH (GANDHIDHAM)",
+          STOCK: "https://mydukaan.io/junigadi/categories/govind4954",
+          CATEGORY: "🚗",
+          VALID_UPTO: "5/4/2025",
+        },
+        {
+          DEALER: "HASAN BHAI",
+          CONTACT: 9702543158,
+          LOCATION: "MUMBAI",
+          STOCK: "https://mydukaan.io/junigadi/categories/hasan3158",
+          CATEGORY: "🛻",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "HET BHAI",
+          CONTACT: 9662990627,
+          LOCATION: "MEHSANA",
+          STOCK: "https://mydukaan.io/junigadi/categories/hetbhai0627",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "HITESH BHAI",
+          CONTACT: 9173773803,
+          LOCATION: "AHMEDABAD",
+          STOCK: "https://mydukaan.io/junigadi/categories/hitesh-3803",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "HITESH BHAI",
+          CONTACT: 9898320360,
+          LOCATION: "BHAVNAGAR",
+          STOCK: "https://mydukaan.io/junigadi/categories/hitesh0360",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "HITESH BHAI",
+          CONTACT: 9909758382,
+          LOCATION: "RAJKOT",
+          STOCK: "https://mydukaan.io/junigadi/categories/hitesh8382",
+          CATEGORY: "🛻",
+          VALID_UPTO: "6/9/2025",
+        },
+        {
+          DEALER: "HUSEN BHAI",
+          CONTACT: 9574596183,
+          LOCATION: "BHARUCH",
+          STOCK: "https://mydukaan.io/junigadi/categories/husen6183",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "IRFAN BHAI",
+          CONTACT: 9904536657,
+          LOCATION: "AHMEDABAD",
+          STOCK: "https://mydukaan.io/junigadi/categories/irfan6657",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "JAGDISH BHAI",
+          CONTACT: 9898487085,
+          LOCATION: "AMRELI",
+          STOCK: "https://mydukaan.io/junigadi/categories/jagdish7085",
+          CATEGORY: "🛻",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "JALARAM MOTORS",
+          CONTACT: 9328057622,
+          LOCATION: "AHMEDABAD",
+          STOCK: "https://mydukaan.io/junigadi/categories/jalaram7622",
+          CATEGORY: "🛻",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "JASU BHAI",
+          CONTACT: 8780006819,
+          LOCATION: "KUTCH (GANDHIDHAM)",
+          STOCK: "https://mydukaan.io/junigadi/categories/jasubhai6819",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "JAYBHAVANI AUTO",
+          CONTACT: 7777971592,
+          LOCATION: "BANASKANTHA (THARAD)",
+          STOCK: "https://mydukaan.io/junigadi/categories/jaybhavani1592",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "JAVED BHAI",
+          CONTACT: 7990102276,
+          LOCATION: "BANASKANTHA (PALANPUR)",
+          STOCK: "https://mydukaan.io/junigadi/categories/javed2276",
+          CATEGORY: "🚗 🛻",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "JAY BHAI",
+          CONTACT: 8320082823,
+          LOCATION: "AMRELI",
+          STOCK: "https://mydukaan.io/junigadi/categories/jay2823",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "JAY BHAI",
+          CONTACT: 9081855636,
+          LOCATION: "AMRELI",
+          STOCK: "https://mydukaan.io/junigadi/categories/jay5636",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "JAY BHAI",
+          CONTACT: 9725794583,
+          LOCATION: "JUNAGADH",
+          STOCK: "https://mydukaan.io/junigadi/categories/jaybhai4583",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "JIGAR BHAI",
+          CONTACT: 9974059574,
+          LOCATION: "MEHSANA (UNJHA)",
+          STOCK: "https://mydukaan.io/junigadi/categories/jigar9574",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "JIGNESH BHAI",
+          CONTACT: 9979880211,
+          LOCATION: "KUTCH (GANDHIDHAM)",
+          STOCK: "https://mydukaan.io/junigadi/categories/jignesh0211",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "JK CARZ",
+          CONTACT: 9377277888,
+          LOCATION: "RAJKOT",
+          STOCK: "https://mydukaan.io/junigadi/categories/jkcarz7888",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "JUBER BHAI",
+          CONTACT: 9714865579,
+          LOCATION: "JUNAGADH (MANGROL)",
+          STOCK: "https://mydukaan.io/junigadi/categories/juber5579",
+          CATEGORY: "🛻",
+          VALID_UPTO: "2/26/2025",
+        },
+        {
+          DEALER: "JUBER BHAI",
+          CONTACT: 9726797863,
+          LOCATION: "KUTCH (BHUJ)",
+          STOCK: "https://mydukaan.io/junigadi/categories/juber7863",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "KALPESH BHAI",
+          CONTACT: 9879763449,
+          LOCATION: "KUTCH (ANJAR)",
+          STOCK: "https://mydukaan.io/junigadi/categories/kalpesh3449",
+          CATEGORY: "🚗",
+          VALID_UPTO: "4/1/2025",
+        },
+        {
+          DEALER: "KAMAL BHAI",
+          CONTACT: 9925744408,
+          LOCATION: "KUTCH (GANDHIDHAM)",
+          STOCK: "https://mydukaan.io/junigadi/categories/kamal4408",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "KAMLESH BHAI",
+          CONTACT: 9723146314,
+          LOCATION: "AHMEDABAD",
+          STOCK: "https://mydukaan.io/junigadi/categories/kamlesh6314",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "KANJI BHAI",
+          CONTACT: 9879294657,
+          LOCATION: "KUTCH (BHUJ)",
+          STOCK: "https://mydukaan.io/junigadi/categories/kanjii4657",
+          CATEGORY: "🚛",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "KEZAR BHAI",
+          CONTACT: 9879921304,
+          LOCATION: "TAPI",
+          STOCK: "https://mydukaan.io/junigadi/categories/kezar1304",
+          CATEGORY: "🚛",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "KISHOR BAVAJI",
+          CONTACT: 9879868696,
+          LOCATION: "KUTCH (MADHAPAR)",
+          STOCK: "https://mydukaan.io/junigadi/categories/kishor8696",
+          CATEGORY: "🛻",
+          VALID_UPTO: "12/9/2024",
+        },
+        {
+          DEALER: "KISHOR BHAI",
+          CONTACT: 8200317027,
+          LOCATION: "RAJKOT",
+          STOCK: "https://mydukaan.io/junigadi/categories/kishor7027",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "KISHORE BHAI",
+          CONTACT: 9925586186,
+          LOCATION: "SURAT",
+          STOCK: "https://mydukaan.io/junigadi/categories/kishor6186",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "KRISHNA BHAI",
+          CONTACT: 7777955427,
+          LOCATION: "BHAVNAGAR",
+          STOCK: "https://mydukaan.io/junigadi/categories/krishna5427",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "KULDEVI AUTO CONSULT",
+          CONTACT: 9909750985,
+          LOCATION: "BANASKANTHA (THARAD)",
+          STOCK: "https://mydukaan.io/junigadi/categories/parag0985",
+          CATEGORY: "🛻",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "KUNAL BHAI",
+          CONTACT: 9825335559,
+          LOCATION: "KUTCH (GANDHIDHAM)",
+          STOCK: "https://mydukaan.io/junigadi/categories/kunal5559",
+          CATEGORY: "🚗",
+          VALID_UPTO: "5/18/2025",
+        },
+        {
+          DEALER: "KUTCHH AUTO",
+          CONTACT: 8469852511,
+          LOCATION: "KUTCH (ADIPUR)",
+          STOCK: "https://mydukaan.io/junigadi/categories/kutchhauto2511",
+          CATEGORY: "🛻",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "LADHA BHAI",
+          CONTACT: 9924376571,
+          LOCATION: "DEVBHUMI DWARKA (KHAMBHALIA)",
+          STOCK: "https://mydukaan.io/junigadi/categories/ladha6571",
+          CATEGORY: "🛻",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "LALU BHAI",
+          CONTACT: 9574184786,
+          LOCATION: "SURAT",
+          STOCK: "https://mydukaan.io/junigadi/categories/lalu4786",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "MAHALAXMI MOTOTRS",
+          CONTACT: 7600071841,
+          LOCATION: "AHMEDABAD",
+          STOCK: "https://mydukaan.io/junigadi/categories/mahalaxmi1841",
+          CATEGORY: "🛻",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "MAHIR BHAI",
+          CONTACT: 8849717627,
+          LOCATION: "SABARKANTHA (IDAR)",
+          STOCK: "https://mydukaan.io/junigadi/categories/mahir7627",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "MAKBUL BHAI",
+          CONTACT: 7487087487,
+          LOCATION: "MEHSANA (VISNAGAR)",
+          STOCK: "https://mydukaan.io/junigadi/categories/makbul7487",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "MANISH BHAI",
+          CONTACT: 7202007778,
+          LOCATION: "KUTCH (GANDHIDHAM)",
+          STOCK: "https://mydukaan.io/junigadi/categories/manish7778",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "MAULIK BHAI",
+          CONTACT: 8200574655,
+          LOCATION: "MEHSANA",
+          STOCK: "https://mydukaan.io/junigadi/categories/maulik4655",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "MAVJI BHAI",
+          CONTACT: 9979610666,
+          LOCATION: "KUTCH (ANJAR)",
+          STOCK: "https://mydukaan.io/junigadi/categories/mavji0666",
+          CATEGORY: "🛻",
+          VALID_UPTO: "12/9/2024",
+        },
+        {
+          DEALER: "MAYANK BHAI",
+          CONTACT: 9624894156,
+          LOCATION: "SURAT",
+          STOCK: "https://mydukaan.io/junigadi/categories/mayank4156",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "MAYUR BHAI",
+          CONTACT: 9904477555,
+          LOCATION: "AHMEDABAD",
+          STOCK: "https://mydukaan.io/junigadi/categories/mayur7555",
+          CATEGORY: "🚛",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "MAYUR BHAI",
+          CONTACT: 9898589836,
+          LOCATION: "BHAVNAGAR",
+          STOCK: "https://mydukaan.io/junigadi/categories/mayur9836",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "MAYUR BHAI",
+          CONTACT: 9316748049,
+          LOCATION: "SURAT",
+          STOCK: "https://mydukaan.io/junigadi/categories/mayur8049",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "MIHIR BHAI",
+          CONTACT: 6354075421,
+          LOCATION: "KUTCH (ANJAR)",
+          STOCK: "https://mydukaan.io/junigadi/categories/mihir5421",
+          CATEGORY: "🛻",
+          VALID_UPTO: "2/19/2025",
+        },
+        {
+          DEALER: "MILAN BHAKOTRA",
+          CONTACT: 7990040675,
+          LOCATION: "RAJKOT (GONDAL)",
+          STOCK: "https://mydukaan.io/junigadi/categories/milan0675",
+          CATEGORY: "🛻 🚛",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "MUBARAK BHAI",
+          CONTACT: 9714040771,
+          LOCATION: "BHAVNAGAR",
+          STOCK: "https://mydukaan.io/junigadi/categories/mubarak0771",
+          CATEGORY: "🛻",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "MUBARAK BHAI",
+          CONTACT: 9638660625,
+          LOCATION: "KUTCH (RAPAR)",
+          STOCK: "https://mydukaan.io/junigadi/categories/mubarak0625",
+          CATEGORY: "🛻",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "MUKESH BHAI",
+          CONTACT: 9925033134,
+          LOCATION: "KUTCH (BHUJ)",
+          STOCK: "https://mydukaan.io/junigadi/categories/mukesh3134",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "MUSTAK BHAI",
+          CONTACT: 9879594645,
+          LOCATION: "BANASKANTHA (KONODAR)",
+          STOCK: "https://mydukaan.io/junigadi/categories/mustak4645",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "MUSTAK BHAI",
+          CONTACT: 9157774466,
+          LOCATION: "KUTCH (GANDHIDHAM)",
+          STOCK: "https://mydukaan.io/junigadi/categories/mustak4466",
+          CATEGORY: "🚗",
+          VALID_UPTO: "6/8/2025",
+        },
+        {
+          DEALER: "NARAYAN BHAI",
+          CONTACT: 9979721796,
+          LOCATION: "PATAN (SANTALPUR)",
+          STOCK: "https://mydukaan.io/junigadi/categories/narayan1796",
+          CATEGORY: "🚗",
+          VALID_UPTO: "2/2/2025",
+        },
+        {
+          DEALER: "NASIR BHAI",
+          CONTACT: 7600401598,
+          LOCATION: "AMRELI",
+          STOCK: "https://mydukaan.io/junigadi/categories/nasir1598",
+          CATEGORY: "🛻",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "NILESH BHAI",
+          CONTACT: 9574009794,
+          LOCATION: "AHMEDABAD",
+          STOCK: "https://mydukaan.io/junigadi/categories/nilesh9794",
+          CATEGORY: "🚗",
+          VALID_UPTO: "5/23/2025",
+        },
+        {
+          DEALER: "NILESH BHAI",
+          CONTACT: 9925267146,
+          LOCATION: "KUTCH (ANJAR)",
+          STOCK: "https://mydukaan.io/junigadi/categories/nilesh7146",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "NITIN BHAI",
+          CONTACT: 9974024563,
+          LOCATION: "KUTCH (BHUJ)",
+          STOCK: "https://mydukaan.io/junigadi/categories/nitin4563",
+          CATEGORY: "🚗",
+          VALID_UPTO: "4/18/2025",
+        },
+        {
+          DEALER: "NK MOTORS",
+          CONTACT: 7788996520,
+          LOCATION: "AHMEDABAD",
+          STOCK: "https://mydukaan.io/junigadi/categories/nkmotors6520",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "PADU BHAI",
+          CONTACT: 9727061350,
+          LOCATION: "RAJKOT",
+          STOCK: "https://mydukaan.io/junigadi/categories/padubhai1350",
+          CATEGORY: "🛻",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "PANKAJ GIRI",
+          CONTACT: 9825353240,
+          LOCATION: "SURENDRANAGAR (DHRAGADHRA)",
+          STOCK: "https://mydukaan.io/junigadi/categories/pankaj3240",
+          CATEGORY: "🛻",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "PARESH BHAI",
+          CONTACT: 9879470400,
+          LOCATION: "JUNAGADH",
+          STOCK: "https://mydukaan.io/junigadi/categories/paresh0400",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "PARIVAR MOTORS",
+          CONTACT: 9724302626,
+          LOCATION: "ANAND",
+          STOCK: "https://mydukaan.io/junigadi/categories/parivar2626",
+          CATEGORY: "🛻",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "PARSHOTAM BHAI",
+          CONTACT: 9979784442,
+          LOCATION: "MEHSANA",
+          STOCK: "https://mydukaan.io/junigadi/categories/parshotam4442",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "PARTH BHAI",
+          CONTACT: 9327175304,
+          LOCATION: "JAMNAGAR",
+          STOCK: "https://mydukaan.io/junigadi/categories/parth5304",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "PARTH BHAI",
+          CONTACT: 7046525031,
+          LOCATION: "SURAT",
+          STOCK: "https://mydukaan.io/junigadi/categories/parth5031",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "PIYUSH BHAI",
+          CONTACT: 8460338433,
+          LOCATION: "SURAT",
+          STOCK: "https://mydukaan.io/junigadi/categories/piyush8433",
+          CATEGORY: "🛻",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "PM CARS",
+          CONTACT: 9898043911,
+          LOCATION: "AHMEDABAD",
+          STOCK: "https://mydukaan.io/junigadi/categories/pmcar3911",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "PRADEEP BHAI",
+          CONTACT: 9327759155,
+          LOCATION: "KUTCH (GANDHIDHAM)",
+          STOCK: "https://mydukaan.io/junigadi/categories/pradeep9155",
+          CATEGORY: "🛻",
+          VALID_UPTO: "10/12/2024",
+        },
+        {
+          DEALER: "PRATIK BHAI",
+          CONTACT: 9664612798,
+          LOCATION: "AHMEDABAD",
+          STOCK: "https://mydukaan.io/junigadi/categories/pratik2798",
+          CATEGORY: "🛻",
+          VALID_UPTO: "4/18/2025",
+        },
+        {
+          DEALER: "RAFIK BHAI",
+          CONTACT: 9624429786,
+          LOCATION: "SURAT",
+          STOCK: "https://mydukaan.io/junigadi/categories/rafik9786",
+          CATEGORY: "🛻",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "RAHIM BHAI",
+          CONTACT: 8619000767,
+          LOCATION: "AHMEDABAD",
+          STOCK: "https://mydukaan.io/junigadi/categories/rahim0767",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "RAHUL BHAI",
+          CONTACT: 7405557666,
+          LOCATION: "SURAT",
+          STOCK: "https://mydukaan.io/junigadi/categories/rahul7666",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "RAHUL BHANUSHALI",
+          CONTACT: 7045772112,
+          LOCATION: "MUMBAI (NAVI MUMBAI)",
+          STOCK: "https://mydukaan.io/junigadi/categories/rahul2112-2",
+          CATEGORY: "🛻 🚛",
+          VALID_UPTO: "12/28/2024",
+        },
+        {
+          DEALER: "RAJDEEP BHAI",
+          CONTACT: 9081181514,
+          LOCATION: "AMRELI",
+          STOCK: "https://mydukaan.io/junigadi/categories/rajdeep1514",
+          CATEGORY: "🚗 🛻",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "RAJU BHAI",
+          CONTACT: 9016537670,
+          LOCATION: "KUTCH (MANDVI)",
+          STOCK: "https://mydukaan.io/junigadi/categories/raju7670",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "RAJU BHAI",
+          CONTACT: 8200758774,
+          LOCATION: "SURENDRANAGAR (CHOTILA)",
+          STOCK: "https://mydukaan.io/junigadi/categories/raju8774",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "RANCHHOD BHAI",
+          CONTACT: 9979745386,
+          LOCATION: "KUTCH (RATNAL)",
+          STOCK: "https://mydukaan.io/junigadi/categories/ranchhod5386",
+          CATEGORY: "🛻",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "RAVI BHAI",
+          CONTACT: 9924390683,
+          LOCATION: "MEHSANA",
+          STOCK: "https://mydukaan.io/junigadi/categories/ravi0683",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "RAVI BHAI",
+          CONTACT: 9925406065,
+          LOCATION: "RAJKOT",
+          STOCK: "https://mydukaan.io/junigadi/categories/ravi6065",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "RAWAL BHAI",
+          CONTACT: 9662480718,
+          LOCATION: "VALSAD",
+          STOCK: "https://mydukaan.io/junigadi/categories/rawal0718",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "RIYAZ BHAI",
+          CONTACT: 9016071973,
+          LOCATION: "ANAND",
+          STOCK: "https://mydukaan.io/junigadi/categories/riyaz1973",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "NAAZ AUTO",
+          CONTACT: 7201074147,
+          LOCATION: "SURAT",
+          STOCK: "https://mydukaan.io/junigadi/categories/sadik4147",
+          CATEGORY: "🚗",
+          VALID_UPTO: "7/4/2025",
+        },
+        {
+          DEALER: "SALMAN BHAI",
+          CONTACT: 9998385786,
+          LOCATION: "DAHOD (MANDLI)",
+          STOCK: "https://mydukaan.io/junigadi/categories/salman5786",
+          CATEGORY: "🛻",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "SAMIR SUMRA",
+          CONTACT: 9712912470,
+          LOCATION: "MEHSANA",
+          STOCK: "https://mydukaan.io/junigadi/categories/samir2470",
+          CATEGORY: "🚗 🛻",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "SANDEEP BHAI",
+          CONTACT: 9426115735,
+          LOCATION: "VALSAD (VAPI)",
+          STOCK: "https://mydukaan.io/junigadi/categories/sandeep5735",
+          CATEGORY: "🛻",
+          VALID_UPTO: "2/12/2025",
+        },
+        {
+          DEALER: "SANDIP BHAI",
+          CONTACT: 9909036509,
+          LOCATION: "KUTCH (GANDHIDHAM)",
+          STOCK: "https://mydukaan.io/junigadi/categories/sandeep6509",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "SANDIP BHAI",
+          CONTACT: 9726930399,
+          LOCATION: "KUTCH (MUNDRA)",
+          STOCK: "https://mydukaan.io/junigadi/categories/sandip0399",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "SANJAY BHAI",
+          CONTACT: 9054458046,
+          LOCATION: "AMRELI",
+          STOCK: "https://mydukaan.io/junigadi/categories/sanjay8046",
+          CATEGORY: "🛻",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "SETUL BHAI",
+          CONTACT: 9664734315,
+          LOCATION: "VADODARA",
+          STOCK: "https://mydukaan.io/junigadi/categories/setul4315",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "SHAKIL BHAI",
+          CONTACT: 9998448159,
+          LOCATION: "MEHSANA (VISNAGAR)",
+          STOCK: "https://mydukaan.io/junigadi/categories/shakil8159",
+          CATEGORY: "🛻",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "SHREE NATH AUTO",
+          CONTACT: 9825277460,
+          LOCATION: "JUNAGADH",
+          STOCK: "https://mydukaan.io/junigadi/categories/shreenath7460",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "SHREE RAM MOTORS",
+          CONTACT: 7434996965,
+          LOCATION: "AHMEDABAD",
+          STOCK: "https://mydukaan.io/junigadi/categories/faizan6965",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "SHRI RAVRAY",
+          CONTACT: 9925652771,
+          LOCATION: "KUTCH (GANDHIDHAM)",
+          STOCK: "https://mydukaan.io/junigadi/categories/shriravray2771",
+          CATEGORY: "🚗",
+          VALID_UPTO: "3/24/2025",
+        },
+        {
+          DEALER: "SIRAJ BHAI",
+          CONTACT: 7600508234,
+          LOCATION: "AHMEDABAD",
+          STOCK: "https://mydukaan.io/junigadi/categories/siraj8234",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "SMIT BHAI",
+          CONTACT: 9033088738,
+          LOCATION: "KUTCH (BHUJ)",
+          STOCK: "https://mydukaan.io/junigadi/categories/smit8738",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "SOHIL BHAI",
+          CONTACT: 9033442432,
+          LOCATION: "AHMEDABAD",
+          STOCK: "https://mydukaan.io/junigadi/categories/sohil2432",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "SUNNY BHAI",
+          CONTACT: 9428039693,
+          LOCATION: "AHMEDABAD",
+          STOCK: "https://mydukaan.io/junigadi/categories/sunny9693",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "TANMAY BHAI",
+          CONTACT: 8460747414,
+          LOCATION: "RAJKOT",
+          STOCK: "https://mydukaan.io/junigadi/categories/tanmay7414",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "TAPASVI BHAI",
+          CONTACT: 9586951321,
+          LOCATION: "BHAVNAGAR",
+          STOCK: "https://mydukaan.io/junigadi/categories/tapasvi1321",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "TOSIF BHAI",
+          CONTACT: 9033523708,
+          LOCATION: "ANAND",
+          STOCK: "https://mydukaan.io/junigadi/categories/tosif3708",
+          CATEGORY: "🛻",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "TUSHAR BHAI",
+          CONTACT: 9099707307,
+          LOCATION: "RAJKOT",
+          STOCK: "https://mydukaan.io/junigadi/categories/tushar7307",
+          CATEGORY: "🚗 🛻",
+          VALID_UPTO: "9/2/2024",
+        },
+        {
+          DEALER: "UMAR BHAI",
+          CONTACT: 6353677932,
+          LOCATION: "BANASKANTHA (DEESA)",
+          STOCK: "https://mydukaan.io/junigadi/categories/umar7932",
+          CATEGORY: "🚗 🛻",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "VASANT BHAI",
+          CONTACT: 9427545923,
+          LOCATION: "BANASKANTHA (DEESA)",
+          STOCK: "https://mydukaan.io/junigadi/categories/vasant5923",
+          CATEGORY: "🚗",
+          VALID_UPTO: "4/16/2025",
+        },
+        {
+          DEALER: "VIKAS BHAI",
+          CONTACT: 8200133568,
+          LOCATION: "MEHSANA (UNJHA)",
+          STOCK: "https://mydukaan.io/junigadi/categories/vikas3568",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "VISHAL BHAI",
+          CONTACT: 9998750596,
+          LOCATION: "SURAT",
+          STOCK: "https://mydukaan.io/junigadi/categories/vishal0596",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "YASH BHAI",
+          CONTACT: 6354562293,
+          LOCATION: "SURAT",
+          STOCK: "https://mydukaan.io/junigadi/categories/yashbhai2293",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "YASIN BHAI",
+          CONTACT: 9825525626,
+          LOCATION: "SURAT",
+          STOCK: "https://mydukaan.io/junigadi/categories/yasin5626",
+          CATEGORY: "🛻",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "YUNUS BHAI",
+          CONTACT: 9998262909,
+          LOCATION: "SURAT",
+          STOCK: "https://mydukaan.io/junigadi/categories/yunus2909",
+          CATEGORY: "🛻 🚛",
+          VALID_UPTO: "7/21/2025",
+        },
+        {
+          DEALER: "MAHESH BHAI",
+          CONTACT: 9723540823,
+          LOCATION: "MEHSANA",
+          STOCK: "https://mydukaan.io/junigadi/categories/mahesh0823",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "NIJEN BHAI",
+          CONTACT: 6352011911,
+          LOCATION: "AMRELI",
+          STOCK: "https://mydukaan.io/junigadi/categories/nijen1911",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "HAKIM BHAI",
+          CONTACT: 9510030691,
+          LOCATION: "RAJASTHAN (SANCHORE)",
+          STOCK: "https://mydukaan.io/junigadi/categories/hakim0691",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "VIRAM AHIR",
+          CONTACT: 9825809378,
+          LOCATION: "AMRELI",
+          STOCK: "https://mydukaan.io/junigadi/categories/viram9378",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "ASIF BHAI",
+          CONTACT: 9773214545,
+          LOCATION: "AMERLI",
+          STOCK: "https://mydukaan.io/junigadi/categories/asif4545",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "PRAKASH BHAI",
+          CONTACT: 9714988856,
+          LOCATION: "VADODARA",
+          STOCK: "https://mydukaan.io/junigadi/categories/prakash8856",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "DHARMESH BHAI",
+          CONTACT: 8238730222,
+          LOCATION: "JUNAGADH",
+          STOCK: "https://mydukaan.io/junigadi/categories/dharmesh0222",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "BHAVESH BHAI",
+          CONTACT: 9712175330,
+          LOCATION: "SURAT",
+          STOCK: "https://mydukaan.io/junigadi/categories/bhavesh5330",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "JISHAN BHAI",
+          CONTACT: 9737206363,
+          LOCATION: "BHAVNAGAR",
+          STOCK: "https://mydukaan.io/junigadi/categories/jishan3134",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "AFEEL BHAI",
+          CONTACT: 9099663133,
+          LOCATION: "SURAT",
+          STOCK: "https://mydukaan.io/junigadi/categories/afeel3133",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "HABIB BHAI",
+          CONTACT: 9978521121,
+          LOCATION: "PANCHMAHAL (GODHRA)",
+          STOCK: "https://mydukaan.io/junigadi/categories/habib1121",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "SMIT BHAI",
+          CONTACT: 7016784703,
+          LOCATION: "MEHSANA (UNJHA)",
+          STOCK: "https://mydukaan.io/junigadi/categories/smit4703",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+        {
+          DEALER: "SAAD KHAN",
+          CONTACT: 9924700786,
+          LOCATION: "SURAT",
+          STOCK: "https://mydukaan.io/junigadi/categories/saad0786",
+          CATEGORY: "🚗",
+          VALID_UPTO: "",
+        },
+      ];
+      function fetchDealerStock() {
+        document.getElementsByClassName("register-link")[0].style.display =
+          "none";
+        const mobileNumberInput = document.getElementById("mobileNumber").value;
+        const mobileNumber = parseInt(mobileNumberInput);
+        const validmMobileNumber = /^[0-9]{10}$/.test(mobileNumber);
+
+        const dealer = dealers.find(
+          (dealer) => dealer.CONTACT === mobileNumber
+        );
+
+        const resultDiv = document.getElementById("result");
+
+        if (dealer) {
+          // Parse the "VALID_UPTO" date (assumes MM/DD/YYYY format)
+          const validUptoDate = new Date(dealer["VALID_UPTO"]);
+          const currentDate = new Date();
+
+          // Calculate the difference in time9898502133
+          const timeDifference = validUptoDate - currentDate;
+
+          // Convert time difference to days
+          const daysLeft = Math.ceil(timeDifference / (1000 * 3600 * 24));
+
+          let plan;
+          if (!dealer.VALID_UPTO) {
+            plan = "FREE";
+          } else {
+            plan = "PAID";
+          }
+
+          const planColor = plan === "FREE" ? "green" : "orange";
+
+          let status;
+          if (!dealer.VALID_UPTO) {
+            status = "TRIAL";
+          } else if (validUptoDate >= currentDate) {
+            status = "ACTIVE";
+          } else {
+            status = "EXPIRED";
+          }
+
+          const statusColor =
+            status === "ACTIVE"
+              ? "green"
+              : status === "EXPIRED"
+              ? "red"
+              : "grey";
+
+          resultDiv.innerHTML = `
+          <table>
+              <tr>
+                  <th>NAME</th>
+                  <td>${dealer.DEALER}</td>
+              </tr>
+              <tr>
+                  <th>LOCATION</th>
+                  <td>${dealer.LOCATION}</td>
+              </tr>
+              <tr>
+                  <th>PLAN</th>
+                  <td style="color: ${planColor}">${plan}</td>
+              </tr>
+              <tr>
+                  <th>DAYS LEFT</th>
+                   <td>${
+                     daysLeft > 0
+                       ? daysLeft + " days"
+                       : daysLeft < 0
+                       ? 0 + " days"
+                       : "&nbsp;❔"
+                   }
+</td>
+              </tr>
+              <tr>
+                  <th>STATUS</th>
+                  <td style="color: ${statusColor}">${status}</td>
+              </tr>
+              <tr>
+                  <th>CATEGORY</th>
+                  <td style="font-size: 1.8em;padding-top:0">${
+                    dealer.CATEGORY
+                  }</td>
+              </tr>
+              </table>
+                      <button onclick="window.open('${
+                        dealer.STOCK
+                      }', '_blank')">View Stock</button>
+      `;
+        } else if (!mobileNumberInput) {
+          resultDiv.innerHTML = `<p>🚫 Enter your mobile number!</p>`;
+        } else if (!validmMobileNumber) {
+          resultDiv.innerHTML = `<p>🚫 Enter valid mobile number!</p>`;
+        } else {
+          resultDiv.innerHTML = `<p>🚫 You are not registered!</p>`;
+        }
+        document.getElementById("searchButton").style.display = "none";
+        document.getElementById("mobileNumber").style.display = "none";
+        document.getElementById("resetButton").style.display = "inline-block";
+      }
+
+      function resetForm() {
+        document.getElementById("mobileNumber").value = "";
+        document.getElementById("result").innerHTML = "";
+        document.getElementById("searchButton").style.display = "inline-block";
+        document.getElementById("mobileNumber").style.display = "inline-block";
+        document.getElementsByClassName("register-link")[0].style.display =
+          "block";
+        document.getElementById("resetButton").style.display = "none";
+      }
+    </script>
+  </body>
+</html>

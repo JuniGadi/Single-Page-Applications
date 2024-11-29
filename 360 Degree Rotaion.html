@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>360 View Slider</title>
+<style>
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #ffffff;
+}
+
+.slider-container {
+    position: relative;
+    width: 80%;
+    height: 80%;
+    overflow: hidden;
+}
+
+.slider-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.5s ease;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+</style>
+</head>
+<body>
+    <div class="slider-container">
+        <img id="slider" src="https://img.playbook.com/U4JIHQEM_a-2tKEEH8RFNQT5OnWLevJdOZIPoy-1BY8/Z3M6Ly9wbGF5Ym9v/ay1hc3NldHMtcHVi/bGljL2NhZTE4YTc2/LTk0ZDAtNGRmOS05/MmRlLTUwMjNjNzg1/ZjQ1MQ" alt="360 View">
+    </div>
+
+<script>
+    const imageUrls = [
+        "https://img.playbook.com/U4JIHQEM_a-2tKEEH8RFNQT5OnWLevJdOZIPoy-1BY8/Z3M6Ly9wbGF5Ym9v/ay1hc3NldHMtcHVi/bGljL2NhZTE4YTc2/LTk0ZDAtNGRmOS05/MmRlLTUwMjNjNzg1/ZjQ1MQ",
+        "https://img.playbook.com/kiyQt0BsFid276KHlBWOcgof4vMB_TM8J_ufl1v1xo8/Z3M6Ly9wbGF5Ym9v/ay1hc3NldHMtcHVi/bGljLzE5ZWVlZDhi/LWRkOTYtNDFmYi05/NjNmLWJmMGUzNDgx/ZmFiZQ",
+        "https://img.playbook.com/3unlWcLXvs9bX6DABUiksp6wIDZdJTQd-gwyQXG9yS0/Z3M6Ly9wbGF5Ym9v/ay1hc3NldHMtcHVi/bGljL2NjMWRlMzIz/LWIwM2YtNDNhMy04/YzU4LTA1MDc0Yzdh/NjBmYQ",
+        "https://img.playbook.com/UKIBPs4LWtlE8QsNumx6qE74RTMwYDh-eHxQWlOYMhc/Z3M6Ly9wbGF5Ym9v/ay1hc3NldHMtcHVi/bGljLzk3NjZkZWUz/LTE0MGYtNGIyNS04/Njk5LTE2YzBlNDdm/OWZlYg",
+        "https://img.playbook.com/yH3J8I_OGMMGXosaXIB-nsU1KOevVXwQhZ8UBSmlPKw/Z3M6Ly9wbGF5Ym9v/ay1hc3NldHMtcHVi/bGljL2RhMmNiMThk/LTI5YTAtNDk2Ny1h/NWViLTRkMzAzNDZi/ZDk4OA",
+        "https://img.playbook.com/MHxANGOKgnBtGEuqTpT1veuWpsuW4hyE9bzSsMwwvKI/Z3M6Ly9wbGF5Ym9v/ay1hc3NldHMtcHVi/bGljLzMzNzcyZDQw/LTAyOTctNDhlYy1h/ZDA5LWZkYTQxZGYz/YWViYw",
+        "https://img.playbook.com/gT4zO6JLTBC1tuFI5VoDN_Evo7IATrmIeiCK-PmQwPs/Z3M6Ly9wbGF5Ym9v/ay1hc3NldHMtcHVi/bGljLzE0MGY5YTVk/LTAyYjAtNDIxNS05/MWE2LTNiMzQzOWU4/ZDVhYg",
+        "https://img.playbook.com/2JhL5r-mP0qhD4wCWjYElVfOCSY3PEsXvVmq13jNEwc/Z3M6Ly9wbGF5Ym9v/ay1hc3NldHMtcHVi/bGljLzQxOTlhMjYw/LTI2YjYtNGRlMS04/NThmLWE0ZTVhZjUx/NDU2MQ",
+        "https://img.playbook.com/7mwdD92N-6_0IXN3d16UhLyBuhqg1fsN6R0My4i2GCM/Z3M6Ly9wbGF5Ym9v/ay1hc3NldHMtcHVi/bGljL2Y1MDdiYmJm/LTAwYjMtNDEyYy05/OWE4LTAwY2NlNTAy/N2FmMg",
+        "https://img.playbook.com/6V0gMOk9YOKvy7PY6grAp8NTdsEcr3ZsQqwtWcxwt2o/Z3M6Ly9wbGF5Ym9v/ay1hc3NldHMtcHVi/bGljLzVkNjUyOWU5/LWY2MDctNDA2OS05/ZjhhLWYwMDQyNjA4/MDBlYg",
+        "https://img.playbook.com/-dHPzwHtcbtD0o5u4X89ahQOHobPM2HjgvcuczXkAjg/Z3M6Ly9wbGF5Ym9v/ay1hc3NldHMtcHVi/bGljLzhhMDY4MWRi/LTU1ZjMtNDVkNy1h/ZjRmLWE2YjNlNWU1/Y2QyOQ",
+        "https://img.playbook.com/YIdPSxjMyQ-2-JTbEcSptSdoAFlKJBxvvhEsEYO3wXs/Z3M6Ly9wbGF5Ym9v/ay1hc3NldHMtcHVi/bGljLzNmZmUxZjM3/LWRhZGItNDdlMi1i/OGRkLTljNzY4ZWRk/MmFkMQ",
+        "https://img.playbook.com/ZifWlnHt2Wni2NVMSuH9qcaAU6xLSGpihkT2sAdxc0M/Z3M6Ly9wbGF5Ym9v/ay1hc3NldHMtcHVi/bGljLzhhNTQ5NGEx/LTM5OTEtNGM3My1h/YmY4LWUxYjA5MjJl/NTViMg",
+        "https://img.playbook.com/zY7LhxygJk6_4CpsMBnQal_-0VrUkr8XbFrJWFkh3Vk/Z3M6Ly9wbGF5Ym9v/ay1hc3NldHMtcHVi/bGljLzY5OGZkMGZk/LWViNjgtNDEyYi1h/MDVlLTQwZDFlNTVi/YTY0Yw",
+        "https://img.playbook.com/DEB4_C-ujSlKIVKERBZi1Xvfgm2P5eY-KoXMifKAyHk/Z3M6Ly9wbGF5Ym9v/ay1hc3NldHMtcHVi/bGljL2NjNjYyNWYy/LTI1YmQtNDM3MS04/OGNjLWJiODYzYTgx/MjRmMQ",
+        "https://img.playbook.com/BZy9qJLBv0ihO-bG2t-MwU24T_qiurAF-VJTvntsUh8/Z3M6Ly9wbGF5Ym9v/ay1hc3NldHMtcHVi/bGljL2FlYWE3MDM2/LTZiOGQtNGQ5NC1i/NWFiLTkxYzIzMzI0/MjUzZA",
+        "https://img.playbook.com/5o845VNgleizrKtr-yqO0KGjbfCeXCi-DYev6iX84FE/Z3M6Ly9wbGF5Ym9v/ay1hc3NldHMtcHVi/bGljLzM5OTk2ZjM3/LTJjMjYtNDU0Mi1h/NDE1LTcwMmJjMDdl/ODZhZQ",
+        "https://img.playbook.com/4d5ChUoo0s67lmGLg5ocELrzrj5Ck2wDOX1lqkxh_go/Z3M6Ly9wbGF5Ym9v/ay1hc3NldHMtcHVi/bGljL2Y1NTdmODAw/LWNhMjAtNDdhMy1h/Y2VjLWU4NjM4YWRm/ZDc3ZA",
+        "https://img.playbook.com/g8n2KWQTsnuPJC4nFBQ3iIbVOtZW2uyt1z9oC4qlQpc/Z3M6Ly9wbGF5Ym9v/ay1hc3NldHMtcHVi/bGljLzE0YjAwNTNj/LWNmY2YtNDZkYy1h/ZGMyLTc3OTAzODVk/MTk4Mw",
+        "https://img.playbook.com/bLR0YgarUv43HRF_X2KdaGp8iZcINysKg5FPTZE-q8c/Z3M6Ly9wbGF5Ym9v/ay1hc3NldHMtcHVi/bGljLzM5YjM4ZGQ4/LTNlMDctNGRiMC05/YzYwLWE1NzhiZTJh/YTNkYQ",
+        "https://img.playbook.com/vaW1TJe-fvKHMR_qRn69BBCU_omixWKGWS-snwkZIx8/Z3M6Ly9wbGF5Ym9v/ay1hc3NldHMtcHVi/bGljLzA4ZGU2MDI0/LTVkNjQtNDQ5Mi05/YmU5LWRhOWU0OTEx/MmYzNw",
+        "https://img.playbook.com/4eZKgbNS4eGh0zAJykQmvhfg2925pVVC6lZfnqOUTbA/Z3M6Ly9wbGF5Ym9v/ay1hc3NldHMtcHVi/bGljL2E4NTg0MzZm/LWIxNjEtNGMxNi04/ZWJiLWY1YjVmNTA0/ZTY3Zg",
+        "https://img.playbook.com/OsctrsB3Zd2z_Qp2qL1RI_HTBzI6ihsvmOjjaj7JBnA/Z3M6Ly9wbGF5Ym9v/ay1hc3NldHMtcHVi/bGljLzIzZTY0ODZk/LWViZGQtNGUwOC1i/YjY3LWU2NTdiZmQ0/YTk0Zg"
+    ];
+
+    let currentIndex = 0;
+    let startX = 0;
+    let isTouch = false;
+
+    const sliderImage = document.getElementById('slider');
+
+    function changeImage(nextIndex) {
+        setTimeout(() => {
+            sliderImage.src = imageUrls[nextIndex];
+        }, 0); 
+    }
+
+    function handleMove(distance) {
+        if (distance > 20) {
+            currentIndex = (currentIndex + 1) % imageUrls.length;
+            changeImage(currentIndex);
+        } else if (distance < -20) {
+            currentIndex = (currentIndex - 1 + imageUrls.length) % imageUrls.length;
+            changeImage(currentIndex);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const sliderContainer = document.querySelector('.slider-container');
+
+        sliderContainer.addEventListener('mousedown', (e) => {
+            startX = e.clientX;
+            isTouch = false;
+        });
+
+        sliderContainer.addEventListener('mousemove', (e) => {
+            if (startX && !isTouch) {
+                handleMove(startX - e.clientX);
+                startX = e.clientX;
+            }
+        });
+
+        sliderContainer.addEventListener('mouseup', () => {
+            startX = 0;
+        });
+
+        sliderContainer.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+            isTouch = true;
+        });
+
+        sliderContainer.addEventListener('touchmove', (e) => {
+            if (startX && isTouch) {
+                handleMove(startX - e.touches[0].clientX);
+                startX = e.touches[0].clientX;
+            }
+        });
+
+        sliderContainer.addEventListener('touchend', () => {
+            startX = 0;
+        });
+    });
+</script>
+</body>
+</html>

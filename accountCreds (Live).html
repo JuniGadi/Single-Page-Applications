@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: white;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 350px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: auto;
+      width: 70%;
+      padding: 10px;
+      background: linear-gradient(45deg,
+          rgb(238, 182, 129) 0%,
+          rgba(240, 192, 60, 0.932) 80%,
+          rgb(255, 182, 24) 99%);
+      border-radius: 15px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      transition: transform 0.3s ease, scale 0.3s ease;
+    }
+
+    h1 {
+      color: #312e2e;
+      text-align: center;
+      font-size: 40px;
+      font-weight: 800;
+    }
+
+    h2 {
+      color: #ffffff;
+      text-align: center;
+      font-size: 25px;
+      font-weight: 800;
+    }
+
+    input[type="text"] {
+      padding: 10px;
+      margin-bottom: 2em;
+      border: 1px solid #ccc;
+      border-radius: 15px;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 5px;
+      margin: auto;
+    }
+
+    button {
+      font-size: 0.7em;
+      padding: 5px 12px;
+      background-color: #e9451c;
+      font-weight: 800;
+      color: white;
+      border: none;
+      border-radius: 15px;
+      cursor: pointer;
+      margin-bottom: 10px;
+      transition: background-color 0.3s ease;
+      transition: transform 0.2s ease;
+    }
+
+    button:hover {
+      background-color: #fa4d2f;
+      transform: scale(1.03);
+    }
+
+    #result {
+      color: black;
+    }
+
+    #result p {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #54368d;
+    }
+
+    p {
+      text-align: center;
+      color: #000000;
+      font-weight: 600;
+    }
+
+    a {
+      color: #4d9416;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    a:hover {
+      color: rgb(19, 139, 19);
+      text-decoration: underline;
+    }
+
+    table {
+      width: 100%;
+      margin: 20px auto;
+      border-collapse: collapse;
+      margin: 20px 0;
+      border-radius: 15px;
+      font-size: 0.8em;
+      background-color: white;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      transition: box-shadow 0.3s ease, transform 0.3s ease;
+    }
+
+    table:hover {
+      box-shadow: 0 5px 15px rgba(119, 116, 116, 0.3);
+      transform: scale(1.01);
+    }
+
+    th,
+    td {
+      padding: 12px 15px;
+      text-align: center;
+    }
+
+    td {
+      font-weight: 700;
+    }
+
+    th {
+      background: linear-gradient(45deg,
+          rgb(80, 136, 189) 0%,
+          rgba(99, 161, 212, 0.932) 80%,
+          rgb(48, 132, 201) 99%);
+      color: white;
+      border-bottom-right-radius: 15px;
+    }
+
+    tr {
+      border-bottom: 0.25em solid rgba(252, 203, 69, 0.932);
+    }
+
+    tr:last-child {
+      border: none;
+    }
+
+    tr:first-child th {
+      border-top-left-radius: 15px;
+    }
+
+    tr:last-child th {
+      border-bottom-left-radius: 15px;
+      border-bottom-right-radius: 15px;
+    }
+
+
+    #resetButton {
+      display: none;
+      background-color: rgb(85, 82, 82);
+    }
+
+    #searchButton {
+      background-color: rgb(18, 161, 204);
+    }
+
+    #searchButton:hover {
+      background-color: rgb(24, 129, 161);
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Dealer Account</h1>
+  <div class="container">
+    <h2>Account Details<br />(ખાતો વિગત)</h2>
+    <input type="text" id="mobileNumber" placeholder="નંબર નાખો ..." onclick="value=''" />
+    <button id="searchButton" onclick="fetchDealerStock()">Search</button>
+    <div id="result"></div>
+    <button id="resetButton" onclick="resetForm()">Reset</button>
+    <!-- Register link -->
+    <div class="register-link">
+      <strong>New Dealer? </strong><a href="https://tally.so/r/3jBpB9"><strong>Register Now</strong></a>
+    </div>
+  </div>
+  <!-- Footer -->
+  <footer>
+    <div class="row">
+      <p style="font-size: 11px">
+        &copy; 2024 Junigadi Vehicle Solution Pvt. Ltd.<br />
+        All rights reserved.
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    // fetch data from google sheets
+    let dealers = [];
+
+    async function fetchDealersData() {
+      try {
+        // Fetch data from Google Sheets
+        const response = await fetch("https://script.google.com/macros/s/AKfycbwGI91SrUbURuOvGzglAW-Xm2eWCMUt5-rARnSL6wAx59JSR31fN7Tnw_8oGKCreMkq/exec");
+        const data = await response.json();
+        dealers = data;
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+
+    // Call this function once when the page loads to populate the dealers array
+    fetchDealersData();
+
+    async function fetchDealerStock() {
+      document.getElementsByClassName("register-link")[0].style.display = "none";
+      const mobileNumberInput = document.getElementById("mobileNumber").value;
+      const mobileNumber = parseInt(mobileNumberInput);
+      const validMobileNumber = /^[0-9]{10}$/.test(mobileNumber);
+      const resultDiv = document.getElementById("result");
+
+      document.getElementById("searchButton").style.display = "none";
+      // Show loading message while fetching dealer stock
+      resultDiv.innerHTML = `<p style="font-size: 18px;font-weight: 800;color: black;">Please wait...</p>`;
+
+
+      // Ensure dealers array is populated before proceeding
+      if (dealers.length === 0) {
+        await fetchDealersData(); // Wait for the data to load
+      }
+
+      const dealer = dealers.find(
+        (dealer) => dealer.CONTACT === mobileNumber
+      );
+
+
+      if (dealer) {
+        // Parse the "EXPIRY" date (assumes MM/DD/YYYY format)
+        const validUptoDate = new Date(dealer["EXPIRY"]);
+        const currentDate = new Date();
+
+        // Calculate the difference in time
+        const timeDifference = validUptoDate - currentDate;
+
+        // Convert time difference to days
+        const daysLeft = Math.ceil(timeDifference / (1000 * 3600 * 24));
+
+        let plan;
+        if (dealer.PLAN === "Pro") {
+          plan = "Pro";
+        } else if (dealer.PLAN === "Gold") {
+          plan = "Gold";
+        } else if (dealer.PLAN === "Diamond") {
+          plan = "Diamond";
+        } else {
+          plan = "Free";
+        }
+
+        const planColor = (plan === "Free")
+          ? "green"
+          : (plan === "Pro")
+            ? "blue"
+            : (plan === "Gold")
+              ? "orange"
+              : (plan === "Diamond")
+                ? "purple"
+                : "white";
+
+        let status;
+        if (!dealer.EXPIRY) {
+          status = "Trial";
+        } else if (validUptoDate >= currentDate) {
+          status = "Active";
+        } else {
+          status = "Expired";
+        }
+
+        const statusColor =
+          status === "Active"
+            ? "green"
+            : status === "Expired"
+              ? "red"
+              : "grey";
+
+        resultDiv.innerHTML = `
+      <table>
+          <tr>
+              <th>Name</th>
+              <td>${dealer.DEALER}</td>
+          </tr>
+          <tr>
+              <th>Location</th>
+              <td>${dealer.LOCATION.replace('(', '<br>(')}</td>
+          </tr>
+          <tr>
+              <th>Plan</th>
+              <td style="color: ${planColor}">${plan}</td>
+          </tr>
+          <tr>
+              <th>Days Left</th>
+              <td>
+  ${daysLeft > 1
+            ? daysLeft + " Days"
+            : daysLeft === 1
+              ? "1 Day"
+              : daysLeft < 0
+                ? "0 Days"
+                : "&nbsp;❔"
+          }
+</td>
+          </tr>
+           <tr>
+              <th>Validity</th>
+              <td> ${dealer.VALIDITY}</td>
+          </tr>
+          <tr>
+              <th>Status</th>
+              <td style="color: ${statusColor}">${status}</td>
+          </tr>
+          <tr>
+              <th>Category</th>
+              <td style="font-size: 1.8em;padding-top:0">${dealer.CATEGORY}</td>
+          </tr>
+      </table>
+    `;
+        if (status === "Active") {
+          resultDiv.innerHTML += `
+        <div class="buttons">
+            <button id="viewStockButton" onclick="window.open('${dealer.STOCK}', '_blank')">View Stock</button>
+            <button id="buyVehicleButton" onclick="window.open('https://mydukaan.io/junigadicom', '_blank')">Buy Vehicle</button>
+            <button id="buyVehicleButton" onclick="window.open('https://www.junigadi.com/pricing', '_blank')">Upgrade</button>
+        </div>`;
+        } else if (status === "Expired") {
+          resultDiv.innerHTML += `
+        <div class="buttons">
+          <button onclick="window.open('${dealer.STOCK}', '_blank')">View Stock</button>
+          <button id="buyVehicleButton" style="background-color: grey;" onclick="window.open('https://www.junigadi.com/tools/buy-vehicle-feature', '_blank')">Buy Vehicle</button>
+          <button id="buyVehicleButton" onclick="window.open('https://www.junigadi.com/pricing', '_blank')">Recharge</button>
+        </div>`;
+        } else {
+          resultDiv.innerHTML += `
+        <div class="buttons">
+          <button onclick="window.open('${dealer.STOCK}', '_blank')">View Stock</button>
+          <button id="buyVehicleButton" style="background-color: grey;" onclick="window.open('https://www.junigadi.com/tools/buy-vehicle-feature', '_blank')">Buy Vehicle</button>
+          <button id="buyVehicleButton" onclick="window.open('https://www.junigadi.com/pricing', '_blank')">Plans</button>
+        </div>`;
+        }
+
+        // Store the result in sessionStorage
+        sessionStorage.setItem('lastResult', resultDiv.innerHTML);
+
+      } else if (!mobileNumberInput) {
+        resultDiv.innerHTML = `<p>🚫 Enter your mobile number!</p>`;
+      } else if (!validMobileNumber) {
+        resultDiv.innerHTML = `<p>🚫 Enter valid mobile number!</p>`;
+      } else {
+        resultDiv.innerHTML = `<p>🚫 You are not registered!</p>`;
+      }
+      document.getElementById("searchButton").style.display = "none";
+      document.getElementById("mobileNumber").style.display = "none";
+      document.getElementById("resetButton").style.display = "inline-block";
+      document.getElementsByClassName("register-link")[0].style.display = "none";
+    }
+
+    function resetForm() {
+      document.getElementById("mobileNumber").value = "";
+      document.getElementById("result").innerHTML = "";
+      document.getElementById("searchButton").style.display = "inline-block";
+      document.getElementById("mobileNumber").style.display = "inline-block";
+      document.getElementsByClassName("register-link")[0].style.display =
+        "block";
+      document.getElementById("resetButton").style.display = "none";
+    }
+
+    // On page load, check if there's a stored result in sessionStorage
+    window.onload = function () {
+      const lastResult = sessionStorage.getItem('lastResult');
+      if (lastResult) {
+        document.getElementById('result').innerHTML = lastResult;
+        document.getElementById("searchButton").style.display = "none";
+        document.getElementById("mobileNumber").style.display = "none";
+        document.getElementById("resetButton").style.display = "inline-block";
+      }
+    };
+
+  </script>
+</body>
+
+</html>

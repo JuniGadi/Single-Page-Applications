@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flexible Plans</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: rgb(255, 255, 255);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    h1 {
+      text-align: center;
+      font-weight: bold;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .image-container {
+      position: relative;
+      width: 80%;
+      max-width: 900px;
+      height: 400px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+    }
+
+    .card {
+      position: absolute;
+      height: auto;
+      width: auto;
+      margin: 0 10px;
+      border-radius: 50px;
+      overflow: hidden;
+      transition: transform 0.5s ease-in-out, opacity 0.5s ease;
+      cursor: pointer;
+    }
+
+    .card img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50px;
+      object-fit: cover;
+    }
+
+    .card.left {
+      transform: translateX(-25%) scale(0.8);
+      opacity: 0.5;
+    }
+
+    .card.center {
+      z-index: 1;
+    }
+
+    .card.right {
+      transform: translateX(25%) scale(0.8);
+      opacity: 0.5;
+    }
+
+    .card.hidden {
+      display: none;
+    }
+
+    /* Dots */
+    .dots {
+      margin-top: 50px;
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .dot {
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background-color: #ada7a7;
+      margin: 0 5px;
+      cursor: pointer;
+    }
+
+    .dot.active {
+      background-color: #0a3a72;
+      animation: blink 1.5s infinite;
+    }
+
+    @keyframes blink {
+      0% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.5;
+      }
+
+      100% {
+        opacity: 1;
+      }
+
+    }
+
+    .choose-plan-btn {
+      display: block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      font-size: 15px;
+      font-weight: bold;
+      color: #ffffff;
+      background-color: #4568ca;
+      border: #4568ca 2px solid;
+      border-radius: 20px;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+      transition-property: all;
+      transition-duration: 0.3s;
+    }
+
+    .choose-plan-btn:hover {
+      background-color: #184f8d;
+      transform: scale(1.1);
+    }
+
+    a {
+      font-weight: bold;
+      color: white;
+      display: block;
+      text-align: center;
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Flexible Plans</h1>
+  <div class="dots">
+    <span class="dot active"></span>
+    <span class="dot"></span>
+    <span class="dot"></span>
+  </div>
+  <div class="image-container">
+
+    <div class="card left">
+      <img src="https://shorturl.at/HYKk2" alt="Basic" />
+    </div>
+
+    <div class="card center">
+      <img src="https://shorturl.at/dHTFe" alt="Business" />
+    </div>
+
+    <div class="card right">
+      <img src="https://shorturl.at/v1amn" alt="Exclusive" />
+    </div>
+
+  </div>
+
+  <button class="choose-plan-btn"><a href="#">Choose Plan</a></button>
+
+  <script>
+
+    let dotIndex = 1;
+
+    function updateDots() {
+      const dots = document.querySelectorAll('.dot');
+      dots.forEach((dot, index) => {
+        if (index === dotIndex) {
+          dot.classList.add('active');
+        } else {
+          dot.classList.remove('active');
+        }
+      });
+    }
+
+    function updateVisibility() {
+      var cards = document.querySelectorAll('.card');
+      var leftCard = document.querySelector('.card.left');
+      var centerCard = document.querySelector('.card.center');
+      var rightCard = document.querySelector('.card.right');
+
+      leftCard.classList.remove('hidden');
+      rightCard.classList.remove('hidden');
+
+      if (centerCard.querySelector('img').alt === 'Basic') {
+        leftCard.classList.add('hidden');
+      } else if (centerCard.querySelector('img').alt === 'Exclusive') {
+        rightCard.classList.add('hidden');
+      }
+    }
+
+    function showNextImageRight() {
+      var cards = document.querySelectorAll('.card');
+      cards.forEach(function (card) {
+        if (card.classList.contains('right')) {
+          card.classList.remove('right');
+          card.classList.add('center');
+        } else if (card.classList.contains('center')) {
+          card.classList.remove('center');
+          card.classList.add('left');
+        } else if (card.classList.contains('left')) {
+          card.classList.remove('left');
+          card.classList.add('right');
+        }
+      });
+      updateVisibility();
+      dotIndex = (dotIndex + 1) % 3;
+      updateDots();
+    }
+
+    function showNextImageLeft() {
+      var cards = document.querySelectorAll('.card');
+      cards.forEach(function (card) {
+        if (card.classList.contains('left')) {
+          card.classList.remove('left');
+          card.classList.add('center');
+        } else if (card.classList.contains('center')) {
+          card.classList.remove('center');
+          card.classList.add('right');
+        } else if (card.classList.contains('right')) {
+          card.classList.remove('right');
+          card.classList.add('left');
+        }
+      });
+      updateVisibility();
+      dotIndex = (dotIndex - 1 + 3) % 3;
+      updateDots();
+    }
+
+    // Initialize with specific positions
+    document.addEventListener('DOMContentLoaded', function () {
+
+      var cards = document.querySelectorAll('.card');
+      cards[0].classList.add('left');
+      cards[1].classList.add('center');
+      cards[2].classList.add('right');
+
+      // Swipe Gesture
+      // Update the event listeners to target the image container
+      const imageContainer = document.querySelector('.image-container');
+      let startX, currentX, scrollDistance;
+
+
+      imageContainer.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+      });
+
+      imageContainer.addEventListener('touchmove', (e) => {
+        currentX = e.touches[0].clientX;
+        scrollDistance = startX - currentX;
+      });
+
+      imageContainer.addEventListener('touchend', (e) => {
+
+        if (scrollDistance > 60) {
+          if (dotIndex !== 2) {
+            showNextImageRight();
+          }
+        } else if (scrollDistance < -60) {
+          if (dotIndex !== 0) {
+            showNextImageLeft();
+          }
+        }
+        // Reset scrollDistance after touch interaction
+        scrollDistance = 0;
+      });
+
+      // Click event handling
+      imageContainer.addEventListener('click', (e) => {
+        const rect = e.target.getBoundingClientRect();
+        const clickX = e.offsetX;
+        const halfWidth = rect.width / 2;
+        const quaterWidth = rect.width / 4;
+
+        if (clickX > halfWidth + quaterWidth) {
+          if (dotIndex !== 2) {
+            showNextImageRight();
+          }
+        } else if (clickX < halfWidth - quaterWidth) {
+          if (dotIndex !== 0) {
+            showNextImageLeft();
+          }
+        }
+      });
+
+      updateVisibility();
+      updateDots();
+    });
+
+  </script>
+</body>
+
+</html>
