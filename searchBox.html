@@ -69,10 +69,29 @@
         /* Responsive adjustments */
         @media (max-width: 400px) {
 
-            .search-box input,
-            .search-box button {
+            .search-box input {
+                width: 90%;
                 padding: 10px;
-                font-size: 14px;
+                font-size: 1.2em;
+                border: 1px solid #ddd;
+                border-radius: 10px 0 0 10px;
+                outline: none;
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+                overflow: hidden;
+                white-space: nowrap;
+                text-align: left;
+                direction: ltr;
+                padding-right: 20px;
+            }
+
+            .search-box input::placeholder {
+                font-size: 0.9em;
+                font-weight: 800;
+            }
+
+            .search-box button {
+                padding: 10px 15px;
+                font-size: 1.2em;
             }
         }
     </style>
