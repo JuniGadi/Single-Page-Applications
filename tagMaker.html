@@ -62,7 +62,7 @@
         <input type="text" id="vehicleNumber" placeholder="Vehicle Number" required>
         <input type="text" id="vehicleModel" placeholder="Vehicle Model" required>
         <input type="text" id="location" placeholder="Location" required>
-        <input type="text" id="fuelType" placeholder="Fuel Type" required>
+        <input type="text" id="fuel" placeholder="Fuel" required>
         <input type="text" id="year" placeholder="Year" required>
         <input type="text" id="owner" placeholder="Owner" required>
         <input type="text" id="engine" placeholder="Engine" required>
@@ -78,7 +78,7 @@
         <input type="text" id="tax" placeholder="Tax" required>
         <button type="button" id="generate">Generate Image</button>
     </form>
-    <canvas id="outputCanvas" width="650" height="1080"></canvas>
+    <canvas id="outputCanvas" width="650" height="1250"></canvas>
 
     <script>
         document.getElementById('generate').addEventListener('click', function () {
@@ -130,23 +130,31 @@
             const tableY = 220;
             const tableWidth = canvas.width - 100;
             const rowHeight = 70;
-            const numRows = 10;
+            const numRows = 14;
             ctx.fillRect(tableX, tableY, tableWidth, rowHeight * numRows);
 
             // Add table labels and values
             const labels = [
-                'Fuel Type', 'Year', 'Owner', 'Engine',
-                'Length', 'Gear', 'Insurance', 'Loan Availability'
+                'Fuel', 'Year', 'Owner', 'Engine',
+                'Length', 'Gear', 'KM', 'Power Steering',
+                'AC', 'RC Book', 'Insurance', 'Passing',
+                'Loan Availability', 'Tax'
             ];
             const values = [
-                document.getElementById('fuelType').value,
+                document.getElementById('fuel').value,
                 document.getElementById('year').value,
                 document.getElementById('owner').value,
                 document.getElementById('engine').value,
                 document.getElementById('length').value,
                 document.getElementById('gear').value,
+                document.getElementById('km').value,
+                document.getElementById('power').value,
+                document.getElementById('ac').value,
+                document.getElementById('rc').value,
                 document.getElementById('insurance').value,
-                document.getElementById('loan').value
+                document.getElementById('passing').value,
+                document.getElementById('loan').value,
+                document.getElementById('tax').value
             ];
 
             ctx.font = '24px Arial';
