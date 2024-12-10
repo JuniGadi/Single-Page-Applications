@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicle Tag Generator</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 40px;
+        }
+
+        form {
+            max-width: 400px;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        input,
+        select,
+        button {
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        input[type="text"] {
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+
+        #generate {
+            background-color: #4CAF50;
+            width: 50%;
+            border-radius: 10px;
+            font-weight: 700;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        canvas {
+            display: block;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Vehicle Details</h2>
+    <form id="vehicleForm">
+        <input type="text" id="vehicleNumber" placeholder="Vehicle Number" required>
+        <input type="text" id="vehicleModel" placeholder="Vehicle Model" required>
+        <input type="text" id="location" placeholder="Location" required>
+        <input type="text" id="fuelType" placeholder="Fuel Type" required>
+        <input type="text" id="year" placeholder="Year" required>
+        <input type="text" id="owner" placeholder="Owner" required>
+        <input type="text" id="engine" placeholder="Engine" required>
+        <input type="text" id="length" placeholder="Length" required>
+        <input type="text" id="gear" placeholder="Gear" required>
+        <input type="text" id="insurance" placeholder="Insurance" required>
+        <input type="text" id="loan" placeholder="Loan Availability" required>
+        <button type="button" id="generate">Generate Image</button>
+    </form>
+    <canvas id="outputCanvas" width="650" height="1080"></canvas>
+
+    <script>
+        document.getElementById('generate').addEventListener('click', function () {
+            const canvas = document.getElementById('outputCanvas');
+            const ctx = canvas.getContext('2d');
+
+            // Set background color
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw border
+            ctx.strokeStyle = '#000';
+            ctx.lineWidth = 5;
+            ctx.strokeRect(20, 20, canvas.width - 40, canvas.height - 40);
+
+            // Add logo
+            ctx.fillStyle = '#000';
+            ctx.font = 'bold 36px Arial';
+            ctx.fillText('JUNIGADI', 40, 70);
+
+            // Draw app link
+            ctx.font = '20px Arial';
+            ctx.fillText('Get it on Google Playstore', 40, 110);
+
+            // Vehicle number (top-right corner)
+            const vehicleNumber = document.getElementById('vehicleNumber').value;
+            ctx.font = 'bold 48px Arial';
+            ctx.fillStyle = '#000';
+            ctx.textAlign = 'right';
+            ctx.fillText(vehicleNumber, canvas.width - 50, 70);
+
+            // Vehicle model (below vehicle number)
+            const vehicleModel = document.getElementById('vehicleModel').value;
+            ctx.font = '28px Arial';
+            ctx.fillStyle = '#000';
+            ctx.textAlign = 'right';
+            ctx.fillText(vehicleModel, canvas.width - 50, 110);
+
+            // Location (highlighted)
+            const location = document.getElementById('location').value;
+            ctx.font = 'bold 36px Arial';
+            ctx.fillStyle = '#ff0000';
+            ctx.textAlign = 'center';
+            ctx.fillText(location, canvas.width / 2, 180);
+
+            // Table background color
+            ctx.fillStyle = '#fee4e3';
+            const tableX = 50;
+            const tableY = 220;
+            const tableWidth = canvas.width - 100;
+            const rowHeight = 70;
+            const numRows = 10;
+            ctx.fillRect(tableX, tableY, tableWidth, rowHeight * numRows);
+
+            // Add table labels and values
+            const labels = [
+                'Fuel Type', 'Year', 'Owner', 'Engine',
+                'Length', 'Gear', 'Insurance', 'Loan Availability'
+            ];
+            const values = [
+                document.getElementById('fuelType').value,
+                document.getElementById('year').value,
+                document.getElementById('owner').value,
+                document.getElementById('engine').value,
+                document.getElementById('length').value,
+                document.getElementById('gear').value,
+                document.getElementById('insurance').value,
+                document.getElementById('loan').value
+            ];
+
+            ctx.font = '24px Arial';
+            ctx.fillStyle = '#000';
+            ctx.textAlign = 'left';
+            for (let i = 0; i < labels.length; i++) {
+                ctx.fillText(labels[i], tableX + 20, tableY + rowHeight * i + 40);
+                ctx.fillText(values[i], tableX + 300, tableY + rowHeight * i + 40);
+            }
+
+            // Download button
+            const downloadLink = document.createElement('a');
+            downloadLink.download = 'vehicle-details.jpg';
+            downloadLink.href = canvas.toDataURL('image/jpeg');
+            downloadLink.textContent = 'Download Image';
+            document.body.appendChild(downloadLink);
+        });
+    </script>
+</body>
+
+</html>
