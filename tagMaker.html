@@ -14,6 +14,7 @@
         h2 {
             text-align: center;
             font-size: 40px;
+            font-weight: 800;
         }
 
         form {
@@ -28,7 +29,7 @@
         input,
         select,
         button {
-            width: 100%;
+            width: 95%;
             margin: 10px 0;
             padding: 10px;
             font-size: 16px;
@@ -39,8 +40,36 @@
             border-radius: 10px;
         }
 
+        input::placeholder {
+            color: #4e4e4e;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #fff;
+            appearance: none;
+            cursor: pointer;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #e97f07;
+            box-shadow: 0 0 5px rgba(211, 105, 7, 0.5);
+        }
+
+        select option {
+            font-size: 16px;
+            padding: 10px;
+        }
+
+
         #generate {
-            background-color: #4CAF50;
+            background-color: #d35603;
             width: 50%;
             border-radius: 10px;
             font-weight: 700;
@@ -57,28 +86,123 @@
 </head>
 
 <body>
-    <h2>Vehicle Details</h2>
-    <form id="vehicleForm">
-        <input type="text" id="vehicleNumber" placeholder="Vehicle Number" required>
-        <input type="text" id="vehicleModel" placeholder="Vehicle Model" required>
-        <input type="text" id="location" placeholder="Location" required>
-        <input type="text" id="fuel" placeholder="Fuel" required>
-        <input type="text" id="year" placeholder="Year" required>
-        <input type="text" id="owner" placeholder="Owner" required>
-        <input type="text" id="engine" placeholder="Engine" required>
-        <input type="text" id="length" placeholder="Length" required>
-        <input type="text" id="gear" placeholder="Gear" required>
-        <input type="text" id="km" placeholder="KM" required>
-        <input type="text" id="power" placeholder="Power Steering" required>
-        <input type="text" id="ac" placeholder="AC" required>
-        <input type="text" id="rc" placeholder="RC Book" required>
-        <input type="text" id="insurance" placeholder="Insurance" required>
-        <input type="text" id="passing" placeholder="Passing" required>
-        <input type="text" id="loan" placeholder="Loan Availability" required>
-        <input type="text" id="tax" placeholder="Tax" required>
-        <button type="button" id="generate">Generate Image</button>
-    </form>
-    <canvas id="outputCanvas" width="650" height="1250"></canvas>
+    <h2>Junigadi <BR>Tag Generator</h2>
+    <div class="container">
+        <form id="vehicleForm">
+            <input type="text" id="vehicleNumber" placeholder="VEHICLE NUMBER" required>
+            <input type="text" id="vehicleModel" placeholder="VEHICLE MODEL" required>
+            <input type="text" id="location" placeholder="LOCATION" required>
+            <!-- Dropdown for Fuel -->
+            <select id="fuel" required>
+                <option value="" disabled selected>FUEL</option>
+                <option value="CNG ONLY">CNG ONLY</option>
+                <option value="DIESEL">DIESEL</option>
+                <option value="ELECTRIC">ELECTRIC</option>
+                <option value="PETROL">PETROL</option>
+                <option value="PETROL/CNG">PETROL/CNG</option>
+                <option value="PETROL/HYBRID">PETROL/HYBRID</option>
+            </select>
+            <!-- Drop -->
+            <select id="year" required>
+                <option value="" disabled selected>YEAR</option>
+                <option value="2024">2024</option>
+                <option value="2023">2023</option>
+                <option value="2022">2022</option>
+                <option value="2021">2021</option>
+                <option value="2020">2020</option>
+                <option value="2019">2019</option>
+                <option value="2018">2018</option>
+                <option value="2017">2017</option>
+                <option value="2016">2016</option>
+                <option value="2015">2015</option>
+                <option value="2014">2014</option>
+                <option value="2013">2013</option>
+                <option value="2012">2012</option>
+                <option value="2011">2011</option>
+                <option value="2010">2010</option>
+                <option value="2009">2009</option>
+                <option value="2008">2008</option>
+                <option value="2007">2007</option>
+                <option value="2006">2006</option>
+                <option value="2005">2005</option>
+                <option value="2004">2004</option>
+            </select>
+            <!-- Dropdown for Owner -->
+            <select id="owner" required>
+                <option value="" disabled selected>OWNER (ઓનર)</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+            </select>
+            <!-- Dropdown for Suspension -->
+            <select id="suspension" required>
+                <option value="" disabled selected>પટ્ટા વારી</option>
+                <option value="Yes">Yes</option>
+            </select>
+            <!-- Dropdown for Engine -->
+            <select id="engine" required>
+                <option value="" disabled selected>ENGINE</option>
+                <option value="BS3">BS3</option>
+                <option value="BS4">BS4</option>
+                <option value="BS6">BS6</option>
+            </select>
+            <input type="text" id="length" placeholder="લોડિંગ ફીટ" required>
+            <!-- Dropdown for Gear -->
+            <select id="gear" required>
+                <option value="" disabled selected>GEAR</option>
+                <option value="4F + 1R">4F + 1R</option>
+                <option value="5F + 1R">5F + 1R</option>
+                <option value="6F + 1R">6F + 1R</option>
+                <option value="MANUAL">MANAUL</option>
+                <option value="AUTOMATIC">AUTOMATIC</option>
+                <option value="SEMI-AUTOMATIC">SEMI-AUTOMATIC</option>
+            </select>
+            <input type="text" id="km" placeholder="KM" required>
+            <!-- Dropdown for Power Steering -->
+            <select id="power" required>
+                <option value="" disabled selected>POWER STEERING</option>
+                <option value="Yes">Yes</option>
+            </select>
+            <!-- Dropdown for AC -->
+            <select id="ac" required>
+                <option value="" disabled selected>AC</option>
+                <option value="Yes">Yes</option>
+            </select>
+
+            <!-- Dropdown for RC BOOK -->
+            <select id="rc" required>
+                <option value="" disabled selected>RC BOOK</option>
+                <option value="Yes">Yes</option>
+            </select>
+
+            <!-- Dropdown for Insurance -->
+            <select id="insurance" required>
+                <option value="" disabled selected>વીમા</option>
+                <option value="TP">TP</option>
+                <option value="FULL">FULL</option>
+            </select>
+
+            <!-- Dropdown for Passing -->
+            <select id="passing" required>
+                <option value="" disabled selected>પાસિંગ</option>
+                <option value="Yes">Yes</option>
+            </select>
+
+            <!-- Dropdown for Loan Availability -->
+            <select id="loan" required>
+                <option value="" disabled selected>લોન સુવિધા</option>
+                <option value="Yes">Yes</option>
+            </select>
+
+            <!-- Dropdown for Tax -->
+            <select id="tax" required>
+                <option value="" disabled selected>TAX</option>
+                <option value="LTT">LTT</option>
+            </select>
+            <button type="button" id="generate">Generate Image</button>
+        </form>
+        <canvas id="outputCanvas" width="800" height="1250"></canvas>
+    </div>
+
 
     <script>
         document.getElementById('generate').addEventListener('click', function () {
@@ -94,85 +218,120 @@
             ctx.lineWidth = 5;
             ctx.strokeRect(20, 20, canvas.width - 40, canvas.height - 40);
 
-            // Add logo
-            ctx.fillStyle = '#000';
-            ctx.font = 'bold 36px Arial';
-            ctx.fillText('JUNIGADI', 40, 70);
+            // Add logo as an image
+            const logoImage = new Image();
+            logoImage.src = 'https://img.playbook.com/vYPQR-MGyrNkGBdC2oIg73BUdFzzTQmDL9Ywc23JYCY/Z3M6Ly9wbGF5Ym9v/ay1hc3NldHMtcHVi/bGljL2NlNzE5ZWMw/LTc1NTAtNGMyOC1h/YjQzLTRhOGU1Mzhh/NDU0OA';
+            logoImage.onload = function () {
+                // Draw the image when it's loaded
+                ctx.drawImage(logoImage, 40, 40, 150, 150); // Adjust the dimensions and position as needed
+            };
+
 
             // Draw app link
-            ctx.font = '20px Arial';
+            ctx.font = '20px Segoe UI';
             ctx.fillText('Get it on Google Playstore', 40, 110);
 
             // Vehicle number (top-right corner)
-            const vehicleNumber = document.getElementById('vehicleNumber').value;
-            ctx.font = 'bold 48px Arial';
+            const vehicleNumber = document.getElementById('vehicleNumber').value.toUpperCase();
+            ctx.font = '700 48px Segoe UI';
             ctx.fillStyle = '#000';
             ctx.textAlign = 'right';
             ctx.fillText(vehicleNumber, canvas.width - 50, 70);
 
             // Vehicle model (below vehicle number)
-            const vehicleModel = document.getElementById('vehicleModel').value;
-            ctx.font = '28px Arial';
+            const vehicleModel = document.getElementById('vehicleModel').value.toUpperCase();
+            ctx.font = '700 28px Segoe UI';
             ctx.fillStyle = '#000';
             ctx.textAlign = 'right';
             ctx.fillText(vehicleModel, canvas.width - 50, 110);
 
             // Location (highlighted)
-            const location = document.getElementById('location').value;
-            ctx.font = 'bold 36px Arial';
+            const location = document.getElementById('location').value.toUpperCase();
+            ctx.font = '700 36px Segoe UI';
             ctx.fillStyle = '#ff0000';
             ctx.textAlign = 'center';
-            ctx.fillText(location, canvas.width / 2, 180);
+            ctx.fillText(location, canvas.width - 180, 180);
 
-            // Table background color
-            ctx.fillStyle = '#fee4e3';
+            // Table labels and values
+            const fields = [
+                { label: 'FUEL', value: document.getElementById('fuel').value.toUpperCase() },
+                { label: 'YEAR', value: document.getElementById('year').value.toUpperCase() },
+                { label: 'OWNER', value: document.getElementById('owner').value },
+                { label: 'પટ્ટા વારી', value: document.getElementById('suspension').value },
+                { label: 'ENGINE', value: document.getElementById('engine').value },
+                { label: 'લોડિંગ ફીટ', value: document.getElementById('length').value },
+                { label: 'GEAR', value: document.getElementById('gear').value },
+                { label: 'KM', value: document.getElementById('km').value },
+                { label: 'POWER STEERING', value: document.getElementById('power').value },
+                { label: 'AC', value: document.getElementById('ac').value },
+                { label: 'RC BOOK', value: document.getElementById('rc').value },
+                { label: 'વીમા', value: document.getElementById('insurance').value },
+                { label: 'પાસિંગ', value: document.getElementById('passing').value },
+                { label: 'લોન સુવિધા', value: document.getElementById('loan').value },
+                { label: 'TAX', value: document.getElementById('tax').value }
+            ];
+
             const tableX = 50;
             const tableY = 220;
             const tableWidth = canvas.width - 100;
             const rowHeight = 70;
-            const numRows = 14;
-            ctx.fillRect(tableX, tableY, tableWidth, rowHeight * numRows);
+            let currentY = tableY;
 
-            // Add table labels and values
-            const labels = [
-                'Fuel', 'Year', 'Owner', 'Engine',
-                'Length', 'Gear', 'KM', 'Power Steering',
-                'AC', 'RC Book', 'Insurance', 'Passing',
-                'Loan Availability', 'Tax'
-            ];
-            const values = [
-                document.getElementById('fuel').value,
-                document.getElementById('year').value,
-                document.getElementById('owner').value,
-                document.getElementById('engine').value,
-                document.getElementById('length').value,
-                document.getElementById('gear').value,
-                document.getElementById('km').value,
-                document.getElementById('power').value,
-                document.getElementById('ac').value,
-                document.getElementById('rc').value,
-                document.getElementById('insurance').value,
-                document.getElementById('passing').value,
-                document.getElementById('loan').value,
-                document.getElementById('tax').value
-            ];
+            // Filter and loop through non-empty fields
+            const filteredFields = fields.filter(field => field.value.trim() !== '');
+            filteredFields.forEach((field, index) => {
+                // Alternate background color
+                ctx.fillStyle = index % 2 === 0 ? '#fee4e3' : '#fff';
+                ctx.fillRect(tableX, currentY, tableWidth, rowHeight);
 
-            ctx.font = '24px Arial';
-            ctx.fillStyle = '#000';
-            ctx.textAlign = 'left';
-            for (let i = 0; i < labels.length; i++) {
-                ctx.fillText(labels[i], tableX + 20, tableY + rowHeight * i + 40);
-                ctx.fillText(values[i], tableX + 300, tableY + rowHeight * i + 40);
+                // Draw borders for each row
+                ctx.strokeStyle = '#000';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(tableX, currentY, tableWidth, rowHeight);
+
+                // Draw vertical divider
+                const dividerX = tableX + 330;
+                ctx.beginPath();
+                ctx.moveTo(dividerX, currentY);
+                ctx.lineTo(dividerX, currentY + rowHeight);
+                ctx.stroke();
+
+                // Draw labels and values
+                ctx.font = '700 24px Segoe UI';
+                ctx.fillStyle = '#000';
+                ctx.textAlign = 'left';
+                ctx.fillText(field.label, tableX + 20, currentY + 40);
+                ctx.fillText(field.value, dividerX + 20, currentY + 40);
+
+                currentY += rowHeight;
+            });
+
+            // Center and style the Download button
+            let downloadLink = document.getElementById('downloadLink');
+            if (!downloadLink) {
+                downloadLink = document.createElement('a');
+                downloadLink.id = 'downloadLink';
+                downloadLink.style.display = 'block';
+                downloadLink.style.textAlign = 'center';
+                downloadLink.style.margin = '20px auto';
+                downloadLink.style.padding = '8px 10px';
+                downloadLink.style.fontSize = '16px';
+                downloadLink.style.fontWeight = 'bold';
+                downloadLink.style.backgroundColor = '#d35603';
+                downloadLink.style.color = '#fff';
+                downloadLink.style.borderRadius = '10px';
+                downloadLink.style.textDecoration = 'none';
+                downloadLink.style.width = '180px';
+                document.body.appendChild(downloadLink);
             }
 
-            // Download button
-            const downloadLink = document.createElement('a');
-            downloadLink.download = 'vehicle-details.jpg';
+            downloadLink.download = 'TAG.jpg';
             downloadLink.href = canvas.toDataURL('image/jpeg');
             downloadLink.textContent = 'Download Image';
-            document.body.appendChild(downloadLink);
         });
     </script>
+
+
 </body>
 
 </html>
